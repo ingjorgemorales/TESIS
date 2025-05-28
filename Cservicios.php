@@ -4,7 +4,7 @@ class cCliente{
 
 
 function registrar_diagnostico($id,$nombres,$apellidos,$edad,$sexo,$observaciones,$radiografia,$categoria,$zona){
-  $conexion = new mysqli("127.0.0.1", "root", "","x-rai");
+  $conexion = new mysqli("127.0.0.1", "root", "","x-ray");
   if ($conexion->connect_error) {
       die("conexion fallida" . $conexion->connect_error);
 }
@@ -18,7 +18,7 @@ $rec = mysqli_query($conexion, $sql);
 
 
 function consultar_todo_diagnosticos(){
-  $conexion = new mysqli("127.0.0.1", "root", "","x-rai");
+  $conexion = new mysqli("127.0.0.1", "root", "","x-ray");
   if ($conexion->connect_error) {
       die("conexion fallida" . $conexion->connect_error);
 }
@@ -30,7 +30,7 @@ $rec = mysqli_query($conexion, $sql);
 
 function consultar_diagnosticos($id_paciente){
 
-  $conexion = new mysqli("127.0.0.1", "root", "","x-rai");
+  $conexion = new mysqli("127.0.0.1", "root", "","x-ray");
   if ($conexion->connect_error) {
       die("conexion fallida" . $conexion->connect_error);
 }
