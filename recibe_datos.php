@@ -9,11 +9,15 @@ $radiografia = $_POST['radiografia'];
 $categoria = $_POST['categoria'];
 $zona = $_POST['zona'];
 
-include_once("Cservicios.php");
+include_once("php/Cservicios.php");
 $objconsulta = new cCliente;
 $resultado= $objconsulta->registrar_diagnostico($id,$nombres,$apellidos,$edad,$sexo,$observaciones,$radiografia,$categoria,$zona);
 include_once('examen.html');
-include_once('notificacion1.php')
+include_once('php/notificacion1.php');
+
+
+
+
 
 
 ?>
