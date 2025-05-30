@@ -18,7 +18,7 @@ $resultado= $objconsulta->consultar_todo_diagnosticos();
     <div style="width: 100%;  height: 14%; border-bottom: 2px solid white; position: absolute; top: -2px"  id="encabezado">
     
         <img style="height: 69px;"
-        src="../public/external/logo_x_ray.png"
+        src="../assets/logo_x_ray.png"
         alt="logoapliB11031"
         class="medicalassured-logoapli-b11"
       />
