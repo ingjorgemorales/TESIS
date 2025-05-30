@@ -18,14 +18,14 @@ $resultado= $objconsulta->consultar_todo_diagnosticos();
     <div style="width: 100%;  height: 14%; border-bottom: 2px solid white; position: absolute; top: -2px"  id="encabezado">
     
         <img style="height: 69px;"
-        src="../public/external/logoaplib11031-8m9m-200h.png"
+        src="../public/external/logo_x_ray.png"
         alt="logoapliB11031"
         class="medicalassured-logoapli-b11"
       />
 
 
       <div style="width: 77px; height: 73px; position: relative; top: -70px; left: 170px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8); border-radius:44px;">
-        <img style="width: 102%; height: auto; " src="../assets/1949154.png" alt="">
+        <img style="width: 102%; height: auto; " src="../assets/icono_doctor.png" alt="">
     </div>
 
        <div style="font-size: 16px; width: 292px; height: 40px; position: relative; top: -130px; left: 270px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8); background-color: white; border-radius: 2px;">
@@ -97,9 +97,9 @@ $resultado= $objconsulta->consultar_todo_diagnosticos();
     <td>
         <?php 
             if (empty($row['radiografia'])) {
-                echo "NULL"; // Muestra el mensaje si no hay radiografía
+                echo "NULL";
             } else {
-                echo '<img style="width:30px; height:30px;" src="../assets/pluginIcon 4.png" alt="Radiografía">';
+                echo '<img style="width:30px; height:30px;" src="../assets/icono_archivo_DICOM.png" alt="Radiografía">';
             }
         ?>
     </td>
@@ -122,19 +122,19 @@ $resultado= $objconsulta->consultar_todo_diagnosticos();
 
             <div style="display: flex; ">
        <a href="../examen.html"> <button style="background-color:  #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px;margin: 10px;  width: 250px;">
-        <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 196px;" src="../assets/examen 1.png" alt=""> 
+        <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 196px;" src="../assets/icono_examen.png" alt=""> 
         EXAMEN</button></a>
        <a href="consultar.php"><button style="background-color: #2DC071; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
-        <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 196px;" src="../assets/buscador 2 (1).png" alt=""> 
+        <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 196px;" src="../assets/icono_lupa.png" alt=""> 
         CONSULTAR</button></a>
         <a href="../configurar.html"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
-            <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 184px;" src="../assets/ajustes 1.png" alt=""> 
+            <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 184px;" src="../assets/icono_ajustes.png" alt=""> 
             AJUSTES</button></a>
         <a href="editar.php"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
-            <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 184px;" src="../assets/EDITAR 2.png" alt=""> 
+            <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 184px;" src="../assets/icono_editar.png" alt=""> 
             EDITAR</button></a>
     <a href="../index.html"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
-           <img style="width: 90px; height: 70px; position: absolute; top:-17px; right: 150px;" src="../assets/logout-sign-out-icon-in-circle-button-vector-removebg-preview 1.png" alt=""> 
+           <img style="width: 90px; height: 70px; position: absolute; top:-17px; right: 150px;" src="../assets/icono_salida.png" alt=""> 
            SALIR</button></a>
 
     </div>

@@ -33,14 +33,14 @@ $row = mysqli_fetch_array($resultado)
     <div style="width: 100%;  height: 14%; border-bottom: 2px solid white; position: absolute; top: -2px"  id="encabezado">
     
         <img style="height: 69px;"
-        src="../public/external/logoaplib11031-8m9m-200h.png"
+        src="../public/external/logo_x_ray.png"
         alt="logoapliB11031"
         class="medicalassured-logoapli-b11"
       />
 
 
       <div style="width: 77px; height: 73px; position: relative; top: -70px; left: 170px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8); border-radius:44px;">
-        <img style="width: 102%; height: auto; " src="../assets/1949154.png" alt="">
+        <img style="width: 102%; height: auto; " src="../assets/icono_doctor.png" alt="">
     </div>
 
        <div style="font-size: 16px; width: 292px; height: 40px; position: relative; top: -130px; left: 270px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8); background-color: white; border-radius: 2px;">
@@ -81,25 +81,25 @@ $row = mysqli_fetch_array($resultado)
             </div>
 
             <button style="position: absolute;  border: 0px; top:122px; left:30px; width: 70px;"> 
-        <img style="width: 60%; height: auto;" src="../assets/BOTE_BASURA 2.PNG" alt="">
+        <img style="width: 60%; height: auto;" src="../assets/icono_basura.png" alt="">
         </button>
             <button style="position: absolute;  border: 0px; top:175px; left:30px; width: 70px;"> 
-        <img style="width: 60%; height: auto;" src="../assets/buscador 2.png" alt="">
+        <img style="width: 60%; height: auto;" src="../assets/icono_lupa_blanco.png" alt="">
         </button>
         <button style="position: absolute;  border: 0px; top:228px; left:30px; width: 70px;"> 
-            <img style="width: 60%; height: auto;" src="../assets/expandir 2.png" alt="">
+            <img style="width: 60%; height: auto;" src="../assets/icono_expandir.png" alt="">
         </button>
         <button style="position: absolute;  border: 0px; top:279px; left:30px; width: 70px;"> 
-            <img style="width: 60%; height: auto;" src="../assets/contraste_logo 2.png" alt="">
+            <img style="width: 60%; height: auto;" src="../assets/icono_contraste.png" alt="">
         </button>
         <button style="position: absolute;  border: 0px; top:334px; left:30px; width: 70px;"> 
-            <img style="width: 60%; height: auto;" src="../assets/girar izquierda 2.png" alt="">
+            <img style="width: 60%; height: auto;" src="../assets/icono_girar_izquierda.png" alt="">
         </button>
         <button style="position: absolute;  border: 0px; top:390px; left:30px; width: 70px; height: 38px;"> 
-            <img style="width: 50%; height: auto;" src="../assets/girar_derecha 2.png" alt="">
+            <img style="width: 50%; height: auto;" src="../assets/icono_girar_derecha.png" alt="">
         </button>
         <button style="position: absolute;  border: 0px; top:443px; left:30px; width: 70px; height: 38px;"> 
-            <img style="width: 50%; height: auto;" src="../assets/EDITAR 2.png" alt="">
+            <img style="width: 50%; height: auto;" src="../assets/icono_editar.png" alt="">
         </button>
 
          <div class="contenedor" style="position: absolute; background-color: black; width: 100px; height: 100px; border-radius: 3px; left: 170px; top: 15%; width: 80%; height: 75%; overflow-y:scroll;">  
@@ -147,7 +147,7 @@ $row = mysqli_fetch_array($resultado)
 <form method="POST" action="editar2.php">
             <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
             <button type="submit" style="background-color: #2DC071; color: white; border: 0px; position: absolute; font-size: 18px; border-radius: 4px; padding: 10px; top: 480px; left: 180px; width:200px;">
-        <img style="width: 45px; height: 40px; position: absolute; top:0px; left: 5px; " src="../assets/ojo_visualizador 1.png" alt=""> 
+        <img style="width: 45px; height: 40px; position: absolute; top:0px; left: 5px; " src="../assets/icono_ojo_visualizador.png" alt=""> 
             
         &nbsp; &nbsp; &nbsp; &nbsp;    INFORME</button>
         </form>      
@@ -158,19 +158,19 @@ $row = mysqli_fetch_array($resultado)
 
             <div style="display: flex; ">
        <a href="../examen.html"> <button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px;margin: 10px;  width: 250px;">
-        <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 196px;" src="../assets/examen 1.png" alt=""> 
+        <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 196px;" src="../assets/icono_examen.png" alt=""> 
         EXAMEN</button></a>
        <a href="consultar.php"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
-        <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 196px;" src="../assets/buscador 2 (1).png" alt=""> 
+        <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 196px;" src="../assets/icono_lupa.png" alt=""> 
         CONSULTAR</button></a>
         <a href="../configurar.html"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
-            <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 184px;" src="../assets/ajustes 1.png" alt=""> 
+            <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 184px;" src="../assets/icono_ajustes.png" alt=""> 
             AJUSTES</button></a>
         <a href="editar.php"><button style="background-color:  #2DC071;  border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
-            <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 184px;" src="../assets/EDITAR 2.png" alt=""> 
+            <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 184px;" src="../assets/icono_editar.png" alt=""> 
             EDITAR</button></a>
             <a href="../index.html"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
-           <img style="width: 90px; height: 70px; position: absolute; top:-17px; right: 150px;" src="../assets/logout-sign-out-icon-in-circle-button-vector-removebg-preview 1.png" alt=""> 
+           <img style="width: 90px; height: 70px; position: absolute; top:-17px; right: 150px;" src="../assets/icono_salida.png" alt=""> 
            SALIR</button></a>
 
     </div>
