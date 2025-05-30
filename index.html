@@ -1,598 +1,288 @@
 <!DOCTYPE html>
-<html lang="english">
-  <head>
-    <title>exported project</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="utf-8" />
-    <meta property="twitter:card" content="summary_large_image" />
+<html lang="es">
 
-    <style data-tag="reset-style-sheet">
-      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;  -webkit-font-smoothing: antialiased;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;  color: inherit;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}details {  display: block;  margin: 0;  padding: 0;}summary::-webkit-details-marker {  display: none;}[data-thq="accordion"] [data-thq="accordion-content"] {  max-height: 0;  overflow: hidden;  transition: max-height 0.3s ease-in-out;  padding: 0;}[data-thq="accordion"] details[data-thq="accordion-trigger"][open] + [data-thq="accordion-content"] {  max-height: 1000vh;}details[data-thq="accordion-trigger"][open] summary [data-thq="accordion-icon"] {  transform: rotate(180deg);}html { scroll-behavior: smooth  }
-    </style>
-    <style data-tag="default-style-sheet">
-      html {
-        font-family: Inter;
-        font-size: 16px;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>X-Rai Diagnostic - Diagnóstico Radiológico con IA</title>
+  <link rel="shortcut icon" href="/assets/cdn.png" type="image/png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style/index.css">
+  <style>
+    /* Estilos iniciales para evitar FOUC */
+    body {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
 
-      body {
-        font-weight: 400;
-        font-style:normal;
-        text-decoration: none;
-        text-transform: none;
-        letter-spacing: normal;
-        line-height: 1.15;
-        color: var(--dl-color-theme-neutral-dark);
-        background: var(--dl-color-theme-neutral-light);
+    body.loaded {
+      opacity: 1;
+    }
+  </style>
+</head>
 
-        fill: var(--dl-color-theme-neutral-dark);
-      }
-    </style>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/animate.css@4.1.1/animate.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css"
-    />
-  </head>
-  <body>
-    <link rel="stylesheet" href="Style/style.css" />
-    <script src="JavaScript/index.js"></script>
+<body>
+  <!-- Navbar -->
+  <header class="header">
+    <div class="container">
+      <div class="navbar">
+        <div class="logo-container">
+          <img src="assets/logo.png" alt="X-Rai Diagnostic" class="logo">
+        </div>
 
+        <nav class="nav-menu" id="navMenu">
+          <ul>
+            <li><a href="index.html" class="nav-link active">INICIO</a></li>
+            <li><a href="#about" class="nav-link">QUIÉNES SOMOS</a></li>
+            <li><a href="#services" class="nav-link">SERVICIOS</a></li>
+            <li><a href="#contact" class="nav-link">CONTACTO</a></li>
+          </ul>
+        </nav>
 
-    
-    <div>
-      <link href="Style/index.css" rel="stylesheet" />
+        <div class="search-bar">
+          <input type="text" placeholder="¿Qué estás buscando?">
+          <button class="search-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </div>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
 
-      <div class="medicalassured-container10">
-        <div class="medicalassured-medicalassured">
-          <div class="medicalassured-header11">
-            <div class="medicalassured-container11">
-          
-              <div class="medicalassured-navbarstyle2navbarlight1">
-                
-                <div class="medicalassured-navbartoggler1">
-                  <div class="medicalassured-navbartogglericon1"></div>
-                </div>
-                <div class="medicalassured-collapsenavbarcollapse1">
-                  <div class="medicalassured-navbarnav1">
-                    <div class="medicalassured-lisec1"></div>
-                    <div class="medicalassured-lisec2"></div>
-                  </div>
-                  <div class="medicalassured-navbarnav2">
-                    <div class="medicalassured-navitemsec1">
-                      <div class="medicalassured-a1"></div>
-                    </div>
-                    <div class="medicalassured-navitemsec2"></div>
-                  </div>
-                </div>
-                <img
-                  src="public/external/rectangle511117-zhgm-200h.png"
-                  alt="Rectangle511117"
-                  class="medicalassured-rectangle511"
-                />
-                <a style="top: 36%;" href="#" class="medicalassured-text10 btnText" onclick="scrollByAmount2(1740)">SERVICIOS</a>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Diagnóstico Radiológico con Inteligencia Artificial</h1>
+        <p class="hero-text">Tecnología avanzada para detección precisa de patologías óseas con un 98% de precisión</p>
+        <div class="hero-buttons">
+          <a href="examen.html" class="btn btn-primary">Únete a nosotros</a>
+          <a href="#services" class="btn btn-secondary">Nuestros servicios</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="assets/hero-doctor.png" alt="Doctor analizando radiografías con IA" class="animate-float">
+      </div>
+    </div>
+  </section>
 
-                <img style="height: 69px;"
-                  src="public/external/logoaplib11031-8m9m-200h.png"
-                  alt="logoapliB11031"
-                  class="medicalassured-logoapli-b11"
-                />
-                <img
-                  src="public/external/rectangle521115-4qjr-200h.png"
-                  alt="Rectangle521115"
-                  class="medicalassured-rectangle521"
-                />
-                <a href="#" class="medicalassured-text11 btnText" onclick="scrollByAmount(940)">QUIÉNES SOMOS</a>
+  <!-- About Section -->
+  <section id="about" class="section about-section">
+    <div class="container">
+      <h2 class="section-title">Nuestro Equipo</h2>
+      <p class="section-subtitle">Profesionales comprometidos con la innovación médica</p>
 
-                <a style="        top: 36%;
-                left: 34%;
-            
-                color: rgba(255, 255, 255, 1);
-                height: auto;
-                position: absolute;
-                text-align: center;
-                line-height: 22px;" href="index.html" class="medicalassured-text11 btnText">MENU</a>
-                <img
-                  src="public/external/rectangle531119-nmsn-200h.png"
-                  alt="Rectangle531119"
-                  class="medicalassured-rectangle531"
-                />
-               
-                <a style="top: 36%;" href="#" class="medicalassured-text12 btnText" onclick="scrollByAmount3(2500)">CONTACTO</a>
-                <div class="medicalassured-searchbar1">
-                  <div class="medicalassured-statelayer10">
-                    <div class="medicalassured-leadingicon1">
-                      <div class="medicalassured-container12">
-                        <div class="medicalassured-statelayer11">
-                          <img
-                            src="public/external/iconi138-ntrk.svg"
-                            alt="IconI138"
-                            class="medicalassured-icon1"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="medicalassured-content1">
-                      <input style="background-color: var(--dl-color-m3_sys_light-surfacecontainerhigh);
-                      " type="text" placeholder="¿Qué estás buscando?" />
-
-                    </div>
-                    <div class="medicalassured-trailing-elements1">
-                      <div class="medicalassured-frame1sttrailingicon1">
-                        <div class="medicalassured-container13">
-                          <div class="medicalassured-statelayer12">
-                            <img
-                              src="public/external/iconi138-nub3.svg"
-                              alt="IconI138"
-                              class="medicalassured-icon2"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="medicalassured-containerfluid1">
-              <div class="medicalassured-row">
-                <div class="medicalassured-colmd61">
-                  <div class="medicalassured-h5headertagsec"></div>
-                  <div class="medicalassured-cta">
-                    <a href="examen.html">
-                      <button class="medicalassured-button-mdsec1">
-                        <span class="medicalassured-text14 btnText">
-                          Únete a nosotros
-                        </span>
-                      </button>
-                    </a>
-                    <a href="index.html">
-                    <button class="medicalassured-button-mdsec2">
-                      <span class="medicalassured-text15 btnText">
-                        Leer mas
-                      </span>
-                    </button>
-                  </a>
-                  </div>
-                </div>
-                <div class="medicalassured-colmd62">
-                  <div class="medicalassured-herocover1">
-                    <div class="medicalassured-none">
-                      <img
-                        src="public/external/doc11039-5dkn-700h.png"
-                        alt="doc11039"
-                        class="medicalassured-doc1"
-                      />
-                      <div class="medicalassured-frame1"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      <div class="team-grid">
+        <!-- Miembro 1 -->
+        <div class="team-card">
+          <div class="team-image">
+            <img src="assets/jorge.png" alt="Jorge Morales">
+          </div>
+          <div class="team-info">
+            <h3>Jorge Morales</h3>
+            <p class="team-position">Ingeniero de Sistemas</p>
+            <p class="team-university">UNIVERSIDAD DEL SINÚ</p>
+            <div class="team-social">
+              <a href="#"><i class="icon-linkedin"></i></a>
+              <a href="#"><i class="icon-github"></i></a>
             </div>
           </div>
-          <div class="medicalassured-frame12-layout11">
-            <div class="medicalassured-header12">
+        </div>
 
-              <div class="medicalassured-containerfluid2">
-                <div class="medicalassured-cards1">
-                  <div  style="      height: 299px;  gap: 5px;" class="medicalassured-card10">
-                    <div class="medicalassured-image7"></div>
-                    <div class="medicalassured-body1">
-                      <div class="medicalassured-text20">
-                        <span class="medicalassured-text21 Heading">
-                          Jorge Morales
-                        </span>
-                        <span class="medicalassured-text22 BodyBase">
-                          <span>UNIVERSIDAD DEL SINÚ</span>
-                          <br />
-                          <span>ING. SISTEMAS</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div style="flex-direction: column;   flex-grow: 0;  gap: 5px;" class="medicalassured-card11">
-                    <div class="medicalassured-image8"></div>
-                    <div class="medicalassured-body2">
-                      <div class="medicalassured-text26">
-                        <span class="medicalassured-text27 Heading">
-                          Camilo Jaramillo
-                        </span>
-                        <span class="medicalassured-text28 BodyBase">
-                          <span>UNIVERSIDAD DEL SINÚ</span>
-                          <br />
-                          <span>ING. SISTEMAS</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="medicalassured-card12">
-                    <div class="medicalassured-image9"></div>
-                    <div class="medicalassured-body3">
-                      <div class="medicalassured-text32">
-                        <span class="medicalassured-text33 Heading">
-                          Yulieth Jimenez
-                        </span>
-                        <span class="medicalassured-text34 BodyBase">
-                          <span>UNIVERSIDAD DEL SINÚ</span>
-                          <br />
-                          <span>ING. SISTEMAS</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div style="     left: 973px;   height: 299px;  gap: 5px;  top: 379px;" class="medicalassured-card13">
-                  <div class="medicalassured-image10"></div>
-                  <div class="medicalassured-body4">
-                    <div class="medicalassured-text38">
-                      <span class="medicalassured-text39 Heading">
-                        Nicolas Arrieta
-                      </span>
-                      <span class="medicalassured-text40 BodyBase">
-                        <span>UNIVERSIDAD DEL SINÚ</span>
-                        <br />
-                        <span>ING. SISTEMAS</span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <img style="top: 400px"
-                  src="public/external/image173032499280111501-je5h-200h.png"
-                  alt="IMAGE173032499280111501"
-                  class="medicalassured-image17303249928011"
-                />
-                <img style="top: 400px"
-                  src="public/external/image11501-dbcm-200h.png"
-                  alt="image11501"
-                  class="medicalassured-image1"
-                />
-                <img 
-                  src="public/external/image21511-fpgj-400h.png"
-                  alt="image21511"
-                  class="medicalassured-image2"
-                />
-                <img style="top: 400px;     left: 997px;"
-                  src="public/external/imagendewhatsapp20241030alas183215229c966811512-jj2d-200h.png"
-                  alt="ImagendeWhatsApp20241030alas183215229c966811512"
-                  class="medicalassured-imagende-whats-app20241030alas183215229c96681"
-                />
-                <img style="top: 400px"
-                  src="public/external/imagendewhatsapp20241030alas184121f76e52a711512-9dyi-200h.png"
-                  alt="ImagendeWhatsApp20241030alas184121f76e52a711512"
-                  class="medicalassured-imagende-whats-app20241030alas184121f76e52a71"
-                />
-              </div>
-              <img 
-                src="public/external/line31404-qzah.svg"
-                alt="Line31404"
-                class="medicalassured-line31"
-              />
-            </div>
+        <!-- Miembro 2 -->
+        <div class="team-card">
+          <div class="team-image">
+            <img src="assets/nicolas.png" alt="Nicolas Arrieta">
           </div>
-          <div class="medicalassured-frame12-layout12">
-            <div class="medicalassured-header13">
-
-              <div class="medicalassured-containerfluid3">
-                <div class="medicalassured-cards2">
-                  <img
-                    src="public/external/image31542-0brj-200h.png"
-                    alt="image31542"
-                    class="medicalassured-image3"
-                  />
-                  <div class="medicalassured-card14">
-                    <div class="medicalassured-body5">
-                      <div class="medicalassured-text49">
-                        <span class="medicalassured-text50 Subheading">
-                          Diagnóstico Radiológico Automatizado
-                        </span>
-                        <span class="medicalassured-text51 BodySmall">
-                          Utilizamos inteligencia artificial para analizar
-                          imágenes de rayos X y detectar patologías óseas con
-                          alta precisión. Este sistema permite reducir el tiempo
-                          de diagnóstico y mejorar la confiabilidad de los
-                          resultados.
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="medicalassured-text-content-heading">
-                  <span class="medicalassured-text52 Heading">
-                    NUESTROS SERVICIOS
-                  </span>
-                </div>
-                <div class="medicalassured-cards3">
-                  <div class="medicalassured-card15">
-                    <div class="medicalassured-body6">
-                      <div class="medicalassured-text53">
-                        <span class="medicalassured-text54 Subheading">
-                          Opción médica Basada en IA
-                        </span>
-                        <span class="medicalassured-text55 BodySmall">
-                          X-Rai Diagnostic ofrece un análisis automatizado que
-                          proporciona a los radiólogos y médicos una “segunda
-                          opinión” rápida, mejorando la precisión y ayudando en
-                          la toma de decisiones clínicas informadas.
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <img
-                    src="public/external/image41542-1g7t-200h.png"
-                    alt="image41542"
-                    class="medicalassured-image4"
-                  />
-                </div>
-                <div class="medicalassured-cards4">
-                  <div class="medicalassured-card16">
-                    <div class="medicalassured-body7">
-                      <div class="medicalassured-text56">
-                        <span class="medicalassured-text57 Subheading">
-                          Monitoreo Continuo de Patologías
-                        </span>
-                        <span class="medicalassured-text58 BodySmall">
-                          Ideal para pacientes que requieren seguimiento a largo
-                          plazo. El sistema de IA monitorea los cambios en las
-                          imágenes radiológicas, facilitando la detección de
-                          progresiones o mejoras en patologías óseas.
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <img
-                    src="public/external/image51772-rcga-200h.png"
-                    alt="image51772"
-                    class="medicalassured-image5"
-                  />
-                </div>
-                <div class="medicalassured-cards5">
-                  <div class="medicalassured-card17"></div>
-                  <span class="medicalassured-text59 Subheading">
-                    <span>
-                      Entrenamiento de Personal Médico en Tecnología de IA
-                    </span>
-                    <br />
-                  </span>
-                  <span class="medicalassured-text62 BodySmall">
-                    Brindamos capacitación en el uso de la inteligencia
-                    artificial para el diagnóstico radiológico. Este servicio
-                    está diseñado para que el médico personal y los radiólogos
-                    integren y aprovechen las herramientas tecnológicas en su
-                    práctica diaria.
-                  </span>
-                  <img
-                    src="public/external/image61772-998-200h.png"
-                    alt="image61772"
-                    class="medicalassured-image6"
-                  />
-                </div>
-                <div class="medicalassured-cards6">
-                  <div class="medicalassured-card18"></div>
-                  <span class="medicalassured-text63 Subheading">
-                    Informes Personalizados de Diagnóstico
-                  </span>
-                  <span class="medicalassured-text64 BodySmall">
-                    Generamos informes detallados con un análisis visual e
-                    interpretativo de las imágenes radiológicas, explicando los
-                    hallazgos y ofreciendo recomendaciones adicionales para cada
-                    caso.
-                  </span>
-                  <img
-                    src="public/external/dalle20241030231845adetailedcustomizedmedicaldiagn1781-et5g-200h.png"
-                    alt="DALLE20241030231845Adetailedcustomizedmedicaldiagn1781"
-                    class="medicalassured-dalle20241030231845-adetailedcustomizedmedicaldiagn"
-                  />
-                </div>
-                <div class="medicalassured-cards7">
-                  <div class="medicalassured-card19"></div>
-                  <span class="medicalassured-text65 Subheading">
-                    Consultoría para Implementación de IA en Instituciones
-                    Médicas
-                  </span>
-                  <span class="medicalassured-text66 BodySmall">
-                    Asesoramos y ayudamos a clínicas y hospitales a implementar
-                    y personalizar la tecnología de X-Rai Diagnostic en sus
-                    sistemas, adaptándonos a sus necesidades específicas para
-                    optimizar el diagnóstico radiológico.
-                  </span>
-                </div>
-                <img
-                  src="public/external/image04b5dc7f378551fec07b3c9856d97ac511781-ks8a-200h.png"
-                  alt="IMAGE04b5dc7f378551fec07b3c9856d97ac511781"
-                  class="medicalassured-image04b5dc7f378551fec07b3c9856d97ac51"
-                />
-              </div>
-              <img
-                src="public/external/line31512-aavi.svg"
-                alt="Line31512"
-                class="medicalassured-line32"
-              />
+          <div class="team-info">
+            <h3>Nicolas Arrieta</h3>
+            <p class="team-position">Ingeniero de Sistemas</p>
+            <p class="team-university">UNIVERSIDAD DEL SINÚ</p>
+            <div class="team-social">
+              <a href="#"><i class="icon-linkedin"></i></a>
+              <a href="#"><i class="icon-github"></i></a>
             </div>
-
           </div>
         </div>
       </div>
     </div>
-    <section style="   height: 600px;
-    background: linear-gradient(to bottom right, #474FA0,#1A1D3A);
-    margin: 0;">
-    <iframe  style="position: absolute; left:900px; top:2640px; height:385px; width:400px;"src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2484.0656334843584!2d-75.88547154165389!3d8.766464139330408!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e5a2f9325c66065%3A0x92ea821aaf582261!2sUniversidad%20del%20Sin%C3%BA!5e0!3m2!1ses!2sco!4v1739334264568!5m2!1ses!2sco" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    <div style="position: relative; width: 370px; margin:73px; top:73px;">
-    <img style="
-      width: 100%;
-      height: auto;" src="./assets/DALL·E 2024-10-29 09.42.11 - A high-quality, detailed image of a professional computer setup displaying a research project on artificial intelligence for radiological bone diagnos 1.png" alt="">
-  </div>
-
-  <div style="position: relative; width: 370px; margin:73px; top:-390px; left:400px;">
-    <img style="
-      width: 100%;
-      height: auto;" src="./assets/DALL·E 2024-10-29 10.05.58 - A professional, high-quality image of a modern robot in a lab environment analyzing a bone X-ray on a digital screen. The robot has a sleek, advanced  1.png" alt="">
-  </div>
   </section>
-  <section style="   height: 300px;
-  background: default;
-  margin: 0;">
- 
- <div style=" position: relative; left: 450px; width: 200px;"></br>
-</br><span style=" font-weight: bold;"> Uses Cases </span></br></br></br>
-  UI design</br></br>
-  UX design</br></br>
-  Wireframing</br></br>
-  Diagramming</br></br>
-  Brainstorming</br></br>
-  Online whiteboard</br></br>
-  Team collaboration</br></br>
- </div>
 
- <div style=" position: relative; left: 750px; width: 200px; top: -330px">
-</br><span style=" font-weight: bold;"> Explore </span></br></br></br>
-  Design</br></br>
-  Prototyping</br></br>
-  Development features</br></br>
-  Design systems</br></br>
-  Collaboration features</br></br>
-  Design process</br></br>
-  FigJam</br></br>
- </div>
- 
- <div style=" position: relative; left: 1050px; width: 200px; top: -660px">
-</br><span style=" font-weight: bold;"> Resources </span></br></br></br>
-  Blog</br></br>
-  Best practices</br></br>
-  Colors</br></br>
-  Color wheel</br></br>
-  Support</br></br>
-  Developers</br></br>
-  Resource library</br></br>
- </div>
-<div style="position: relative;     width: 422px; height: 185px;border: 5px; top: -990px"">
- <div style="position: absolute; width: 25px; height: 35px; left:50px; top: 10px;">
-  <img style="
-    width: 100%;
-    height: auto;" src="./assets/Icon.png" alt="">
-</div>
+  <!-- Services Section -->
+  <section id="services" class="section services-section">
+    <div class="container">
+      <h2 class="section-title">Nuestros Servicios</h2>
+      <p class="section-subtitle">Soluciones innovadoras para el diagnóstico médico</p>
 
-<div style="position: absolute; width: 25px; height: 35px; left:50px; top: 75px;">
-  <img style="
-    width: 100%;
-    height: auto;" src="./assets/Icon (1).png" alt="">
-</div>
-<div style="position: absolute; width: 25px; height: 35px; left:95px; top: 75px;">
-  <img style="
-    width: 100%;
-    height: auto;" src="./assets/Icon (2).png" alt="">
-</div>
-<div style="position: absolute; width: 31px; height: 45px; left:140px; top: 75px;">
-  <img style="
-    width: 100%;
-    height: auto;" src="./assets/Icon (3).png" alt="">
-</div>
-<div style="position: absolute; width: 25px; height: 35px; left:190px; top: 75px;">
-  <img style="
-    width: 100%;
-    height: auto;" src="./assets/Icon (4).png" alt="">
-</div>
-</div>
+      <!-- Servicio 1 -->
+      <div class="service-card">
+        <div class="service-image">
+          <img src="assets/service1.png" alt="Diagnóstico Radiológico Automatizado">
+        </div>
+        <div class="service-content">
+          <h3>Diagnóstico Radiológico Automatizado</h3>
+          <p>Utilizamos inteligencia artificial para analizar imágenes de rayos X y detectar patologías óseas con alta
+            precisión. Este sistema permite reducir el tiempo de diagnóstico y mejorar la confiabilidad de los
+            resultados.</p>
+          <ul class="service-features">
+            <li>Análisis en tiempo real</li>
+            <li>Precisión del 98%</li>
+            <li>Integración con sistemas PACS</li>
+          </ul>
+          <a href="#" class="btn btn-outline">Más información</a>
+        </div>
+      </div>
 
+      <!-- Servicio 2 -->
+      <div class="service-card reverse">
+        <div class="service-content">
+          <h3>Opción médica Basada en IA</h3>
+          <p>X-Rai Diagnostic ofrece un análisis automatizado que proporciona a los radiólogos y médicos una "segunda
+            opinión" rápida, mejorando la precisión y ayudando en la toma de decisiones clínicas informadas.</p>
+          <ul class="service-features">
+            <li>Soporte para toma de decisiones</li>
+            <li>Reducción de errores</li>
+            <li>Informes detallados</li>
+          </ul>
+          <a href="#" class="btn btn-outline">Más información</a>
+        </div>
+        <div class="service-image">
+          <img src="assets/service2.png" alt="Opción médica Basada en IA">
+        </div>
+      </div>
+
+      <!-- Servicio 3 -->
+      <div class="service-card">
+        <div class="service-image">
+          <img src="assets/service3.png" alt="Monitoreo Continuo de Patologías">
+        </div>
+        <div class="service-content">
+          <h3>Monitoreo Continuo de Patologías</h3>
+          <p>Ideal para pacientes que requieren seguimiento a largo plazo. El sistema de IA monitorea los cambios en las
+            imágenes radiológicas, facilitando la detección de progresiones o mejoras en patologías óseas.</p>
+          <ul class="service-features">
+            <li>Seguimiento automatizado</li>
+            <li>Alertas de cambios significativos</li>
+            <li>Historial completo del paciente</li>
+          </ul>
+          <a href="#" class="btn btn-outline">Más información</a>
+        </div>
+      </div>
+    </div>
   </section>
-  </body>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section contact-section">
+    <div class="container">
+      <div class="contact-content">
+        <h2 class="section-title">Contáctanos</h2>
+        <p class="section-subtitle">Estamos aquí para ayudarte en tu transformación digital</p>
+
+        <div class="contact-info">
+          <div class="contact-item">
+            <i class="icon-location"></i>
+            <h3>Ubicación</h3>
+            <p>Universidad del Sinú, Cartagena, Colombia</p>
+          </div>
+
+          <div class="contact-item">
+            <i class="icon-email"></i>
+            <h3>Email</h3>
+            <p>info@xraidiagnostic.com</p>
+          </div>
+
+          <div class="contact-item">
+            <i class="icon-phone"></i>
+            <h3>Teléfono</h3>
+            <p>+57 300 123 4567</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2484.0656334843584!2d-75.88547154165389!3d8.766464139330408!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e5a2f9325c66065%3A0x92ea821aaf582261!2sUniversidad%20del%20Sin%C3%BA!5e0!3m2!1ses!2sco!4v1739334264568!5m2!1ses!2sco"
+          allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <img src="assets/logo.png" alt="X-Rai Diagnostic" class="footer-logo">
+          <p class="footer-about">X-Rai Diagnostic es una solución innovadora que utiliza inteligencia artificial para
+            mejorar el diagnóstico radiológico y la atención al paciente.</p>
+          <div class="footer-social">
+            <a href="#"><i class="icon-facebook"></i></a>
+            <a href="#"><i class="icon-twitter"></i></a>
+            <a href="#"><i class="icon-linkedin"></i></a>
+            <a href="#"><i class="icon-instagram"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h3>Servicios</h3>
+          <ul>
+            <li><a href="#">Diagnóstico Automatizado</a></li>
+            <li><a href="#">Segunda Opinión Médica</a></li>
+            <li><a href="#">Monitoreo Continuo</a></li>
+            <li><a href="#">Capacitación en IA</a></li>
+            <li><a href="#">Consultoría</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>Enlaces útiles</h3>
+          <ul>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Documentación</a></li>
+            <li><a href="#">Preguntas frecuentes</a></li>
+            <li><a href="#">Política de privacidad</a></li>
+            <li><a href="#">Términos y condiciones</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>Suscríbete</h3>
+          <p>Recibe las últimas noticias y actualizaciones sobre nuestra plataforma.</p>
+          <form class="newsletter-form">
+            <input type="email" placeholder="Tu correo electrónico" required>
+            <button type="submit" class="btn btn-primary">Suscribirse</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2024 X-Rai Diagnostic. Todos los derechos reservados.</p>
+        <div class="footer-links">
+          <a href="#">Política de privacidad</a>
+          <a href="#">Términos de servicio</a>
+          <a href="#">Mapa del sitio</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="JavaScript/main.js"></script>
+  <script>
+    // Cargar página completamente antes de mostrar contenido
+    window.addEventListener('load', function () {
+      document.body.classList.add('loaded');
+    });
+  </script>
+</body>
 
 </html>
