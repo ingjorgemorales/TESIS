@@ -1,9 +1,20 @@
-<!DOCTYPE html>
+
+<?php
+include_once("Cservicios.php");
+$objconsulta = new cCliente;
+$resultado= $objconsulta->Usuario_logueado();
+$result= $objconsulta->Consultar_empleado($resultado);
+//echo "✅✅✅". $resultado;
+if(empty($resultado)){
+    header("Location: ../login.html");
+    exit();
+}
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/Style/configurar.css" />
+  <link rel="stylesheet" href="../css/Style/configurar.css" />
     <title>X-RAY DIAGNOSTIC</title>
 </head>
 
@@ -14,20 +25,23 @@
     <div style="width: 100%;  height: 14%; border-bottom: 2px solid white; position: absolute; top: -2px"  id="encabezado">
     
         <img style="height: 69px;"
-        src="./assets/logo_x_ray.png"
+        src="../assets/logo_x_ray.png"
         alt="logoapliB11031"
         class="medicalassured-logoapli-b11"
       />
 
 
       <div style="width: 77px; height: 73px; position: relative; top: -70px; left: 170px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8); border-radius:44px;">
-        <img style="width: 102%; height: auto; " src="./assets/icono_doctor.png" alt="">
+        <img style="width: 102%; height: auto; " src="../assets/icono_doctor.png" alt="">
     </div>
 
        <div style="font-size: 16px; width: 292px; height: 40px; position: relative; top: -130px; left: 270px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8); background-color: white; border-radius: 2px;">
     <div style="position: absolute; top:10px; background-color: #2DC071; width: 20px ; height: 20px; border-radius: 20px; left: 250px;"></div>
 
-   <span style="position: relative; top: 10px; left: 10px;"> DR. JORGE MORALES </span>
+   <span style="position: relative; top: 10px; left: 10px;"> <?php while ($row = mysqli_fetch_array($result)){
+    echo $row['Nombre'] . " " . $row['Apellido'];    
+}
+    ?>  </span>
     </div>
 
 <!-- From Uiverse.io by LightAndy1 --> 
@@ -177,12 +191,12 @@
 
 
 <div style="background-color:#474FA0; position: absolute; width: 280px; height: 800px; left: 1050px; top: 50px; border-radius: 10px;">
-    <img style="position: absolute; top:10%; left: 20%; "src="./assets/imagen_radiologo.png" alt="">
+    <img style="position: absolute; top:10%; left: 20%; "src="../assets/imagen_radiologo.png" alt="">
     <a style="position: absolute;  top: 255px; left:40%; color: #8AC0FF;">Editar</a>
     <label style="font-size:14px; color: white; left: 10%; top: 35% ;position: absolute;" >Dr.Jorge Andrés Morales de la ossa</label></br>
     <label style="font-size:14px; color: white; left: 10%; top: 37% ;position: absolute;" >Esp. Radiologia</label></br>
     <label style="font-size:14px; color: white; left: 10%; top: 39% ;position: absolute;" >mjorge801@yahoo.com</label></br>
-    <img style="position: absolute; top:85%; left: 15%; "src="./assets/Logo_traumas_y_fracturas.png" alt="">
+    <img style="position: absolute; top:85%; left: 15%; "src="../assets/Logo_traumas_y_fracturas.png" alt="">
     <label style="font-size:14px; color: rgba(199, 199, 199, 0.623); left: 20%; top: 95% ;position: absolute;" >Power by Digitaldreams.com </label></br>
 
 
@@ -191,30 +205,30 @@
 </div>
 
 <button style="color:#474FA0; background-color: #D9D9D9; width: 140px; font-size: 16px; padding: 10px; border-radius: 5px; position: absolute; top:480px; left: 30px; border: 0px;">
-    <img style="width: 25px; height: 20px; position: absolute; top:8px; left: 13px; " src="./assets/icono_guardar.png" alt=""> 
+    <img style="width: 25px; height: 20px; position: absolute; top:8px; left: 13px; " src="../assets/icono_guardar.png" alt=""> 
     
         &nbsp; &nbsp;  &nbsp; Guardar</button>    
         
  <button style="color:#474FA0; background-color: #D9D9D9; width: 290px; font-size: 16px; padding: 10px; border-radius: 5px; position: absolute; top:480px; left: 200px; border: 0px;">
-            <img style="width: 25px; height: 20px; position: absolute; top:8px; left: 13px; " src="./assets/icono_ajustes.png" alt=""> 
+            <img style="width: 25px; height: 20px; position: absolute; top:8px; left: 13px; " src="../assets/icono_ajustes.png" alt=""> 
             
                 &nbsp; &nbsp;  &nbsp; Restablecer valores de fabrica</button>   
 
             <div style="display: flex; ">
-       <a href="examen.html"> <button style="background-color:  #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px;margin: 10px;  width: 250px;">
-        <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 196px;" src="./assets/icono_examen.png" alt=""> 
+       <a href="examen.php"> <button style="background-color:  #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px;margin: 10px;  width: 250px;">
+        <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 196px;" src="../assets/icono_examen.png" alt=""> 
         EXAMEN</button></a>
-       <a href="./php/consultar.php"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
-        <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 196px;" src="./assets/icono_lupa.png" alt=""> 
+       <a href="consultar.php"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
+        <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 196px;" src="../assets/icono_lupa.png" alt=""> 
         CONSULTAR</button></a>
-        <a href="configurar.html"><button style="background-color: #2DC071; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
-            <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 184px;" src="./assets/icono_ajustes.png" alt=""> 
+        <a href="configurar.php"><button style="background-color: #2DC071; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
+            <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 184px;" src="../assets/icono_ajustes.png" alt=""> 
             AJUSTES</button></a>
-        <a href="./php/editar.php"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
-            <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 184px;" src="./assets/icono_editar.png" alt=""> 
+        <a href="editar.php"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
+            <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 184px;" src="../assets/icono_editar.png" alt=""> 
             EDITAR</button></a>
-    <a href="index.html"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
-           <img style="width: 90px; height: 70px; position: absolute; top:-17px; right: 150px;" src="./assets/icono_salida.png" alt=""> 
+    <a href="cerrar_session.php"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
+           <img style="width: 90px; height: 70px; position: absolute; top:-17px; right: 150px;" src="../assets/icono_salida.png" alt=""> 
            SALIR</button></a>
 
     </div>

@@ -1,23 +1,13 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['id'])) {
-        $id_paciente = $_POST['id'];
-       // echo "El ID del paciente recibido es: " . htmlspecialchars($id_paciente);
-        // Aquí puedes hacer más procesos con la base de datos o redirigir a otra página
-    } else {
-        echo "No se recibió ningún ID de paciente.";
-    }
-} else {
-    echo "Acceso no permitido.";
-}
-
-//echo $id_paciente;
 include_once("Cservicios.php");
 $objconsulta = new cCliente;
-$resultado= $objconsulta->consultar_diagnosticos($id_paciente);
-//include_once('notificacion2.php');
-
-$row = mysqli_fetch_array($resultado)
+$resultado= $objconsulta->Usuario_logueado();
+$result= $objconsulta->Consultar_empleado($resultado);
+//echo "✅✅✅". $resultado;
+if(empty($resultado)){
+    header("Location: ../login.html");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +39,10 @@ $row = mysqli_fetch_array($resultado)
        <div style="font-size: 16px; width: 292px; height: 40px; position: relative; top: -130px; left: 270px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8); background-color: white; border-radius: 2px;">
     <div style="position: absolute; top:10px; background-color: #2DC071; width: 20px ; height: 20px; border-radius: 20px; left: 250px;"></div>
 
-   <span style="position: relative; top: 10px; left: 10px;"> DR. JORGE MORALES </span>
+   <span style="position: relative; top: 10px; left: 10px;"> <?php while ($row = mysqli_fetch_array($result)){
+    echo $row['Nombre'] . " " . $row['Apellido'];    
+}
+    ?> </span>
     </div>
 
 <div style="color:#474FA0; background-color: #D9D9D9; width: 120px; font-size: 18px; padding: 10px; border-radius: 10px; position: absolute; top:100px; left: 5px;">
@@ -150,19 +143,19 @@ $row = mysqli_fetch_array($resultado)
            
 
             <div style="display: flex; ">
-       <a href="../examen.html"> <button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px;margin: 10px;  width: 250px;">
+       <a href="examen.php"> <button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px;margin: 10px;  width: 250px;">
         <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 196px;" src="../assets/icono_examen.png" alt=""> 
         EXAMEN</button></a>
        <a href="consultar.php"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
         <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 196px;" src="../assets/icono_lupa.png" alt=""> 
         CONSULTAR</button></a>
-        <a href="../configurar.html"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
+        <a href="configurar.php"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
             <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 184px;" src="../assets/icono_ajustes.png" alt=""> 
             AJUSTES</button></a>
         <a href="editar.php"><button style="background-color:  #2DC071;  border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
             <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 184px;" src="../assets/icono_editar.png" alt=""> 
             EDITAR</button></a>
-            <a href="../index.html"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
+            <a href="cerrar_session.php"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
            <img style="width: 90px; height: 70px; position: absolute; top:-17px; right: 150px;" src="../assets/icono_salida.png" alt=""> 
            SALIR</button></a>
 
