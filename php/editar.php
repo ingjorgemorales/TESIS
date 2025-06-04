@@ -1,94 +1,116 @@
 <?php
 include_once("Cservicios.php");
 $objconsulta = new cCliente;
-$resultado= $objconsulta->Usuario_logueado();
-$result= $objconsulta->Consultar_empleado($resultado);
-//echo "✅✅✅". $resultado;
+$resultado = $objconsulta->Usuario_logueado();
+$result = $objconsulta->Consultar_empleado($resultado);
+
 if(empty($resultado)){
     header("Location: ../login.html");
     exit();
 }
+
+// Obtener nombre del empleado para mostrarlo
+$nombre_empleado = '';
+while ($row = mysqli_fetch_array($result)) {
+    $nombre_empleado = $row['Nombre'] . " " . $row['Apellido'];    
+}
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet" href="../css/Style/editar.css" />
-    <title>X-RAY DIAGNOSTIC</title>
+    <title>X-RAY DIAGNOSTIC - Editar Diagnóstico</title>
+    <link rel="shortcut icon" href="./assets/img/logo_icono_x_ray.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/Style/editar.css">
+    
+
 </head>
 
 <body>
-
-    <div style="width: 100%;  height: 14%; border-bottom: 2px solid white; position: absolute; top: -2px"  id="encabezado">
-    
-        <img style="height: 69px;"
-         src="../assets/logo_x_ray.png"
-        alt="logoapliB11031"
-        class="medicalassured-logoapli-b11"
-      />
-
-
-      <div style="width: 77px; height: 73px; position: relative; top: -70px; left: 170px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8); border-radius:44px;">
-        <img style="width: 102%; height: auto; " src="../assets/icono_doctor.png" alt="">
-    </div>
-
-       <div style="font-size: 16px; width: 292px; height: 40px; position: relative; top: -130px; left: 270px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.8); background-color: white; border-radius: 2px;">
-    <div style="position: absolute; top:10px; background-color: #2DC071; width: 20px ; height: 20px; border-radius: 20px; left: 250px;"></div>
-
-   <span style="position: relative; top: 10px; left: 10px;"> <?php while ($row = mysqli_fetch_array($result)){
-    echo $row['Nombre'] . " " . $row['Apellido'];    
-}
-    ?> </span>
-    </div>
-
-<!-- From Uiverse.io by LightAndy1 --> 
-
-
-
-
+    <!-- Barra de navegación superior -->
+    <header class="main-header">
+        <div class="logo-container" style="max-width: 100px;">
+            <a href="examen.php">
+            <img src="../assets/img/logo_x_ray.png" alt="X-RAY DIAGNOSTIC" class="logo" style="max-width: 100%; height: auto;">
+            </a>
         </div>
-        <div style="width: 99%; height: 400px;  border: 2px; position: absolute; top: 100px" >
-    <div style=" box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.6); position: relative; width:443px ; height:248px; background-color: white;  top:-433px; left:790px; z-index: -1;">
-        <img style="width: 25%; height: auto; position: relative; top: 20%; left: 38%;" src="./assets/pluginIcon 4.png" alt="">
-        <div id="previewContainer" style="width: 100%; height: auto; position: absolute; left: 25%; top: 0px;">
-            <img id="previewImage" src="" alt="Vista previa" style=" width: 100%; height: auto; display: none; max-width: 245px; max-height: 400px; border: 0px solid #ddd; padding: 1px;">
-        </div>
-    </div>
+        
+        <div class="user-info">
+            <div class="user-avatar">
+                <img src="../assets/img/icono_doctor.png" alt="Doctor">
             </div>
+            <div class="user-name">
+                <span><?php echo $nombre_empleado; ?></span>
+                <div class="status-indicator"></div>
+            </div>
+        </div>
+        
+        <button class="hamburger-btn" aria-label="Menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
 
+    <!-- Menú lateral (aparece en móvil) -->
+    <nav class="sidebar-nav">
+        <ul>
+            <li><a href="examen.php"><i class="fas fa-file-medical"></i> EXAMEN</a></li>
+            <li><a href="consultar.php"><i class="fas fa-search"></i> CONSULTAR</a></li>
+            <li><a href="configurar.php"><i class="fas fa-cog"></i> AJUSTES</a></li>
+            <li class="active"><a href="editar.php"><i class="fas fa-edit"></i> EDITAR</a></li>
+            <li><a href="cerrar_session.php"><i class="fas fa-sign-out-alt"></i> SALIR</a></li>
+        </ul>
+    </nav>
 
+    <!-- Contenido principal -->
+    <main class="main-content">
+        <div class="section-header">
+            <h1>Editar Diagnóstico</h1>
+            <p>Ingrese el ID del paciente para acceder y modificar los diagnósticos existentes</p>
+        </div>
+        
+        <div class="diagnostic-container">
+            <div class="form-section">
+                <h2>Ingrese el ID del Diagnóstico</h2>
+                <form action="editar3.php" method="POST">
+                    <div class="input-group">
+                        <input type="text" name="id" placeholder="Cédula del paciente" required>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i> Buscar Diagnóstico
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
 
-            <div class="form-container">
-        <h2 style="color: white;">Ingrese El Id del Diagnostico Para Empezar El Analísis</h2>
-        <form action="editar3.php" method="POST">
-            <input type="text" name="id" placeholder="Cédula del paciente" required>
-            <button type="submit">Enviar</button>
-        </form>
-    </div>
-
-           
-
-            <div style="display: flex; ">
-       <a href="examen.php"> <button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px;margin: 10px;  width: 250px;">
-        <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 196px;" src="../assets/icono_examen.png" alt=""> 
-        EXAMEN</button></a>
-       <a href="consultar.php"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
-        <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 196px;" src="../assets/icono_lupa.png" alt=""> 
-        CONSULTAR</button></a>
-        <a href="configurar.php"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
-            <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 184px;" src="../assets/icono_ajustes.png" alt=""> 
-            AJUSTES</button></a>
-        <a href="editar.php"><button style="background-color:  #2DC071;  border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
-            <img style="width: 45px; height: 40px; position: absolute; top:4px; right: 184px;" src="../assets/icono_editar.png" alt=""> 
-            EDITAR</button></a>
-            <a href="cerrar_session.php"><button style="background-color: #474FA0; border: 0px; color:white; font-size:20px; top:530px; position: relative; padding: 12px; left:10px; margin: 10px; width: 250px;">
-           <img style="width: 90px; height: 70px; position: absolute; top:-17px; right: 150px;" src="../assets/icono_salida.png" alt=""> 
-           SALIR</button></a>
-
-    </div>
-    </body>
-
-
-    
+    <!-- Barra de navegación inferior (solo en desktop) -->
+    <nav class="bottom-nav">
+        <a href="examen.php" class="nav-item">
+            <i class="fas fa-file-medical"></i>
+            <span>EXAMEN</span>
+        </a>
+        <a href="consultar.php" class="nav-item">
+            <i class="fas fa-search"></i>
+            <span>CONSULTAR</span>
+        </a>
+        <a href="configurar.php" class="nav-item">
+            <i class="fas fa-cog"></i>
+            <span>AJUSTES</span>
+        </a>
+        <a href="editar.php" class="nav-item active">
+            <i class="fas fa-edit"></i>
+            <span>EDITAR</span>
+        </a>
+        <a href="cerrar_session.php" class="nav-item">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>SALIR</span>
+        </a>
+    </nav>
+</body>
+<script src="../assets/js/editar.js"></script>
 </html>
