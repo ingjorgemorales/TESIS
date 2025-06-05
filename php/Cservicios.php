@@ -68,6 +68,89 @@ function Consultar_empleado($id_empleado){
     $resultado = $stmt->get_result();
     return $resultado;
 }
+
+function Consultar_todo_paciente(){
+  $conexion = $this->createConnection();
+  $sql = "CALL Consultar_todo_paciente()";
+  $stmt = $conexion->prepare($sql);
+  $stmt->execute();
+  $resultado = $stmt->get_result();
+  return $resultado;
+}
+function Registrar_paciente($id_paciente, $nombres, $apellidos, $direccion, $fecha_nacimiento, $email, $celular, $sexo) {
+    $conexion = $this->createConnection();
+    $sql = "CALL Registrar_paciente(?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("isssssss", $id_paciente, $nombres, $apellidos, $direccion, $fecha_nacimiento, $email, $celular, $sexo);
+
+    try {
+        if ($stmt->execute()) {
+            return ['success' => true];
+        } else {
+            return ['success' => false, 'error' => 'Error al ejecutar el procedimiento'];
+        }
+    } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() == 1062) {
+            return ['success' => false, 'error' => 'El Paciente ya está registrado'];
+        } else {
+            return ['success' => false, 'error' => 'Error de base de datos: ' . $e->getMessage()];
+        }
+    }
+}
+
+function Mostrar_todo_categoria(){
+  $conexion = $this->createConnection();
+  $sql = "CALL Mostrar_todo_categoria()";
+  $stmt = $conexion->prepare($sql);
+  $stmt->execute();
+  $resultado = $stmt->get_result();
+  return $resultado;
+}
+function Mostrar_todo_zona(){
+  $conexion = $this->createConnection();
+  $sql = "CALL Mostrar_todo_zona()";
+  $stmt = $conexion->prepare($sql);
+  $stmt->execute();
+  $resultado = $stmt->get_result();
+  return $resultado;
+}
+function Registrar_radiografia($fechaHoraActual,$nombreArchivo, $observaciones, $zona, $categoria, $id_paciente){
+   global $id; 
+    $conexion = $this->createConnection();
+    $sql = "CALL Registrar_radiografia(?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("sssssss", $fechaHoraActual,$nombreArchivo, $observaciones, $zona, $categoria, $id, $id_paciente);
+        try {
+        if ($stmt->execute()) {
+            return ['success' => true];
+        } else {
+            return ['success' => false, 'error' => 'Error al ejecutar el procedimiento'];
+        }
+    } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() == 1062) {
+            return ['success' => false, 'error' => ''];
+        } else {
+            return ['success' => false, 'error' => 'Error de base de datos: ' . $e->getMessage()];
+        }
+    }
+}
+function Mostrar_todo_radiografia(){
+    $conexion = $this->createConnection();
+    $sql = "CALL Mostrar_todo_radiografia()";
+    $stmt = $conexion->prepare($sql);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    return $resultado;
+}
+function Consultar_radiografia($ID_Radiografia){
+    $conexion = $this->createConnection();
+    $sql = "CALL Consultar_radiografia(?)";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("i", $ID_Radiografia);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    return $resultado;
+}
 }
 
 ?>

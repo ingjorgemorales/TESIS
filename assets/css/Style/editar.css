@@ -568,3 +568,44 @@ body {
         font-size: 1rem;
     }
 }
+    .notification {
+    display:none;
+    position: fixed;
+    top: -50px; /* Inicialmente fuera de la pantalla */
+    left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+    background-color: rgb(196, 35, 35);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    z-index: 1000;
+    animation: slideDown 0.5s ease-in-out forwards, fadeOut 0.5s 2s ease-in-out forwards;
+}
+
+@keyframes slideDown {
+    0% {
+        top: -50px; 
+    }
+    100% {
+        top: 0; 
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        top: -100px;
+        display: none; 
+    }
+}
+
+.close {
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}

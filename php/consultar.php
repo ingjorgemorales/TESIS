@@ -3,7 +3,7 @@ include_once("Cservicios.php");
 $objconsulta = new cCliente;
 $resultado = $objconsulta->Usuario_logueado();
 $result = $objconsulta->Consultar_empleado($resultado);
-
+$result_radiografia =$objconsulta->Mostrar_todo_radiografia();
 if (empty($resultado)) {
     header("Location: ../login.html");
     exit();
@@ -15,16 +15,16 @@ while ($row = mysqli_fetch_array($result)) {
     $nombre_medico = $row['Nombre'] . " " . $row['Apellido'];
 }
 
-// Obtener los resultados para la tabla (asegurando que se recorran solo una vez)
-// $diagnosticos = [];
-// $resultado_diagnosticos = $objconsulta->Consultar_diagnostico();
-// while ($row = mysqli_fetch_array($resultado_diagnosticos)) {
-//     $diagnosticos[] = $row;
-// }
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
-
+<style>
+.fila-seleccionada {
+  background-color: #f0f0ff;
+  border-left: 4px solid #7a00cc;
+}
+</style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -96,55 +96,89 @@ while ($row = mysqli_fetch_array($result)) {
             </div>
 
             <div class="table-section">
+                                    <select id="filterColumn" class="filter-select">
+                        <option value="1">ID</option>
+                        <option value="2">Fecha y hora</option>
+                        <option value="3">Edad</option>
+                        <option value="4">Observaciones</option>
+                        <option value="5">Zona</option>
+                        <option value="6">Categoría</option>
+                        <option value="7">Realizado por</option>
+                        <option value="8">Cédula paciente</option>
+                        <option value="9">Nombre paciente</option>
+                        <option value="10">Género</option>
+                    </select>
                 <div class="search-container">
+
+
                     <i class="fas fa-search search-icon"></i>
                     <input type="text" id="query" class="search-input" placeholder="Buscar por ID, nombre o fecha...">
+                    
                 </div>
 
                 <div class="table-container">
                     <table class="responsive-table">
                         <thead>
                             <tr>
-                                <th>ID Diagnóstico</th>
-                                <th>ID Paciente</th>
-                                <th>Nombres</th>
-                                <th>Apellidos</th>
+                                <th></th>
+                                <th>ID</th>
+                                <th>Fecha y hora</th>
                                 <th>Edad</th>
-                                <th>Sexo</th>
                                 <th>Observaciones</th>
-                                <th>Archivo</th>
-                                <th>Fecha</th>
-                                <th>Acciones</th>
+                                <th>Zona</th>
+                                <th>Categoria</th>
+                                <th>Realizado por</th>
+                                <th>Cedula paciente</th>
+                                <th>Nombre completo</th>
+                                <th>Genero</th>
+                                <th>Archivo Radiografia</th>
+                                <th>Funciones</th>
+
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($diagnosticos as $row): ?>
-                                <tr>
-                                    <td><?php echo $row['id']; ?></td>
-                                    <td><?php echo $row['id_paciente']; ?></td>
-                                    <td><?php echo $row['nombres']; ?></td>
-                                    <td><?php echo $row['apellidos']; ?></td>
-                                    <td><?php echo $row['edad']; ?></td>
-                                    <td><?php echo $row['sexo']; ?></td>
-                                    <td><?php echo $row['observaciones']; ?></td>
-                                    <td>
-                                        <?php if (empty($row['radiografia'])): ?>
-                                            <span class="no-file">N/A</span>
-                                        <?php else: ?>
-                                            <i class="fas fa-file-medical file-icon"></i>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td><?php echo $row['fecha']; ?></td>
-                                    <td>
-                                        <form method="POST" action="editar3.php">
-                                            <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                            <button type="submit" class="action-btn">
-                                                <i class="fas fa-play"></i> Analizar
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
+                        <?php
+                        while ($radiografia = mysqli_fetch_array($result_radiografia)) { ?>
+                            <tr>
+                                <td><input type="checkbox" class="fila-check"></td>
+                                <td><?php echo $radiografia['ID']; ?></td>
+                                <td><?php echo $radiografia['Fecha y hora']; ?></td>
+                                <td>
+                                    <?php
+                                    $fechaNacimiento = new DateTime($radiografia['Fecha_nacimiento']);
+                                    $hoy = new DateTime();
+                                    $edad = $hoy->diff($fechaNacimiento)->y;
+                                    echo $edad;
+                                    ?>
+                                </td>
+                                <td><?php echo $radiografia['Observaciones']; ?></td>
+                                <td><?php echo $radiografia['Zona']; ?></td>
+                                <td><?php echo $radiografia['Categoria']; ?></td>
+                                <td><?php echo $radiografia['nombre_empleado']; ?></td>
+                                <td><?php echo $radiografia['Cedula paciente']; ?></td>
+                                <td><?php echo $radiografia['Nombre completo']; ?></td>
+                                <td>
+                                    <?php 
+                                    if($radiografia['Genero'] == 'M') {
+                                        echo "Masculino";
+                                    } elseif($radiografia['Genero'] == 'F') {
+                                        echo "Femenino";
+                                    } else {
+                                        echo "Otro";
+                                    }
+                                    ?>
+                                </td>
+                                <td class="archivo-radiografia"><?php echo $radiografia['Archivo_radiografia']; ?></td>
+                                <td>
+                                    <form method="POST" action="editar3.php">
+                                        <input type="hidden" name="id" value="<?php echo $radiografia['ID']; ?>">
+                                        <button type="submit" class="action-btn">
+                                            <i class="fas fa-play"></i> Analizar
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php } ?>
                         </tbody>
                     </table>
                 </div>
@@ -176,6 +210,9 @@ while ($row = mysqli_fetch_array($result)) {
         </a>
     </nav>
 </body>
+
 <script src="../assets/js/consultar.js"></script>
+
+
 
 </html>

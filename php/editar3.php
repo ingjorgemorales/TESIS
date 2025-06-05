@@ -1,8 +1,15 @@
 <?php
+$ID_Radiografia = $_POST['id'];
 include_once("Cservicios.php");
 $objconsulta = new cCliente;
 $resultado = $objconsulta->Usuario_logueado();
 $result = $objconsulta->Consultar_empleado($resultado);
+$result_radiografia = $objconsulta->Consultar_radiografia($ID_Radiografia);
+$radiografia = mysqli_fetch_array($result_radiografia);
+if (empty($radiografia)) {
+    header("Location: editar.php?ms=Radiografía no encontrada&type=error");
+    exit();
+}
 
 if(empty($resultado)){
     header("Location: ../login.html");
@@ -78,29 +85,17 @@ if(empty($resultado)){
             <div class="image-section">
                 <h2>Imagen Radiológica</h2>
                 <div class="image-container">
-                    <?php 
-                    // Simulamos la obtención de datos del paciente
-                    $row = [
-                        'id' => 'DIAG-2023-001',
-                        'id_paciente' => 'PAC-12345',
-                        'fecha' => '2023-10-15',
-                        'edad' => '42 años',
-                        'sexo' => 'Masculino',
-                        'radiografia' => null // Simulamos que no hay imagen para el ejemplo
-                    ];
-                    
-                    if (!empty($row['radiografia'])) { 
-                        $imagenBase64 = base64_encode($row['radiografia']);
-                        $mime = 'image/jpeg';
-                        echo '<img class="zoom-img" 
-                             src="data:' . $mime . ';base64,' . $imagenBase64 . '">';
-                    } else { 
-                        echo '<div style="text-align: center; color: #6c757d;">
-                                <i class="fas fa-image" style="font-size: 5rem; margin-bottom: 15px;"></i>
-                                <p>No hay imagen disponible</p>
-                              </div>'; 
-                    } 
-                    ?>
+                <?php 
+                if (!empty($radiografia['Archivo_radiografia'])) { 
+                    echo '<img class="zoom-img" src="../assets/upload/' . $radiografia['Archivo_radiografia'] . '">';
+                } else { 
+                    echo '<div style="text-align: center; color: #6c757d;">
+                            <i class="fas fa-image" style="font-size: 5rem; margin-bottom: 15px;"></i>
+                            <p>No hay imagen disponible</p>
+                        </div>'; 
+                } 
+                ?>
+
                 </div>
                 
                 <div class="image-controls">
@@ -146,23 +141,36 @@ if(empty($resultado)){
                 <div class="patient-info">
                     <div class="info-item">
                         <span class="info-label">Número de análisis:</span>
-                        <span class="info-value"><?php echo $row['id']; ?></span>
+                        <span class="info-value"><?php echo $radiografia['ID']; ?></span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">ID del paciente:</span>
-                        <span class="info-value"><?php echo $row['id_paciente']; ?></span>
+                        <span class="info-value"><?php echo $radiografia['Cedula paciente']; ?></span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">Fecha:</span>
-                        <span class="info-value"><?php echo $row['fecha']; ?></span>
+                        <span class="info-value"><?php echo $radiografia['Fecha y hora']; ?></span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">Edad:</span>
-                        <span class="info-value"><?php echo $row['edad']; ?></span>
+                        <span class="info-value">                                    <?php
+                                    $fechaNacimiento = new DateTime($radiografia['Fecha_nacimiento']);
+                                    $hoy = new DateTime();
+                                    $edad = $hoy->diff($fechaNacimiento)->y;
+                                    echo $edad;
+                                    ?></span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">Sexo:</span>
-                        <span class="info-value"><?php echo $row['sexo']; ?></span>
+                        <span class="info-value">                                    <?php 
+                                    if($radiografia['Genero'] == 'M') {
+                                        echo "Masculino";
+                                    } elseif($radiografia['Genero'] == 'F') {
+                                        echo "Femenino";
+                                    } else {
+                                        echo "Otro";
+                                    }
+                                    ?></span>
                     </div>
                 </div>
                 
@@ -212,6 +220,7 @@ if(empty($resultado)){
             <span>SALIR</span>
         </a>
     </nav>
+    
     <script src="../assets/js/editar3.js"></script>
 
 </body>

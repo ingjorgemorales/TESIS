@@ -60,3 +60,114 @@ document.addEventListener('DOMContentLoaded', function () {
         patientForm.style.opacity = '1';
     }, 300);
 });
+function calcularEdad(fechaNacimiento) {
+    const hoy = new Date();
+    const nacimiento = new Date(fechaNacimiento);
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    const mes = hoy.getMonth() - nacimiento.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+        edad--;
+    }
+
+    return edad;
+}
+
+const inputId = document.getElementById('id');
+const inputNombres = document.getElementById('nombres');
+const inputApellidos = document.getElementById('apellidos');
+const inputDireccion = document.getElementById('direccion');
+const inputFechaNacimiento = document.getElementById('fecha_nacimiento');
+const inputEmail = document.getElementById('email');
+const inputCelular = document.getElementById('celular');
+const inputSexo = document.getElementById('sexo');
+const inputEdad = document.getElementById('edad');
+inputFechaNacimiento.addEventListener('change', function () {
+    if(inputFechaNacimiento.value){
+        inputEdad.value = calcularEdad(inputFechaNacimiento.value);
+    }
+});
+
+inputId.addEventListener('input', function () {
+    const id = this.value;
+
+    if (pacientes[id]) {
+        inputNombres.value = pacientes[id].nombres;
+        inputApellidos.value = pacientes[id].apellidos;
+        inputDireccion.value = pacientes[id].direccion;
+        inputFechaNacimiento.value = pacientes[id].fecha_nacimiento;
+        inputEmail.value = pacientes[id].email;
+        inputCelular.value = pacientes[id].celular;
+        inputEdad.value = calcularEdad(pacientes[id].fecha_nacimiento);
+
+        let sexoBD = pacientes[id].sexo;
+        let sexoForm = '';
+        if (sexoBD === 'F') sexoForm = 'Femenino';
+        else if (sexoBD === 'M') sexoForm = 'Masculino';
+        else if (sexoBD === 'O') sexoForm = 'Otro';
+        inputSexo.value = sexoForm;
+
+        // Deshabilitar edición
+        inputNombres.readOnly = true;
+        inputApellidos.readOnly = true;
+        inputDireccion.readOnly = true;
+        inputFechaNacimiento.readOnly = true;
+        inputEmail.readOnly = true;
+        inputCelular.readOnly = true;
+        inputEdad.readOnly = true;
+        inputSexo.disabled = true;
+
+    } else {
+        // Limpiar campos
+        inputNombres.value = '';
+        inputApellidos.value = '';
+        inputDireccion.value = '';
+        inputFechaNacimiento.value = '';
+        inputEmail.value = '';
+        inputCelular.value = '';
+        inputEdad.value = '';
+        inputSexo.value = '';
+
+        // Habilitar edición
+        inputNombres.readOnly = false;
+        inputApellidos.readOnly = false;
+        inputDireccion.readOnly = false;
+        inputFechaNacimiento.readOnly = false;
+        inputEmail.readOnly = false;
+        inputCelular.readOnly = false;
+        inputEdad.readOnly = false;
+        inputSexo.disabled = false;
+    }
+});
+
+
+const params = new URLSearchParams(window.location.search);
+const message = params.get('ms');
+const type = params.get('type');
+
+if (message && type) {
+    const notification = document.getElementById('notification');
+    const messageSpan = document.getElementById('notification-message');
+
+    // Set message
+    messageSpan.textContent = message;
+
+    // Set background color
+    if (type === 'ok') {
+        notification.style.backgroundColor = '#23c483'; // verde
+    } else if (type === 'error') {
+        notification.style.backgroundColor = '#e74c3c'; // rojo
+    }
+
+    // Mostrar
+    notification.style.display = 'block';
+
+    // Ocultar automáticamente luego de 4 segundos
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 4000);
+}
+
+function closeNotification() {
+    document.getElementById('notification').style.display = 'none';
+}

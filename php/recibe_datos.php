@@ -15,9 +15,4 @@ $resultado= $objconsulta->registrar_diagnostico($id,$nombres,$apellidos,$edad,$s
 include_once('examen.html');
 include_once('php/notificacion1.php');
 
-
-
-
-
-
 ?>

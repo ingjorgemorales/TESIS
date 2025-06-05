@@ -17,8 +17,37 @@ document.addEventListener('DOMContentLoaded', function () {
     const previewCard = document.querySelector('.preview-card');
 
     // Simular animación de carga
-    setTimeout(() => {
-        previewCard.style.transform = 'translateY(0)';
-        previewCard.style.opacity = '1';
-    }, 300);
+
 });
+
+
+const params = new URLSearchParams(window.location.search);
+const message = params.get('ms');
+const type = params.get('type');
+
+if (message && type) {
+    const notification = document.getElementById('notification');
+    const messageSpan = document.getElementById('notification-message');
+
+    // Set message
+    messageSpan.textContent = message;
+
+    // Set background color
+    if (type === 'ok') {
+        notification.style.backgroundColor = '#23c483'; // verde
+    } else if (type === 'error') {
+        notification.style.backgroundColor = '#e74c3c'; // rojo
+    }
+
+    // Mostrar
+    notification.style.display = 'block';
+
+    // Ocultar automáticamente luego de 4 segundos
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 4000);
+}
+
+function closeNotification() {
+    document.getElementById('notification').style.display = 'none';
+}

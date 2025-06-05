@@ -12,38 +12,23 @@
         });
     });
 
-    // Función de búsqueda
-    document.getElementById('query').addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        const tableRows = document.querySelectorAll('.responsive-table tbody tr');
-        
-        tableRows.forEach(row => {
-            const rowText = row.textContent.toLowerCase();
-            if (rowText.includes(searchTerm)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    });
+    
+// Filtrar registros por columna
+    document.getElementById("query").addEventListener("input", function () {
+        const filterText = this.value.trim().toLowerCase();
+        const columnIndex = parseInt(document.getElementById("filterColumn").value);
+        const tableRows = document.querySelectorAll(".responsive-table tbody tr");
 
-    // Simular vista previa al pasar el ratón sobre un registro
-    document.querySelectorAll('.responsive-table tbody tr').forEach(row => {
-        row.addEventListener('mouseenter', function() {
-            const fileIcon = this.querySelector('.file-icon');
-            if (fileIcon) {
-                document.getElementById('previewImage').style.display = 'block';
-                document.querySelector('.preview-placeholder').style.display = 'none';
-                // En una implementación real, cargaríamos la imagen real aquí
-                document.getElementById('previewImage').src = '../assets/sample_xray.jpg';
+        tableRows.forEach(function (row) {
+            const cell = row.cells[columnIndex];
+            if (cell) {
+                const cellText = cell.textContent.toLowerCase();
+                row.style.display = (cellText.includes(filterText)) ? "" : "none";
             }
         });
-        
-        row.addEventListener('mouseleave', function() {
-            document.getElementById('previewImage').style.display = 'none';
-            document.querySelector('.preview-placeholder').style.display = 'flex';
-        });
     });
+    console.log("Filtro de registros activado.");
+
 
     // Efecto de carga para la tarjeta de vista previa
     document.addEventListener('DOMContentLoaded', function () {
@@ -58,3 +43,38 @@
             tableSection.style.opacity = '1';
         }, 300);
     });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const checkboxes = document.querySelectorAll(".fila-check");
+  const previewImage = document.getElementById("previewImage");
+  const previewPlaceholder = document.querySelector(".preview-placeholder");
+
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener("change", () => {
+      const fila = checkbox.closest("tr");
+      const archivoCell = fila.querySelector(".archivo-radiografia");
+      const archivo = archivoCell ? archivoCell.textContent : null;
+
+      // Solo mostrar la imagen si el checkbox está marcado
+      if (checkbox.checked && archivo) {
+        // Desmarcar todas las filas
+        checkboxes.forEach(cb => {
+          cb.checked = false;
+          cb.closest("tr").classList.remove("fila-seleccionada");
+        });
+
+        // Marcar la fila seleccionada y mostrar la imagen
+        checkbox.checked = true;  // Asegurarse de que este checkbox esté marcado
+        fila.classList.add("fila-seleccionada");
+        previewImage.src = `../assets/upload/${archivo}`;
+        previewImage.style.display = "block";
+        previewPlaceholder.style.display = "none";
+      } else {
+        // Si el checkbox no está marcado, ocultar la imagen
+        fila.classList.remove("fila-seleccionada");
+        previewImage.style.display = "none";
+        previewPlaceholder.style.display = "flex";
+      }
+    });
+  });
+});

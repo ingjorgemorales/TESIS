@@ -28,7 +28,50 @@ while ($row = mysqli_fetch_array($result)) {
     
 
 </head>
+<style>
+      .notification {
+    display:none;
+    position: fixed;
+    top: -50px; /* Inicialmente fuera de la pantalla */
+    left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+    background-color: rgb(196, 35, 35);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    z-index: 1000;
+    animation: slideDown 0.5s ease-in-out forwards, fadeOut 0.5s 2s ease-in-out forwards;
+}
 
+@keyframes slideDown {
+    0% {
+        top: -50px; 
+    }
+    100% {
+        top: 0; 
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        top: -100px;
+        display: none; 
+    }
+}
+
+.close {
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+</style>
 <body>
     <!-- Barra de navegación superior -->
     <header class="main-header">
@@ -111,6 +154,43 @@ while ($row = mysqli_fetch_array($result)) {
             <span>SALIR</span>
         </a>
     </nav>
+    
 </body>
-<script src="../assets/js/editar.js"></script>
+<div class="notification" id="notification" style="display: none;">
+    <span id="notification-message"></span>
+    <span class="close" onclick="closeNotification()">&times;</span>
+</div>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+const message = params.get('ms');
+const type = params.get('type');
+
+if (message && type) {
+    const notification = document.getElementById('notification');
+    const messageSpan = document.getElementById('notification-message');
+
+    // Set message
+    messageSpan.textContent = message;
+
+    // Set background color
+    if (type === 'ok') {
+        notification.style.backgroundColor = '#23c483'; // verde
+    } else if (type === 'error') {
+        notification.style.backgroundColor = '#e74c3c'; // rojo
+    }
+
+    // Mostrar
+    notification.style.display = 'block';
+
+    // Ocultar automáticamente luego de 4 segundos
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 4000);
+}
+
+function closeNotification() {
+    document.getElementById('notification').style.display = 'none';
+}
+</script>
 </html>
