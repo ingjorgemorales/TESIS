@@ -32,3 +32,43 @@ document.querySelectorAll('.control-btn').forEach(btn => {
         }, 300);
     });
 });
+
+expandBtn.addEventListener('click', function () {
+    // Implementar la lógica de pantalla completa
+    if (!isFullScreen) {
+        if (image.requestFullscreen) {
+            image.requestFullscreen();
+        } else if (image.mozRequestFullScreen) { /* Firefox */
+            image.mozRequestFullScreen();
+        } else if (image.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+            image.webkitRequestFullscreen();
+        } else if (image.msRequestFullscreen) { /* IE/Edge */
+            image.msRequestFullscreen();
+        }
+        isFullScreen = true;
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) { /* Firefox */
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) { /* Chrome, Safari & Opera */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE/Edge */
+            document.msExitFullscreen();
+        }
+        isFullScreen = false;
+    }
+});
+
+contrastBtn.addEventListener('click', function () {
+    // Implementar la lógica de contraste
+    currentContrast += 10;
+    if (currentContrast > 200) currentContrast = 50; // Reinicia el contraste
+    image.style.filter = `contrast(${currentContrast}%)`;
+});
+
+rotateBtn.addEventListener('click', function () {
+    // Implementar la lógica de rotación
+    currentRotation += 90;
+    image.style.transform += ` rotate(${currentRotation}deg)`;
+});
