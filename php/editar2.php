@@ -109,30 +109,6 @@ while ($row = mysqli_fetch_array($result)) {
                         } 
                         ?>
                     </div>
-                    
-                    <div class="image-controls">
-                        <button class="control-btn" title="Eliminar">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                        <button class="control-btn" title="Zoom">
-                            <i class="fas fa-search-plus"></i>
-                        </button>
-                        <button class="control-btn" title="Expandir">
-                            <i class="fas fa-expand"></i>
-                        </button>
-                        <button class="control-btn" title="Contraste">
-                            <i class="fas fa-adjust"></i>
-                        </button>
-                        <button class="control-btn" title="Rotar">
-                            <i class="fas fa-undo"></i>
-                        </button>
-                        <button class="control-btn" title="Guardar">
-                            <i class="fas fa-save"></i>
-                        </button>
-                        <button class="control-btn" title="Editar">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                    </div>
                 </div>
             </div>
             

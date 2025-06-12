@@ -11,7 +11,7 @@ if (empty($radiografia)) {
     exit();
 }
 
-if(empty($resultado)){
+if (empty($resultado)) {
     header("Location: ../login.html");
     exit();
 }
@@ -19,6 +19,7 @@ if(empty($resultado)){
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,27 +27,101 @@ if(empty($resultado)){
     <link rel="shortcut icon" href="../assets/img/logo_icono_x_ray.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/Style/editar3.css">
-
+    <style>
+        /* Estilos para el nuevo layout de tres columnas */
+        .diagnostic-container {
+            display: grid;
+            grid-template-columns: 40% 30% 30%;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .image-section {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .tools-section {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+        
+        .info-section {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .image-container {
+            width: 100%;
+            height: 400px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .control-group {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .control-group:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 1200px) {
+            .diagnostic-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .diagnostic-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <!-- Barra de navegación superior -->
     <header class="main-header">
         <div class="logo-container" style="max-width: 100px;">
             <a href="examen.php">
-            <img src="../assets/img/logo_x_ray.png" alt="X-RAY DIAGNOSTIC" class="logo" style="max-width: 100%; height: auto;">
+                <img src="../assets/img/logo_x_ray.png" alt="X-RAY DIAGNOSTIC" class="logo" style="max-width: 100%; height: auto;">
             </a>
         </div>
-        
+
         <div class="user-info">
             <div class="user-avatar">
                 <img src="../assets/img/icono_doctor.png" alt="Doctor">
             </div>
             <div class="user-name">
                 <span>
-                    <?php 
+                    <?php
                     $nombre_empleado = '';
                     while ($row = mysqli_fetch_array($result)) {
-                        $nombre_empleado = $row['Nombre'] . " " . $row['Apellido'];    
+                        $nombre_empleado = $row['Nombre'] . " " . $row['Apellido'];
                     }
                     echo $nombre_empleado;
                     ?>
@@ -54,7 +129,7 @@ if(empty($resultado)){
                 <div class="status-indicator"></div>
             </div>
         </div>
-        
+
         <button class="hamburger-btn" aria-label="Menú">
             <span></span>
             <span></span>
@@ -79,116 +154,186 @@ if(empty($resultado)){
             <h1>Editar Diagnóstico</h1>
             <p>Detalles del diagnóstico seleccionado</p>
         </div>
-        
+
         <div class="diagnostic-container">
-            <!-- Sección de imagen y controles -->
+            <!-- Sección 1: Imagen -->
             <div class="image-section">
-                <h2>Imagen Radiológica</h2>
+                <h2><i class="fas fa-image"></i> Imagen Radiológica</h2>
                 <div class="image-container">
-                <?php 
-                if (!empty($radiografia['Archivo_radiografia'])) { 
-                    echo '<img class="zoom-img" src="../assets/upload/' . $radiografia['Archivo_radiografia'] . '">';
-                } else { 
-                    echo '<div style="text-align: center; color: #6c757d;">
+                    <?php
+                    if (!empty($radiografia['Archivo_radiografia'])) {
+                        echo '<img id="imagePreview" src="../assets/upload/' . $radiografia['Archivo_radiografia'] . '">';
+                    } else {
+                        echo '<div style="text-align: center; color: #6c757d;">
                             <i class="fas fa-image" style="font-size: 5rem; margin-bottom: 15px;"></i>
                             <p>No hay imagen disponible</p>
-                        </div>'; 
-                } 
-                ?>
-
+                        </div>';
+                    }
+                    ?>
                 </div>
-                
-                <div class="image-controls">
-                    <button class="control-btn">
-                        <i class="fas fa-trash-alt"></i>
-                        <span>Eliminar</span>
-                    </button>
-                    <button class="control-btn">
-                        <i class="fas fa-search-plus"></i>
-                        <span>Zoom</span>
-                    </button>
-                    <button class="control-btn">
-                        <i class="fas fa-expand-alt"></i>
-                        <span>Expandir</span>
-                    </button>
-                    <button class="control-btn">
-                        <i class="fas fa-adjust"></i>
-                        <span>Contraste</span>
-                    </button>
-                    <button class="control-btn">
-                        <i class="fas fa-undo-alt"></i>
-                        <span>Girar Izq.</span>
-                    </button>
-                    <button class="control-btn">
-                        <i class="fas fa-redo-alt"></i>
-                        <span>Girar Der.</span>
-                    </button>
-                    <button class="control-btn">
-                        <i class="fas fa-edit"></i>
-                        <span>Anotar</span>
-                    </button>
-                    <button class="control-btn">
-                        <i class="fas fa-download"></i>
-                        <span>Descargar</span>
-                    </button>
+                <div class="zoom-controls">
+                    <button class="zoom-btn" id="zoomIn"><i class="fas fa-search-plus"></i></button>
+                    <button class="zoom-btn" id="zoomOut"><i class="fas fa-search-minus"></i></button>
+                    <button class="zoom-btn" id="zoomReset"><i class="fas fa-expand"></i></button>
                 </div>
             </div>
-            
-            <!-- Sección de información del paciente -->
-            <div class="info-section">
-                <h2>Información del Paciente</h2>
+
+            <!-- Sección 2: Herramientas -->
+            <div class="tools-section">
+                <h2><i class="fas fa-tools"></i> Herramientas de Edición</h2>
                 
-                <div class="patient-info">
-                    <div class="info-item">
-                        <span class="info-label">Número de análisis:</span>
-                        <span class="info-value"><?php echo $radiografia['ID']; ?></span>
+                <div class="control-group">
+                    <h3><i class="fas fa-font"></i> Texto</h3>
+                    <label for="textInput">Texto a agregar:</label>
+                    <input type="text" id="textInput" placeholder="Escribe tu texto aquí" class="form-control">
+
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label for="textColor">Color:</label>
+                            <input type="color" id="textColor" value="#ffffff">
+                        </div>
+                        <div class="form-col">
+                            <label for="textBgColor">Fondo:</label>
+                            <input type="color" id="textBgColor" value="#00000000">
+                        </div>
                     </div>
-                    <div class="info-item">
-                        <span class="info-label">ID del paciente:</span>
-                        <span class="info-value"><?php echo $radiografia['Cedula paciente']; ?></span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Fecha:</span>
-                        <span class="info-value"><?php echo $radiografia['Fecha y hora']; ?></span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Edad:</span>
-                        <span class="info-value">                                    <?php
-                                    $fechaNacimiento = new DateTime($radiografia['Fecha_nacimiento']);
-                                    $hoy = new DateTime();
-                                    $edad = $hoy->diff($fechaNacimiento)->y;
-                                    echo $edad;
-                                    ?></span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Sexo:</span>
-                        <span class="info-value">                                    <?php 
-                                    if($radiografia['Genero'] == 'M') {
-                                        echo "Masculino";
-                                    } elseif($radiografia['Genero'] == 'F') {
-                                        echo "Femenino";
-                                    } else {
-                                        echo "Otro";
-                                    }
-                                    ?></span>
+
+                    <label for="textSize">Tamaño: <span id="textSizeValue">24</span>px</label>
+                    <input type="range" id="textSize" min="10" max="72" value="24" class="form-range">
+
+                    <label for="textFont">Fuente:</label>
+                    <select id="textFont" class="form-select">
+                        <option value="Arial">Arial</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Helvetica">Helvetica</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Courier New">Courier New</option>
+                    </select>
+
+                    <div class="button-group">
+                        <button id="addTextBtn" class="btn-primary"><i class="fas fa-plus"></i> Agregar Texto</button>
+                        <button id="clearTextBtn" class="btn-secondary"><i class="fas fa-trash"></i> Eliminar Texto</button>
                     </div>
                 </div>
-                
+
+                <div class="control-group">
+                    <h3><i class="fas fa-crop-alt"></i> Transformaciones</h3>
+                    <div class="button-group">
+                        <button id="rotateLeftBtn" class="btn-primary"><i class="fas fa-undo"></i> Girar Izquierda</button>
+                        <button id="rotateRightBtn" class="btn-primary"><i class="fas fa-redo"></i> Girar Derecha</button>
+                        <button id="flipHorizontalBtn" class="btn-secondary"><i class="fas fa-arrows-alt-h"></i> Horizontal</button>
+                        <button id="flipVerticalBtn" class="btn-secondary"><i class="fas fa-arrows-alt-v"></i> Vertical</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <h3><i class="fas fa-sliders-h"></i> Ajustes de Imagen</h3>
+                    <label for="contrastRange">Contraste: <span id="contrastValue">100</span>%</label>
+                    <input type="range" id="contrastRange" min="0" max="200" value="100" class="form-range">
+
+                    <label for="brightnessRange">Brillo: <span id="brightnessValue">100</span>%</label>
+                    <input type="range" id="brightnessRange" min="0" max="200" value="100" class="form-range">
+
+                    <label for="saturationRange">Saturación: <span id="saturationValue">100</span>%</label>
+                    <input type="range" id="saturationRange" min="0" max="200" value="100" class="form-range">
+                </div>
+
+                <div class="control-group">
+                    <div class="button-group">
+                        <button id="resetBtn" class="btn-warning"><i class="fas fa-sync-alt"></i> Reiniciar</button>
+                        <button id="downloadBtn" class="btn-success"><i class="fas fa-download"></i> Descargar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección 3: Información del paciente -->
+            <div class="info-section">
+                <h2><i class="fas fa-user-injured"></i> Información del Paciente</h2>
+
+                <div class="patient-info">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <div class="info-content">
+                            <span class="info-label">ID Análisis</span>
+                            <span class="info-value"><?php echo $radiografia['ID']; ?></span>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-fingerprint"></i>
+                        </div>
+                        <div class="info-content">
+                            <span class="info-label">ID Paciente</span>
+                            <span class="info-value"><?php echo $radiografia['Cedula paciente']; ?></span>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <div class="info-content">
+                            <span class="info-label">Fecha</span>
+                            <span class="info-value"><?php echo $radiografia['Fecha y hora']; ?></span>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-birthday-cake"></i>
+                        </div>
+                        <div class="info-content">
+                            <span class="info-label">Edad</span>
+                            <span class="info-value">
+                                <?php
+                                $fechaNacimiento = new DateTime($radiografia['Fecha_nacimiento']);
+                                $hoy = new DateTime();
+                                $edad = $hoy->diff($fechaNacimiento)->y;
+                                echo $edad . " años";
+                                ?>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-venus-mars"></i>
+                        </div>
+                        <div class="info-content">
+                            <span class="info-label">Sexo</span>
+                            <span class="info-value">
+                                <?php
+                                if ($radiografia['Genero'] == 'M') {
+                                    echo "Masculino";
+                                } elseif ($radiografia['Genero'] == 'F') {
+                                    echo "Femenino";
+                                } else {
+                                    echo "Otro";
+                                }
+                                ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="action-buttons">
-                    <form method="POST" action="editar2.php">
-                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                        <button type="submit" class="action-btn">
+                    <form method="POST" action="editar2.php" class="action-form">
+                        <input type="hidden" name="id" value="<?php echo $radiografia['ID']; ?>">
+                        <button type="submit" class="btn-action btn-report">
                             <i class="fas fa-file-medical-alt"></i>
                             Generar Informe
                         </button>
                     </form>
-                    
-                    <button class="action-btn" style="background: linear-gradient(to right, #6c757d, #5a6268);">
+
+                    <button class="btn-action btn-print">
                         <i class="fas fa-print"></i>
                         Imprimir Diagnóstico
                     </button>
-                    
-                    <button class="action-btn" style="background: linear-gradient(to right, #ffc107, #e0a800);">
+
+                    <button class="btn-action btn-update">
                         <i class="fas fa-sync-alt"></i>
                         Actualizar Datos
                     </button>
@@ -220,8 +365,7 @@ if(empty($resultado)){
             <span>SALIR</span>
         </a>
     </nav>
-    
-    <script src="../assets/js/editar3.js"></script>
 
+    <script src="../assets/js/editar3.js"></script>
 </body>
 </html>
