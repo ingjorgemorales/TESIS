@@ -100,6 +100,21 @@ if (empty($resultado)) {
                 grid-template-columns: 1fr;
             }
         }
+        .button_diagnostico{
+            background-color: #2dbd2d; 
+            color: white;
+            margin-bottom: 10px;
+        }
+        .button_diagnostico:hover {
+            background-color: #28a745; 
+            color: white;
+        }
+        .input-label{
+        border: none; 
+        background: transparent; 
+        outline: none;
+        font-size: 14px;
+        }
     </style>
 </head>
 
@@ -255,9 +270,10 @@ if (empty($resultado)) {
                         <div class="info-icon">
                             <i class="fas fa-id-card"></i>
                         </div>
+                    <form action="editar2.php" method = "POST">
                         <div class="info-content">
                             <span class="info-label">ID Análisis</span>
-                            <span class="info-value"><?php echo $radiografia['ID']; ?></span>
+                            <input class= "input-label" name="id" value="<?php echo $radiografia['ID']; ?>" readonly>
                         </div>
                     </div>
 
@@ -298,6 +314,7 @@ if (empty($resultado)) {
                         </div>
                     </div>
 
+
                     <div class="info-card">
                         <div class="info-icon">
                             <i class="fas fa-venus-mars"></i>
@@ -317,8 +334,13 @@ if (empty($resultado)) {
                             </span>
                         </div>
                     </div>
-                </div>
 
+                </div>
+                
+                    <button type="submit" class = "button_diagnostico">
+                        <i class="fas fa-plus"></i>&nbsp;&nbsp;&nbsp;Empezar Diagnostico
+                    </button><br>
+                    </form>
                 <div class="action-buttons">
                     <form method="POST" action="editar2.php" class="action-form">
                         <input type="hidden" name="id" value="<?php echo $radiografia['ID']; ?>">

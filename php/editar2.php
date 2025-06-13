@@ -1,9 +1,11 @@
 <?php
+$ID_Radiografia = $_POST['id'];
 include_once("Cservicios.php");
 $objconsulta = new cCliente;
 $resultado = $objconsulta->Usuario_logueado();
 $result = $objconsulta->Consultar_empleado($resultado);
-
+$result_radiografia = $objconsulta->Consultar_radiografia($ID_Radiografia);
+$radiografia = mysqli_fetch_array($result_radiografia);
 if(empty($resultado)){
     header("Location: ../login.html");
     exit();
@@ -95,19 +97,57 @@ while ($row = mysqli_fetch_array($result)) {
                 
                 <div class="image-container">
                     <div style="width: 100%; border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden;">
-                        <?php 
-                        if (!empty($row['radiografia'])) { 
-                            $imagenBase64 = base64_encode($row['radiografia']);
-                            $mime = 'image/jpeg';
-                            echo '<img class="original-image zoom-img" 
-                                   src="data:' . $mime . ';base64,' . $imagenBase64 . '">';
-                        } else { 
-                            echo '<div style="text-align: center; padding: 40px; background: #f0f0f0; color: #777;">
-                                    <i class="fas fa-image" style="font-size: 3rem; margin-bottom: 15px;"></i>
-                                    <p>No hay imagen disponible</p>
-                                  </div>'; 
-                        } 
-                        ?>
+                <?php
+                // Ruta del archivo que quieres enviar (puede venir de $_FILES si usas un formulario)
+$imagePath = '../assets/upload/' . $radiografia['Archivo_radiografia'];
+
+// Verifica que exista
+if (!file_exists($imagePath)) {
+    die("No se encontró la imagen en: " . $imagePath);
+}
+
+// Preparar cURL
+$ch = curl_init();
+
+curl_setopt($ch, CURLOPT_URL, "http://127.0.0.1:5000/predict");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$cfile = new CURLFile($imagePath, mime_content_type($imagePath), basename($imagePath));
+$postData = ['file' => $cfile];
+
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+
+// Ejecutar
+$response = curl_exec($ch);
+
+// Manejar errores
+if (curl_errno($ch)) {
+    echo 'Error en cURL: ' . curl_error($ch);
+    curl_close($ch);
+    exit;
+}
+
+curl_close($ch);
+
+ $responseData = json_decode($response, true);
+
+if (isset($responseData['imagen'])) {
+
+    echo "<h4>Imagen con detecciones:</h4>";
+    echo '<img src="data:image/jpeg;base64,' . $responseData['imagen'] . '" style="max-width: 400px;">';
+
+    $modelo = $responseData['resultado_modelo'];
+
+} else {
+    echo "<p>Respuesta inesperada del servidor:</p>";
+    echo "<pre>" . htmlspecialchars($response) . "</pre>";
+}
+
+
+                ?>
+
+
                     </div>
                 </div>
             </div>
@@ -123,9 +163,17 @@ while ($row = mysqli_fetch_array($result)) {
                             <td>Hallazgos:</td>
                             <td>
                                 <ul>
-                                    <li>Anomalía zona C107</li>
-                                    <li>Aumento de volumen en tejidos blandos adyacentes</li>
-                                    <li>Sin evidencia de neumotórax o hemotórax</li>
+                                    <li><?php 
+                            if (isset($responseData['imagen'])) {
+                                $numHallazgos = count($responseData['diagnostico']);
+                                echo "<p><strong>Número de hallazgos:</strong> " . $numHallazgos . "</p>";
+
+                                foreach ($responseData['diagnostico'] as $diag) {
+                                    echo "<p><strong>Clase:</strong> " . htmlspecialchars($diag['clase']) . 
+                                        " | <strong>Confianza:</strong> " . htmlspecialchars($diag['confianza']) . "</p>";
+                                }
+                            }
+                            ?></li>
                                 </ul>
                             </td>
                         </tr>
@@ -133,25 +181,38 @@ while ($row = mysqli_fetch_array($result)) {
                             <td>Porcentaje confianza:</td>
                             <td>
                                 <ul>
-                                    <li>86%</li>
+                                    <li><?php 
+                                if (isset($responseData['imagen'])) {
+                                        foreach ($responseData['diagnostico'] as $diag) {
+                                        echo "<p>" . htmlspecialchars($diag['confianza']*100) ."%</p>";
+                                    }
+                                }?></li>
                                 </ul>
                             </td>
                         </tr>
                         <tr>
-                            <td>Áreas marcadas:</td>
+
+                        </tr>
+                        <tr>
+                            <td>Resolucion:</td>
                             <td>
                                 <ul>
-                                    <li>(255,0,0) - (255,0,0) - (255,0,0) - (255,0,0)- (255,0,0)- (255,0,0)- (255,0,0)- (255,0,0)- (255,0,0)- (255,0,0)- (255,0,0)- (255,0,0)- (255,0,0)- (255,0,0)- (255,0,0)- (255,0,0)</li>
+                                    <li><?php if (isset($responseData['imagen'])) {
+                                    echo "<p>" . htmlspecialchars($modelo['deteccion']['imagen']) . "</p>";
+                                    }
+                                    ?></li>
                                 </ul>
                             </td>
                         </tr>
                         <tr>
-                            <td>Tipo de estudio:</td>
+                            <td>Tiempo de inferencia: </td>
                             <td>
                                 <ul>
-                                    <li>Proyección posteroanterior y lateral</li>
+                                    <li><?php if (isset($responseData['imagen'])) {
+                                     echo "<p>" . htmlspecialchars($modelo['velocidades']['inferencia']) . "</p>";
+                                    }
+                                    ?></li>
                                 </ul>
-                            </td>
                         </tr>
                     </table>
                 </div>
@@ -163,7 +224,7 @@ while ($row = mysqli_fetch_array($result)) {
                             <td>Diagnóstico principal:</td>
                             <td>
                                 <ul>
-                                    <li>Fractura no desplazada en la zona C107 del lado derecho.</li>
+                                    <li>None</li>
                                 </ul>
                             </td>
                         </tr>
@@ -171,8 +232,8 @@ while ($row = mysqli_fetch_array($result)) {
                             <td>Diagnóstico diferencial:</td>
                             <td>
                                 <ul>
-                                    <li>Fractura desplazada (baja probabilidad, basado en la imagen).</li>
-                                    <li>Contusión costal sin fractura (descartada por la evidencia radiológica).</li>
+                                    <li>None</li>
+                                    <li>None</li>
                                 </ul>
                             </td>
                         </tr>
@@ -180,7 +241,7 @@ while ($row = mysqli_fetch_array($result)) {
                             <td>Recomendaciones:</td>
                             <td>
                                 <ul>
-                                    <li>Reposo y evitar actividades que puedan agravar la lesión (como levantar peso o realizar movimientos bruscos).</li>
+                                    <li>None</li>
                                 </ul>
                             </td>
                         </tr>
