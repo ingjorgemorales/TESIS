@@ -32,7 +32,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 30px;
+    padding: 5px 30px;
     background-color: rgba(26, 29, 58, 0.95);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -543,7 +543,7 @@ body {
 
 @media (max-width: 768px) {
     .main-header {
-        padding: 15px 20px;
+        padding: 5px 20px;
     }
 
     .logo-text {
@@ -599,6 +599,24 @@ body {
     }
 }
 
+.top-nav {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-left: 30px;
+}
+
+.top-nav .nav-item i {
+    margin-right: 6px;
+    font-size: 1.1em;
+}
+
+@media (max-width: 900px) {
+    .top-nav {
+        display: none !important;
+    }
+}
+
 @media (max-width: 480px) {
     .section-header h1 {
         font-size: 1.6rem;
@@ -621,22 +639,26 @@ body {
         padding: 6px 10px;
     }
 }
-    .filter-select {
+
+.filter-select {
     padding: 8px;
     margin-right: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 14px;
 }
-    .table-section {
+
+.table-section {
     overflow-x: auto;
     max-width: 100%;
 }
 
 .responsive-table {
-    min-width: 1000px; /* O ajusta según el número de columnas */
+    min-width: 1000px;
+    /* O ajusta según el número de columnas */
     border-collapse: collapse;
 }
+
 .table-section::-webkit-scrollbar {
     height: 8px;
 }

@@ -80,6 +80,28 @@ while ($row = mysqli_fetch_array($result)) {
             <img src="../assets/img/logo_x_ray.png" alt="X-RAY DIAGNOSTIC" class="logo" style="max-width: 100%; height: auto;">
             </a>
         </div>
+        <nav class="top-nav" style="display: flex; gap: 10px;">
+            <a href="examen.php" class="nav-item">
+                <i class="fas fa-file-medical"></i>
+                <span>EXAMEN</span>
+            </a>
+            <a href="consultar.php" class="nav-item">
+                <i class="fas fa-search"></i>
+                <span>CONSULTAR</span>
+            </a>
+            <a href="configurar.php" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>AJUSTES</span>
+            </a>
+            <a href="editar.php" class="nav-item active">
+                <i class="fas fa-edit"></i>
+                <span>EDITAR</span>
+            </a>
+            <a href="cerrar_session.php" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>SALIR</span>
+            </a>
+        </nav>
         
         <div class="user-info">
             <div class="user-avatar">
@@ -130,30 +152,6 @@ while ($row = mysqli_fetch_array($result)) {
             </div>
         </div>
     </main>
-
-    <!-- Barra de navegación inferior (solo en desktop) -->
-    <nav class="bottom-nav">
-        <a href="examen.php" class="nav-item">
-            <i class="fas fa-file-medical"></i>
-            <span>EXAMEN</span>
-        </a>
-        <a href="consultar.php" class="nav-item">
-            <i class="fas fa-search"></i>
-            <span>CONSULTAR</span>
-        </a>
-        <a href="configurar.php" class="nav-item">
-            <i class="fas fa-cog"></i>
-            <span>AJUSTES</span>
-        </a>
-        <a href="editar.php" class="nav-item active">
-            <i class="fas fa-edit"></i>
-            <span>EDITAR</span>
-        </a>
-        <a href="cerrar_session.php" class="nav-item">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>SALIR</span>
-        </a>
-    </nav>
     
 </body>
 <div class="notification" id="notification" style="display: none;">
@@ -161,36 +159,5 @@ while ($row = mysqli_fetch_array($result)) {
     <span class="close" onclick="closeNotification()">&times;</span>
 </div>
 
-<script>
-    const params = new URLSearchParams(window.location.search);
-const message = params.get('ms');
-const type = params.get('type');
-
-if (message && type) {
-    const notification = document.getElementById('notification');
-    const messageSpan = document.getElementById('notification-message');
-
-    // Set message
-    messageSpan.textContent = message;
-
-    // Set background color
-    if (type === 'ok') {
-        notification.style.backgroundColor = '#23c483'; // verde
-    } else if (type === 'error') {
-        notification.style.backgroundColor = '#e74c3c'; // rojo
-    }
-
-    // Mostrar
-    notification.style.display = 'block';
-
-    // Ocultar automáticamente luego de 4 segundos
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 4000);
-}
-
-function closeNotification() {
-    document.getElementById('notification').style.display = 'none';
-}
-</script>
+<script src="../assets/js/editar.js"></script>
 </html>

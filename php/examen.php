@@ -32,16 +32,37 @@ $result_paciente = $objconsulta->Consultar_todo_paciente();
     <link rel="stylesheet" href="../assets/css/Style/examen.css">
 </head>
 
-
 <body>
-    <!-- Barra de navegación superior -->
-    <header class="main-header">
+   <header class="main-header">
         <div class="logo-container" style="max-width: 100px;">
             <a href="examen.php">
             <img src="../assets/img/logo_x_ray.png" alt="X-RAY DIAGNOSTIC" class="logo" style="max-width: 100%; height: auto;">
             </a>
         </div>
-
+    </div>
+    <nav class="top-nav" style="display: flex; gap: 10px;">
+            <a href="examen.php" class="nav-item active">
+                <i class="fas fa-file-medical"></i>
+                <span>EXAMEN</span>
+            </a>
+            <a href="consultar.php" class="nav-item">
+                <i class="fas fa-search"></i>
+                <span>CONSULTAR</span>
+            </a>
+            <a href="configurar.php" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>AJUSTES</span>
+            </a>
+            <a href="editar.php" class="nav-item">
+                <i class="fas fa-edit"></i>
+                <span>EDITAR</span>
+            </a>
+            <a href="cerrar_session.php" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>SALIR</span>
+            </a>
+        </nav>
+        
         <div class="user-info">
             <div class="user-avatar">
                 <img src="../assets/img/icono_doctor.png" alt="Doctor">
@@ -57,7 +78,9 @@ $result_paciente = $objconsulta->Consultar_todo_paciente();
             <span></span>
             <span></span>
         </button>
-    </header>
+    </div>
+</header>
+
 
     <!-- Menú lateral (aparece en móvil) -->
     <nav class="sidebar-nav">
@@ -204,30 +227,6 @@ $result_paciente = $objconsulta->Consultar_todo_paciente();
             </div>
         </form>
     </main>
-
-    <!-- Barra de navegación inferior (solo en desktop) -->
-    <nav class="bottom-nav">
-        <a href="examen.php" class="nav-item active">
-            <i class="fas fa-file-medical"></i>
-            <span>EXAMEN</span>
-        </a>
-        <a href="consultar.php" class="nav-item">
-            <i class="fas fa-search"></i>
-            <span>CONSULTAR</span>
-        </a>
-        <a href="configurar.php" class="nav-item">
-            <i class="fas fa-cog"></i>
-            <span>AJUSTES</span>
-        </a>
-        <a href="editar.php" class="nav-item">
-            <i class="fas fa-edit"></i>
-            <span>EDITAR</span>
-        </a>
-        <a href="cerrar_session.php" class="nav-item">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>SALIR</span>
-        </a>
-    </nav>
 <div class="notification" id="notification" style="display: none;">
     <span id="notification-message"></span>
     <span class="close" onclick="closeNotification()">&times;</span>

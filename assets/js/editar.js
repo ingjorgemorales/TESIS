@@ -51,3 +51,4 @@ if (message && type) {
 function closeNotification() {
     document.getElementById('notification').style.display = 'none';
 }
+

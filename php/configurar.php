@@ -37,6 +37,28 @@ while ($row = mysqli_fetch_array($result)) {
                 <img src="../assets/img/logo_x_ray.png" alt="X-RAY DIAGNOSTIC" class="logo" style="max-width: 100%; height: auto;">
             </a>
         </div>
+        <nav class="top-nav" style="display: flex; gap: 10px;">
+            <a href="examen.php" class="nav-item">
+                <i class="fas fa-file-medical"></i>
+                <span>EXAMEN</span>
+            </a>
+            <a href="consultar.php" class="nav-item ">
+                <i class="fas fa-search"></i>
+                <span>CONSULTAR</span>
+            </a>
+            <a href="configurar.php" class="nav-item active">
+                <i class="fas fa-cog"></i>
+                <span>AJUSTES</span>
+            </a>
+            <a href="editar.php" class="nav-item">
+                <i class="fas fa-edit"></i>
+                <span>EDITAR</span>
+            </a>
+            <a href="cerrar_session.php" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>SALIR</span>
+            </a>
+        </nav>
 
         <div class="user-info">
             <div class="user-avatar">
@@ -136,30 +158,6 @@ while ($row = mysqli_fetch_array($result)) {
             </button>
         </div>
     </main>
-
-    <!-- Barra de navegación inferior (solo en desktop) -->
-    <nav class="bottom-nav">
-        <a href="examen.php" class="nav-item">
-            <i class="fas fa-file-medical"></i>
-            <span>EXAMEN</span>
-        </a>
-        <a href="consultar.php" class="nav-item">
-            <i class="fas fa-search"></i>
-            <span>CONSULTAR</span>
-        </a>
-        <a href="configurar.php" class="nav-item active">
-            <i class="fas fa-cog"></i>
-            <span>AJUSTES</span>
-        </a>
-        <a href="editar.php" class="nav-item">
-            <i class="fas fa-edit"></i>
-            <span>EDITAR</span>
-        </a>
-        <a href="cerrar_session.php" class="nav-item">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>SALIR</span>
-        </a>
-    </nav>
     <script src="../assets/js/configurar.js"></script>
 </body>
 

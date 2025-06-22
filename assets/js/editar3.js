@@ -12,12 +12,6 @@ document.querySelectorAll('.sidebar-nav a').forEach(item => {
     });
 });
 
-// Efecto de zoom en imágenes
-document.querySelectorAll('.zoom-img').forEach(img => {
-    img.addEventListener('click', function () {
-        this.classList.toggle('zoomed');
-    });
-});
 
 
 console.log("Página cargada");
@@ -90,67 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
         textElement.style.left = `${centerX}px`;
         textElement.style.top = `${centerY}px`;
 
-        // Crear controles de texto
-        const textControls = document.createElement('div');
-        textControls.className = 'text-controls';
-
-        const colorBtn = document.createElement('div');
-        colorBtn.className = 'text-btn';
-        colorBtn.innerHTML = '🎨';
-        colorBtn.title = 'Cambiar color';
-        colorBtn.addEventListener('click', function (e) {
-            e.stopPropagation();
-            const newColor = prompt('Ingresa un color (nombre, hex, rgb, etc.):', textElement.style.color);
-            if (newColor) {
-                textElement.style.color = newColor;
-                updateActiveTextControls();
-            }
-        });
-
-        const bgColorBtn = document.createElement('div');
-        bgColorBtn.className = 'text-btn';
-        bgColorBtn.innerHTML = '🖍️';
-        bgColorBtn.title = 'Cambiar fondo';
-        bgColorBtn.addEventListener('click', function (e) {
-            e.stopPropagation();
-            const newBgColor = prompt('Ingresa un color de fondo (nombre, hex, rgb, etc.):', textElement.style.backgroundColor || 'transparent');
-            if (newBgColor) {
-                if (newBgColor.toLowerCase() === 'transparent') {
-                    textElement.style.backgroundColor = '';
-                    textElement.style.padding = '';
-                    textElement.style.borderRadius = '';
-                } else {
-                    textElement.style.backgroundColor = newBgColor;
-                    textElement.style.padding = '5px';
-                    textElement.style.borderRadius = '3px';
-                }
-                updateActiveTextControls();
-            }
-        });
-
-        const deleteBtn = document.createElement('div');
-        deleteBtn.className = 'text-btn';
-        deleteBtn.innerHTML = '🗑️';
-        deleteBtn.title = 'Eliminar texto';
-        deleteBtn.addEventListener('click', function (e) {
-            e.stopPropagation();
-            if (confirm('¿Eliminar este texto?')) {
-                const index = textElements.indexOf(textElement);
-                if (index > -1) {
-                    textElements.splice(index, 1);
-                }
-                imageContainer.removeChild(textElement);
-                if (activeTextElement === textElement) {
-                    activeTextElement = null;
-                }
-            }
-        });
-
-        textControls.appendChild(colorBtn);
-        textControls.appendChild(bgColorBtn);
-        textControls.appendChild(deleteBtn);
-        textElement.appendChild(textControls);
-
+        
         // Hacer el texto arrastrable
         makeDraggable(textElement);
 
@@ -535,5 +469,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-
-console.log("hola");
