@@ -33,14 +33,14 @@ $result_paciente = $objconsulta->Consultar_todo_paciente();
 </head>
 
 <body>
-   <header class="main-header">
+    <header class="main-header">
         <div class="logo-container" style="max-width: 100px;">
             <a href="examen.php">
-            <img src="../assets/img/logo_x_ray.png" alt="X-RAY DIAGNOSTIC" class="logo" style="max-width: 100%; height: auto;">
+                <img src="../assets/img/logo_x_ray.png" alt="X-RAY DIAGNOSTIC" class="logo" style="max-width: 100%; height: auto;">
             </a>
         </div>
-    </div>
-    <nav class="top-nav" style="display: flex; gap: 10px;">
+        </div>
+        <nav class="top-nav" style="display: flex; gap: 10px;">
             <a href="examen.php" class="nav-item active">
                 <i class="fas fa-file-medical"></i>
                 <span>EXAMEN</span>
@@ -57,12 +57,20 @@ $result_paciente = $objconsulta->Consultar_todo_paciente();
                 <i class="fas fa-edit"></i>
                 <span>EDITAR</span>
             </a>
+            <a href="diagnostico.php" class="nav-item">
+                <i class="fas fa-stethoscope"></i>
+                <span>DIAGNÓSTICO</span>
+            </a>
+            <a href="registrar_patologia.php" class="nav-item">
+                <i class="fas fa-notes-medical"></i>
+                <span>PATOLOGÍAS</span>
+            </a>
             <a href="cerrar_session.php" class="nav-item">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>SALIR</span>
             </a>
         </nav>
-        
+
         <div class="user-info">
             <div class="user-avatar">
                 <img src="../assets/img/icono_doctor.png" alt="Doctor">
@@ -78,8 +86,8 @@ $result_paciente = $objconsulta->Consultar_todo_paciente();
             <span></span>
             <span></span>
         </button>
-    </div>
-</header>
+        </div>
+    </header>
 
 
     <!-- Menú lateral (aparece en móvil) -->
@@ -89,6 +97,8 @@ $result_paciente = $objconsulta->Consultar_todo_paciente();
             <li><a href="consultar.php"><i class="fas fa-search"></i> CONSULTAR</a></li>
             <li><a href="configurar.php"><i class="fas fa-cog"></i> AJUSTES</a></li>
             <li><a href="editar.php"><i class="fas fa-edit"></i> EDITAR</a></li>
+            <li><a href="diagnostico.php"><i class="fas fa-stethoscope"></i> DIAGNÓSTICO</a></li>
+            <li><a href="registrar_patologia.php"><i class="fas fa-notes-medical"></i> PATOLOGÍAS</a></li>
             <li><a href="cerrar_session.php"><i class="fas fa-sign-out-alt"></i> SALIR</a></li>
         </ul>
     </nav>
@@ -108,11 +118,11 @@ $result_paciente = $objconsulta->Consultar_todo_paciente();
                     <label for="id">Identificación</label>
                     <input id="id" name="id" type="number" list="pacieenteList" required>
                     <datalist id="pacieenteList">
-<?php while ($paciente = mysqli_fetch_assoc($result_paciente)) : ?>
-    <option value="<?php echo htmlspecialchars($paciente['Id_paciente'], ENT_QUOTES, 'UTF-8'); ?>">
-        <?php echo htmlspecialchars($paciente['Nombres'] . ' ' . $paciente['Apellidos'], ENT_QUOTES, 'UTF-8'); ?>
-    </option>
-<?php endwhile; ?>
+                        <?php while ($paciente = mysqli_fetch_assoc($result_paciente)) : ?>
+                            <option value="<?php echo htmlspecialchars($paciente['Id_paciente'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <?php echo htmlspecialchars($paciente['Nombres'] . ' ' . $paciente['Apellidos'], ENT_QUOTES, 'UTF-8'); ?>
+                            </option>
+                        <?php endwhile; ?>
 
                     </datalist>
                 </div>
@@ -170,23 +180,23 @@ $result_paciente = $objconsulta->Consultar_todo_paciente();
                     <label for="categoria">Categoría</label>
 
                     <select id="categoria" name="categoria">
-                 <?php while ($categoria = mysqli_fetch_assoc($result_categoria)) : ?>      
-                    <option  value="<?php echo htmlspecialchars($categoria['Id_categoria'], ENT_QUOTES, 'UTF-8'); ?>">
-                        <?php echo htmlspecialchars($categoria['Nombre_categoria'], ENT_QUOTES, 'UTF-8'); ?>
-                    </option>
-                <?php endwhile; ?>
+                        <?php while ($categoria = mysqli_fetch_assoc($result_categoria)) : ?>
+                            <option value="<?php echo htmlspecialchars($categoria['Id_categoria'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <?php echo htmlspecialchars($categoria['Nombre_categoria'], ENT_QUOTES, 'UTF-8'); ?>
+                            </option>
+                        <?php endwhile; ?>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="zona">Zona</label>
-               
+
                     <select id="zona" name="zona">
-                             <?php while ($zona = mysqli_fetch_assoc($result_zona)) : ?>
-                    <option  value="<?php echo htmlspecialchars($zona['Id_zona'], ENT_QUOTES, 'UTF-8'); ?>">
-                        <?php echo htmlspecialchars($zona['Nombre_zona'], ENT_QUOTES, 'UTF-8'); ?>
-                    </option>
-                <?php endwhile; ?>
+                        <?php while ($zona = mysqli_fetch_assoc($result_zona)) : ?>
+                            <option value="<?php echo htmlspecialchars($zona['Id_zona'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <?php echo htmlspecialchars($zona['Nombre_zona'], ENT_QUOTES, 'UTF-8'); ?>
+                            </option>
+                        <?php endwhile; ?>
                     </select>
                 </div>
 
@@ -227,32 +237,30 @@ $result_paciente = $objconsulta->Consultar_todo_paciente();
             </div>
         </form>
     </main>
-<div class="notification" id="notification" style="display: none;">
-    <span id="notification-message"></span>
-    <span class="close" onclick="closeNotification()">&times;</span>
-</div>
+    <div class="notification" id="notification" style="display: none;">
+        <span id="notification-message"></span>
+        <span class="close" onclick="closeNotification()">&times;</span>
+    </div>
 
     <script src="../assets/js/examen.js"></script>
-<script>
-
-
-    const pacientes = <?php
-        mysqli_data_seek($result_paciente, 0); // Reiniciar puntero
-        $paciente_data = [];
-        while ($p = mysqli_fetch_assoc($result_paciente)) {
-            $paciente_data[$p['Id_paciente']] = [
-                'nombres' => $p['Nombres'],
-                'apellidos' => $p['Apellidos'],
-                'direccion' => $p['Direccion'],
-                'fecha_nacimiento' => $p['Fecha_nacimiento'],
-                'email' => $p['Email'],
-                'celular' => $p['Celular'],
-                'sexo' => $p['Genero'],
-            ];
-        }
-        echo json_encode($paciente_data, JSON_UNESCAPED_UNICODE);
-    ?>;
-</script>
+    <script>
+        const pacientes = <?php
+                            mysqli_data_seek($result_paciente, 0); // Reiniciar puntero
+                            $paciente_data = [];
+                            while ($p = mysqli_fetch_assoc($result_paciente)) {
+                                $paciente_data[$p['Id_paciente']] = [
+                                    'nombres' => $p['Nombres'],
+                                    'apellidos' => $p['Apellidos'],
+                                    'direccion' => $p['Direccion'],
+                                    'fecha_nacimiento' => $p['Fecha_nacimiento'],
+                                    'email' => $p['Email'],
+                                    'celular' => $p['Celular'],
+                                    'sexo' => $p['Genero'],
+                                ];
+                            }
+                            echo json_encode($paciente_data, JSON_UNESCAPED_UNICODE);
+                            ?>;
+    </script>
 
 </body>
 

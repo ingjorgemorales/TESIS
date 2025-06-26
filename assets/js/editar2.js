@@ -1,24 +1,34 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Menú hamburguesa
-    const hamburgerBtn = document.querySelector('.hamburger-btn');
-    const sidebarNav = document.querySelector('.sidebar-nav');
-
-    if (hamburgerBtn && sidebarNav) {
-        hamburgerBtn.addEventListener('click', function () {
-            sidebarNav.classList.toggle('active');
-            this.classList.toggle('active');
-        });
+    // Función para cerrar el menú
+    function closeMenu() {
+        document.querySelector('.sidebar-nav').classList.remove('active');
+        document.querySelector('.hamburger-btn').classList.remove('active');
     }
 
-    // Cerrar menú al hacer clic en un enlace (para móviles)
-    document.querySelectorAll('.sidebar-nav a').forEach(item => {
-        item.addEventListener('click', () => {
-            if (sidebarNav && hamburgerBtn) {
-                sidebarNav.classList.remove('active');
-                hamburgerBtn.classList.remove('active');
-            }
-        });
+    // Menú hamburguesa
+    document.querySelector('.hamburger-btn').addEventListener('click', function () {
+        document.querySelector('.sidebar-nav').classList.toggle('active');
+        this.classList.toggle('active');
     });
+
+    // Cerrar menú al hacer clic en enlaces (móviles)
+    document.querySelectorAll('.sidebar-nav a').forEach(item => {
+        item.addEventListener('click', closeMenu);
+    });
+
+    // Cerrar menú automáticamente al redimensionar
+    window.addEventListener('resize', function () {
+        // Cierra el menú solo si está abierto y el ancho supera 900px
+        const isMenuOpen = document.querySelector('.hamburger-btn').classList.contains('active');
+        if (window.innerWidth > 900 && isMenuOpen) {
+            closeMenu();
+        }
+    });
+
+    // Verificar estado inicial al cargar
+    if (window.innerWidth > 900) {
+        closeMenu();
+    }
 
     // Efecto de carga para la tarjeta de vista previa
     const previewCard = document.querySelector('.preview-card');

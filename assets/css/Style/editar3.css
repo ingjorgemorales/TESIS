@@ -36,8 +36,10 @@ body {
   background-color: rgba(26, 29, 58, 0.95);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
   transition: var(--transition);
 }
@@ -486,20 +488,21 @@ body {
   }
 
   .user-name span {
-    display: none;
+    display: inline-block !important;
   }
 
   .user-name {
-    padding: 12px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .status-indicator {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
+    position: static;
+    margin-left: 5px;
   }
 
   .hamburger-btn {

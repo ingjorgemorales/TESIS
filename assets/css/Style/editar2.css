@@ -544,21 +544,21 @@ body {
 }
 
 .top-nav {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    margin-left: 30px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-left: 30px;
 }
 
 .top-nav .nav-item i {
-    margin-right: 6px;
-    font-size: 1.1em;
+  margin-right: 6px;
+  font-size: 1.1em;
 }
 
 @media (max-width: 900px) {
-    .top-nav {
-        display: none !important;
-    }
+  .top-nav {
+    display: none !important;
+  }
 }
 
 /* Animation for placeholder */
@@ -603,20 +603,22 @@ body {
   }
 
   .user-name span {
-    display: none;
+    display: inline-block !important;
   }
 
   .user-name {
-    padding: 12px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-  }
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
   .status-indicator {
-    position: absolute;
+    position: static;
     bottom: 5px;
-    right: 5px;
+    margin-left: 5px;
   }
 
   .hamburger-btn {

@@ -4,7 +4,7 @@ $objconsulta = new cCliente;
 $resultado = $objconsulta->Usuario_logueado();
 $result = $objconsulta->Consultar_empleado($resultado);
 
-if(empty($resultado)){
+if (empty($resultado)) {
     header("Location: ../login.html");
     exit();
 }
@@ -12,12 +12,13 @@ if(empty($resultado)){
 // Obtener nombre del empleado para mostrarlo
 $nombre_empleado = '';
 while ($row = mysqli_fetch_array($result)) {
-    $nombre_empleado = $row['Nombre'] . " " . $row['Apellido'];    
+    $nombre_empleado = $row['Nombre'] . " " . $row['Apellido'];
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,59 +26,62 @@ while ($row = mysqli_fetch_array($result)) {
     <link rel="shortcut icon" href="./assets/img/logo_icono_x_ray.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/Style/editar.css">
-    
+
 
 </head>
 <style>
-      .notification {
-    display:none;
-    position: fixed;
-    top: -50px; /* Inicialmente fuera de la pantalla */
-    left: 50%;
-    transform: translateX(-50%);
-    width: fit-content;
-    background-color: rgb(196, 35, 35);
-    color: white;
-    text-align: center;
-    padding: 10px;
-    z-index: 1000;
-    animation: slideDown 0.5s ease-in-out forwards, fadeOut 0.5s 2s ease-in-out forwards;
-}
-
-@keyframes slideDown {
-    0% {
-        top: -50px; 
+    .notification {
+        display: none;
+        position: fixed;
+        top: -50px;
+        /* Inicialmente fuera de la pantalla */
+        left: 50%;
+        transform: translateX(-50%);
+        width: fit-content;
+        background-color: rgb(196, 35, 35);
+        color: white;
+        text-align: center;
+        padding: 10px;
+        z-index: 1000;
+        animation: slideDown 0.5s ease-in-out forwards, fadeOut 0.5s 2s ease-in-out forwards;
     }
-    100% {
-        top: 0; 
-    }
-}
 
-@keyframes fadeOut {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-        top: -100px;
-        display: none; 
-    }
-}
+    @keyframes slideDown {
+        0% {
+            top: -50px;
+        }
 
-.close {
-    float: right;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-}
+        100% {
+            top: 0;
+        }
+    }
 
+    @keyframes fadeOut {
+        0% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+            top: -100px;
+            display: none;
+        }
+    }
+
+    .close {
+        float: right;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+    }
 </style>
+
 <body>
     <!-- Barra de navegación superior -->
     <header class="main-header">
         <div class="logo-container" style="max-width: 100px;">
             <a href="examen.php">
-            <img src="../assets/img/logo_x_ray.png" alt="X-RAY DIAGNOSTIC" class="logo" style="max-width: 100%; height: auto;">
+                <img src="../assets/img/logo_x_ray.png" alt="X-RAY DIAGNOSTIC" class="logo" style="max-width: 100%; height: auto;">
             </a>
         </div>
         <nav class="top-nav" style="display: flex; gap: 10px;">
@@ -97,12 +101,20 @@ while ($row = mysqli_fetch_array($result)) {
                 <i class="fas fa-edit"></i>
                 <span>EDITAR</span>
             </a>
+            <a href="diagnostico.php" class="nav-item">
+                <i class="fas fa-stethoscope"></i>
+                <span>DIAGNÓSTICO</span>
+            </a>
+            <a href="registrar_patologia.php" class="nav-item">
+                <i class="fas fa-notes-medical"></i>
+                <span>PATOLOGÍAS</span>
+            </a>    
             <a href="cerrar_session.php" class="nav-item">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>SALIR</span>
             </a>
         </nav>
-        
+
         <div class="user-info">
             <div class="user-avatar">
                 <img src="../assets/img/icono_doctor.png" alt="Doctor">
@@ -112,7 +124,7 @@ while ($row = mysqli_fetch_array($result)) {
                 <div class="status-indicator"></div>
             </div>
         </div>
-        
+
         <button class="hamburger-btn" aria-label="Menú">
             <span></span>
             <span></span>
@@ -127,6 +139,8 @@ while ($row = mysqli_fetch_array($result)) {
             <li><a href="consultar.php"><i class="fas fa-search"></i> CONSULTAR</a></li>
             <li><a href="configurar.php"><i class="fas fa-cog"></i> AJUSTES</a></li>
             <li class="active"><a href="editar.php"><i class="fas fa-edit"></i> EDITAR</a></li>
+            <li><a href="diagnostico.php"><i class="fas fa-stethoscope"></i> DIAGNÓSTICO</a></li>
+            <li><a href="registrar_patologia.php"><i class="fas fa-notes-medical"></i> PATOLOGÍAS</a></li>
             <li><a href="cerrar_session.php"><i class="fas fa-sign-out-alt"></i> SALIR</a></li>
         </ul>
     </nav>
@@ -137,7 +151,7 @@ while ($row = mysqli_fetch_array($result)) {
             <h1>Editar Diagnóstico</h1>
             <p>Ingrese el ID del paciente para acceder y modificar los diagnósticos existentes</p>
         </div>
-        
+
         <div class="diagnostic-container">
             <div class="form-section">
                 <h2>Ingrese el ID del Diagnóstico</h2>
@@ -152,7 +166,7 @@ while ($row = mysqli_fetch_array($result)) {
             </div>
         </div>
     </main>
-    
+
 </body>
 <div class="notification" id="notification" style="display: none;">
     <span id="notification-message"></span>
@@ -160,4 +174,5 @@ while ($row = mysqli_fetch_array($result)) {
 </div>
 
 <script src="../assets/js/editar.js"></script>
+
 </html>
