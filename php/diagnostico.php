@@ -1,8 +1,16 @@
 <?php
+date_default_timezone_set('America/Mexico_City'); // Ajusta la zona horaria según tu ubicación
 include_once("Cservicios.php");
 $objconsulta = new cCliente;
 $resultado = $objconsulta->Usuario_logueado();
 
+$id =  $_POST['id'] ?? null;
+$hallazgos = $_POST['hallazgos'] ?? null;
+$promedio_confianza = $_POST['promedio_confianza'] ?? null;
+$result_radiografia = $objconsulta->Consultar_radiografia($id);
+$result_patologia = $objconsulta->Mostrar_todo_patologia();
+$patologias = mysqli_fetch_array($result_patologia);
+$radiografia = mysqli_fetch_array($result_radiografia);
 // Verificar si el usuario está logueado
 if (empty($resultado)) {
     header("Location: ../login.html");
@@ -13,20 +21,8 @@ if (empty($resultado)) {
 $result = $objconsulta->Consultar_empleado($resultado);
 $empleado = mysqli_fetch_assoc($result);
 
-// Obtener datos para los select (simulado)
-$radiografias = [
-    ['id' => 1, 'paciente' => 'Juan Pérez - RX Brazo'],
-    ['id' => 2, 'paciente' => 'María García - RX Pierna'],
-    ['id' => 3, 'paciente' => 'Carlos López - RX Tórax']
-];
 
-$patologias = [
-    ['id' => 1, 'nombre' => 'Fractura de Colles'],
-    ['id' => 2, 'nombre' => 'Fractura de Smith'],
-    ['id' => 3, 'nombre' => 'Fractura de Monteggia'],
-    ['id' => 4, 'nombre' => 'Fractura de Galeazzi'],
-    ['id' => 5, 'nombre' => 'Fractura de Bennett']
-];
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -39,7 +35,9 @@ $patologias = [
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/Style/diagnostico.css">
 </head>
+<style>
 
+</style>
 <body>
     <header class="main-header">
         <div class="logo-container">
@@ -114,42 +112,37 @@ $patologias = [
         </div>
 
         <div class="diagnosis-form-container">
-            <form id="diagnosisForm">
+            <form id="diagnosisForm" action="registrar_diagnostico.php" method="POST">
                 <h2 class="form-section-title">
                     <i class="fas fa-info-circle"></i> Información Básica
                 </h2>
 
                 <div class="form-row">
-                    <div class="form-group">
-                        <label for="id_diagnostico"><i class="fas fa-id-card"></i> ID Diagnóstico</label>
-                        <input type="text" id="id_diagnostico" class="form-input readonly" value="DX-<?php echo date('YmdHis'); ?>" readonly>
-                    </div>
+   
 
                     <div class="form-group">
                         <label for="fecha_hora"><i class="fas fa-calendar-alt"></i> Fecha y Hora</label>
-                        <input type="datetime-local" id="fecha_hora" class="form-input" value="<?php echo date('Y-m-d\TH:i'); ?>">
+                        <input type="datetime-local" id="fecha_hora" name= "fecha_hora" class="form-input" value="<?php echo date('Y-m-d\TH:i', time() + 3600); ?>">
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="id_radiografia"><i class="fas fa-x-ray"></i> Radiografía Asociada</label>
-                        <select id="id_radiografia" class="form-select" required>
-                            <option value="">Seleccione una radiografía</option>
-                            <?php foreach ($radiografias as $radiografia): ?>
-                                <option value="<?php echo $radiografia['id']; ?>"><?php echo $radiografia['paciente']; ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                        <input type="text" id="id_radiografia"  class="form-input" value="<?php echo 'Nombre: ' . ($radiografia['Nombre completo'] ?? '') . ' - Zona: ' . ($radiografia['Zona'] ?? ''); ?>" required disabled/>
+                        <input type="hidden" name="id_r" value="<?php echo htmlspecialchars($id, ENT_QUOTES, 'UTF-8'); ?>" />
                     </div>
-
                     <div class="form-group">
                         <label for="id_patologia"><i class="fas fa-disease"></i> Patología</label>
-                        <select id="id_patologia" class="form-select" required>
-                            <option value="">Seleccione una patología</option>
-                            <?php foreach ($patologias as $patologia): ?>
-                                <option value="<?php echo $patologia['id']; ?>"><?php echo $patologia['nombre']; ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                         <input id="nombre" name="id_patologia" class="form-input" list="pacieenteList" required>
+                    <datalist id="pacieenteList">
+                        <?php while ($patologias = mysqli_fetch_assoc($result_patologia)) : ?>
+                            <option value="<?php echo htmlspecialchars($patologias['Id_patologia'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <?php echo htmlspecialchars($patologias['Nombre_patologia'], ENT_QUOTES, 'UTF-8'); ?>
+                            </option>
+                        <?php endwhile; ?>
+
+                    </datalist>
                     </div>
                 </div>
 
@@ -159,13 +152,13 @@ $patologias = [
 
                 <div class="form-group full-width">
                     <label for="descripcion"><i class="fas fa-file-medical"></i> Descripción</label>
-                    <textarea id="descripcion" class="form-textarea" placeholder="Describa en detalle el diagnóstico..." required></textarea>
+                    <textarea id="descripcion" class="form-textarea" name = "descripcion" placeholder="Describa en detalle el diagnóstico..." required></textarea>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="nivel_gravedad"><i class="fas fa-exclamation-triangle"></i> Nivel de Gravedad</label>
-                        <select id="nivel_gravedad" class="form-select" required>
+                        <select id="nivel_gravedad" name= "nivel_gravedad" class="form-select" required>
                             <option value="">Seleccione nivel</option>
                             <option value="leve">Leve</option>
                             <option value="moderado">Moderado</option>
@@ -176,7 +169,9 @@ $patologias = [
 
                     <div class="form-group">
                         <label for="tipo_fractura"><i class="fas fa-bone"></i> Tipo de Fractura (IA)</label>
-                        <input type="text" id="tipo_fractura" class="form-input" value="Fractura conminuta">
+                        <input type="text" id="tipo_fractura" name="tipo_de_fractura" class="form-input" value="<?php echo $hallazgos ?>" readonly />
+                        <input type="hidden" name="tipo_de_fractura" value="<?php echo htmlspecialchars($hallazgos, ENT_QUOTES, 'UTF-8'); ?>" />
+                       
                     </div>
                 </div>
 
@@ -184,11 +179,12 @@ $patologias = [
                     <label for="porcentaje_confianza"><i class="fas fa-brain"></i> Confianza de la IA</label>
                     <div class="confidence-container">
                         <div class="confidence-bar">
-                            <div class="confidence-fill" id="confidenceFill" style="width: 85%"></div>
+                            <div class="confidence-fill" id="confidenceFill" style="width: <?php echo $promedio_confianza ?>%"></div>
                         </div>
-                        <div class="confidence-value" id="confidenceValue">85%</div>
+                        <div class="confidence-value" id="confidenceValue"><?php echo $promedio_confianza ?>%</div>
                     </div>
-                    <input type="range" id="porcentaje_confianza" class="form-input" min="0" max="100" value="85" step="1" style="width: 100%; margin-top: 10px;">
+                     <input type="hidden" name="porcentaje" value="<?php echo htmlspecialchars($promedio_confianza, ENT_QUOTES, 'UTF-8'); ?>" />
+                 <!--   <input type="range" id="porcentaje_confianza" class="form-input" min="0" max="100" value="<?php echo $promedio_confianza ?>" step="1" style="width: 100%; margin-top: 10px;"> -->
                 </div>
 
                 <!-- Botones de acción -->
@@ -202,6 +198,10 @@ $patologias = [
                 </div>
             </form>
         </div>
+            <div class="notification" id="notification" style="display: none;">
+        <span id="notification-message"></span>
+        <span class="close" onclick="closeNotification()">&times;</span>
+    </div>
     </main>
     <script src="../assets/js/diagnostico.js"></script>
 

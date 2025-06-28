@@ -151,6 +151,65 @@ function Consultar_radiografia($ID_Radiografia){
     $resultado = $stmt->get_result();
     return $resultado;
 }
+
+function Mostrar_todo_patologia(){
+    $conexion = $this->createConnection();
+    $sql = "CALL Mostrar_todo_patologia()";
+    $stmt = $conexion->prepare($sql);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    return $resultado;
 }
 
+function Registrar_diagnostico($descripcion,$nivel_gravedad,$porcentaje, $tipo_de_fractura, $fecha_hora, $id_r, $id_patologia){
+    $conexion = $this->createConnection();
+    $sql = "CALL Insertar_diagnostico(?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("sssssss", $descripcion,$nivel_gravedad,$porcentaje, $tipo_de_fractura, $fecha_hora, $id_r, $id_patologia);
+            try {
+        if ($stmt->execute()) {
+            return ['success' => true];
+        } else {
+            return ['success' => false, 'error' => 'Error al ejecutar el procedimiento'];
+        }
+    } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() == 1062) {
+            return ['success' => false, 'error' => ''];
+        } else {
+            return ['success' => false, 'error' => 'Error de base de datos: ' . $e->getMessage()];
+        }
+    }
+}
+
+
+function Registrar_patologia($nombre_patologia, $tipo_patologia, $descripcion_patologia){
+    $conexion = $this->createConnection();
+    $sql = "CALL Insertar_patologia(?, ?, ?)";
+    $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("sss", $nombre_patologia, $tipo_patologia, $descripcion_patologia);
+            try {
+        if ($stmt->execute()) {
+            return ['success' => true];
+        } else {
+            return ['success' => false, 'error' => 'Error al ejecutar el procedimiento'];
+        }
+    } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() == 1062) {
+            return ['success' => false, 'error' => ''];
+        } else {
+            return ['success' => false, 'error' => 'Error de base de datos: ' . $e->getMessage()];
+        }
+    }
+}
+function Eliminar_patologia($id_patologia){
+    $conexion = $this->createConnection();
+    $sql = "CALL Eliminar_patologia(?)";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("s", $id_patologia);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    return $id_patologia;
+}
+
+}
 ?>

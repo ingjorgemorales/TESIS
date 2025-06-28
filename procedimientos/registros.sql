@@ -70,3 +70,53 @@ BEGIN
         p_Id_paciente
     );
 END
+//////////////////////-REGISTRAR DIAGNOSTICO-///////////////////////
+DELIMITER //
+
+CREATE PROCEDURE Insertar_diagnostico (
+    IN p_Descripcion  VARCHAR(100),
+    IN p_Nivel_gravedad VARCHAR(100),
+    IN p_Porcentaje_confianza_IA  VARCHAR(100),
+    IN p_Tipo_Fractura_IA VARCHAR(100),
+    IN p_Fecha_hora  VARCHAR(100),
+    IN p_Id_radiografia  VARCHAR(100),
+    IN p_Id_patologia  VARCHAR(100)
+)
+BEGIN
+    INSERT INTO diagnostico (
+        Descripcion,
+        Nivel_gravedad,
+        Porcentaje_confianza_IA,
+        Tipo_Fractura_IA,
+        Fecha_hora,
+        Id_radiografia,
+        Id_patologia
+    ) VALUES (
+        p_Descripcion,
+        p_Nivel_gravedad,
+        p_Porcentaje_confianza_IA,
+        p_Tipo_Fractura_IA,
+        p_Fecha_hora,
+        p_Id_radiografia,
+        p_Id_patologia
+    );
+END
+///////////////////////-REGISTRAR PATOLOGIA-///////////////////////
+DELIMITER //
+
+CREATE PROCEDURE Insertar_patologia (
+    IN p_Nombre_patologia VARCHAR(100),
+    IN p_Tipo_patologia VARCHAR(100),
+    IN p_Descripcion_patologia VARCHAR(100)
+)
+BEGIN
+    INSERT INTO patologia (
+        Nombre_patologia,
+        Tipo_patologia,
+        Descripcion_patologia
+    ) VALUES (
+        p_Nombre_patologia,
+        p_Tipo_patologia,
+        p_Descripcion_patologia
+    );
+END

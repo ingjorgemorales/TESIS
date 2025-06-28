@@ -189,36 +189,62 @@ while ($row = mysqli_fetch_array($result)) {
                 <h2>Información del Diagnóstico</h2>
 
                 <div class="table-container">
-                    <h3><i class="fas fa-clipboard-list"></i> Hallazgos</h3>
-                    <table class="diagnostic-table">
-                        <tr>
-                            <td>Hallazgos:</td>
-                            <td>
-                                <ul>
-                                    <li><?php
-                                        if (isset($responseData['imagen'])) {
-                                            $numHallazgos = count($responseData['diagnostico']);
-                                            echo "<p><strong>Número de hallazgos:</strong> " . $numHallazgos . "</p>";
+                    <form action="diagnostico.php" method="POST">
+                        <h3><i class="fas fa-clipboard-list"></i> Hallazgos</h3>
+                        <table class="diagnostic-table">
+                            <tr>
+                                <td>Hallazgos:</td>
+                                <td>
+                                    <ul>
+                                        <li>
+                                            <?php
+                                            $clases_str = '';
+                                            if (isset($responseData['imagen'])) {
+                                                $numHallazgos = count($responseData['diagnostico']);
+                                                echo "<p><strong>Número de hallazgos:</strong> " . $numHallazgos . "</p>";
 
-                                            foreach ($responseData['diagnostico'] as $diag) {
-                                                echo "<p><strong>Clase:</strong> " . htmlspecialchars($diag['clase']) .
-                                                    " | <strong>Confianza:</strong> " . htmlspecialchars($diag['confianza']) . "</p>";
+                                                $clases_arr = [];
+                                                foreach ($responseData['diagnostico'] as $diag) {
+                                                    $clase = $diag['clase'];
+                                                    $clases_arr[] = $clase;
+                                                    echo "<p><strong>Clase:</strong> " . htmlspecialchars($clase) . "</p>";
+                                                }
+                                                // Unir todas las clases en una sola cadena separada por punto y coma
+                                                $clases_str = implode('; ', $clases_arr);
                                             }
-                                        }
-                                        ?></li>
+                                            ?>
+                                            <!-- Campo oculto para enviar solo las clases -->
+                                            <input type="hidden" name="hallazgos" value="<?php echo htmlspecialchars($clases_str); ?>">
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
                                 </ul>
                             </td>
                         </tr>
                         <tr>
-                            <td>Porcentaje confianza:</td>
+                            <td>Porcentaje confianza promedio:</td>
                             <td>
                                 <ul>
-                                    <li><?php
+                                    <li>
+                                        <?php
+                                        $promedio_confianza = 0;
                                         if (isset($responseData['imagen'])) {
+                                            $total_confianza = 0;
+                                            $num_diag = count($responseData['diagnostico']);
                                             foreach ($responseData['diagnostico'] as $diag) {
-                                                echo "<p>" . htmlspecialchars($diag['confianza'] * 100) . "%</p>";
+                                                $total_confianza += $diag['confianza'];
                                             }
-                                        } ?></li>
+                                            if ($num_diag > 0) {
+                                                $promedio_confianza = ($total_confianza / $num_diag) * 100;
+                                                echo "<p>" . round($promedio_confianza, 2) . "%</p>";
+                                            } else {
+                                                echo "<p>0%</p>";
+                                            }
+                                        }
+                                        ?>
+                                        <input type="hidden" name="promedio_confianza" value="<?php echo round($promedio_confianza, 2); ?>">
+                                    </li>
                                 </ul>
                             </td>
                         </tr>
@@ -253,29 +279,18 @@ while ($row = mysqli_fetch_array($result)) {
                     <h3><i class="fas fa-stethoscope"></i> Diagnóstico</h3>
                     <table class="diagnostic-table">
                         <tr>
-                            <td>Diagnóstico principal:</td>
+                           
+                                <input type="hidden" name="id" value="<?php echo $ID_Radiografia; ?>">
+                            <td><button class="action-btn" type="submit" style="background-color: #82ff86;"> <i class="fas fa-diagnoses"></i>Terminar y Registrar Diagnostico</button></td>
+                            </form>
                             <td>
-                                <ul>
-                                    <li>None</li>
-                                </ul>
+
                             </td>
                         </tr>
                         <tr>
-                            <td>Diagnóstico diferencial:</td>
-                            <td>
-                                <ul>
-                                    <li>None</li>
-                                    <li>None</li>
-                                </ul>
-                            </td>
+ 
                         </tr>
                         <tr>
-                            <td>Recomendaciones:</td>
-                            <td>
-                                <ul>
-                                    <li>None</li>
-                                </ul>
-                            </td>
                         </tr>
                     </table>
                 </div>

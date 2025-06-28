@@ -1,29 +1,24 @@
 <?php
-session_start();
 
-// Procesar eliminación
-if (isset($_GET['eliminar'])) {
-    $id_eliminar = $_GET['eliminar'];
-    foreach ($_SESSION['patologias'] as $key => $patologia) {
-        if ($patologia['id'] == $id_eliminar) {
-            unset($_SESSION['patologias'][$key]);
-            break;
-        }
-    }
-    // Reindexar el array
-    $_SESSION['patologias'] = array_values($_SESSION['patologias']);
-    $mensaje = "Patología eliminada exitosamente!";
+
+include_once("Cservicios.php");
+$objconsulta = new cCliente;
+$resultado = $objconsulta->Usuario_logueado();
+
+$result_patologia = $objconsulta->Mostrar_todo_patologia();
+
+
+if (empty($resultado)) {
+    header("Location: ../login.html");
+    exit();
 }
 
-// Simular datos de usuario
-$empleado = [
-    'Nombre' => 'Carlos',
-    'Apellido' => 'Mendoza'
-];
+
+$result = $objconsulta->Consultar_empleado($resultado);
+$empleado = mysqli_fetch_assoc($result);
 ?>
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,7 +27,6 @@ $empleado = [
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/Style/mostrar_patologias.css">
 </head>
-
 <body>
     <header class="main-header">
         <div class="logo-container">
@@ -41,36 +35,14 @@ $empleado = [
             </a>
         </div>
         <nav class="top-nav">
-            <a href="examen.php" class="nav-item">
-                <i class="fas fa-file-medical"></i>
-                <span>EXAMEN</span>
-            </a>
-            <a href="consultar.php" class="nav-item">
-                <i class="fas fa-search"></i>
-                <span>CONSULTAR</span>
-            </a>
-            <a href="configurar.php" class="nav-item">
-                <i class="fas fa-cog"></i>
-                <span>AJUSTES</span>
-            </a>
-            <a href="editar.php" class="nav-item">
-                <i class="fas fa-edit"></i>
-                <span>EDITAR</span>
-            </a>
-            <a href="diagnostico.php" class="nav-item">
-                <i class="fas fa-stethoscope"></i>
-                <span>DIAGNÓSTICO</span>
-            </a>
-            <a href="mostrar_patologias.php" class="nav-item active">
-                <i class="fas fa-disease"></i>
-                <span>PATOLOGÍAS</span>
-            </a>
-            <a href="cerrar_session.php" class="nav-item">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>SALIR</span>
-            </a>
+            <a href="examen.php" class="nav-item"><i class="fas fa-file-medical"></i><span>EXAMEN</span></a>
+            <a href="consultar.php" class="nav-item"><i class="fas fa-search"></i><span>CONSULTAR</span></a>
+            <a href="configurar.php" class="nav-item"><i class="fas fa-cog"></i><span>AJUSTES</span></a>
+            <a href="editar.php" class="nav-item"><i class="fas fa-edit"></i><span>EDITAR</span></a>
+            <a href="diagnostico.php" class="nav-item"><i class="fas fa-stethoscope"></i><span>DIAGNÓSTICO</span></a>
+            <a href="mostrar_patologias.php" class="nav-item active"><i class="fas fa-disease"></i><span>PATOLOGÍAS</span></a>
+            <a href="cerrar_session.php" class="nav-item"><i class="fas fa-sign-out-alt"></i><span>SALIR</span></a>
         </nav>
-
         <div class="user-info">
             <div class="user-avatar">
                 <img src="../assets/img/icono_doctor.png" alt="Doctor">
@@ -80,11 +52,8 @@ $empleado = [
                 <div class="status-indicator"></div>
             </div>
         </div>
-
         <button class="hamburger-btn" aria-label="Menú">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </button>
     </header>
 
@@ -107,11 +76,9 @@ $empleado = [
         </div>
 
         <div class="diagnosis-form-container">
-            <h2 class="form-section-title">
-                <i class="fas fa-list"></i> Listado de Patologías
-            </h2>
-            
-            <?php if(isset($_SESSION['patologias']) && count($_SESSION['patologias']) > 0): ?>
+            <h2 class="form-section-title"><i class="fas fa-list"></i> Listado de Patologías</h2>
+
+            <?php if (mysqli_num_rows($result_patologia) > 0): ?>
             <table class="patologias-table">
                 <thead>
                     <tr>
@@ -123,19 +90,22 @@ $empleado = [
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach($_SESSION['patologias'] as $patologia): ?>
+                    <?php while ($patologias = mysqli_fetch_array($result_patologia)) { ?>
                     <tr>
-                        <td><?php echo $patologia['id']; ?></td>
-                        <td><?php echo htmlspecialchars($patologia['nombre']); ?></td>
-                        <td><?php echo htmlspecialchars($patologia['tipo']); ?></td>
-                        <td><?php echo htmlspecialchars($patologia['descripcion']); ?></td>
+                        <td><?php echo $patologias['Id_patologia']; ?></td>
+                        <td><?php echo htmlspecialchars($patologias['Nombre_patologia']); ?></td>
+                        <td><?php echo htmlspecialchars($patologias['Tipo_patologia']); ?></td>
+                        <td><?php echo htmlspecialchars($patologias['Descripcion_patologia']); ?></td>
                         <td class="action-cell">
-                            <button class="delete-btn" onclick="if(confirm('¿Está seguro de eliminar esta patología?')) { window.location.href='mostrar_patologias.php?eliminar=<?php echo $patologia['id']; ?>'; }">
-                                <i class="fas fa-trash-alt"></i> Eliminar
-                            </button>
+                            <form action="eliminar_patologia.php" method="POST" style="display:inline;">
+                                <input type="hidden" name="id" value="<?php echo $patologias['Id_patologia']; ?>">
+                                <button type="submit" class="delete-btn" onclick="return confirm('¿Está seguro de eliminar esta patología?');">
+                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                </button>
+                            </form>
                         </td>
                     </tr>
-                    <?php endforeach; ?>
+                    <?php } ?>
                 </tbody>
             </table>
             <?php else: ?>
@@ -145,7 +115,7 @@ $empleado = [
                 <p>Comienza registrando tu primera patología</p>
             </div>
             <?php endif; ?>
-            
+
             <div class="form-buttons">
                 <a href="registrar_patologia.php" class="save-btn">
                     <i class="fas fa-plus"></i> Registrar Nueva Patología
@@ -154,12 +124,13 @@ $empleado = [
         </div>
     </main>
 
-    <?php if(isset($mensaje)): ?>
+    <?php if (isset($mensaje)): ?>
     <div class="notification success" id="notification">
         <i class="fas fa-check-circle"></i>
         <div><?php echo $mensaje; ?></div>
     </div>
     <?php endif; ?>
+
     <script src="../assets/js/mostrar_patologias.js"></script>
 </body>
 </html>

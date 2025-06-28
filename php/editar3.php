@@ -317,6 +317,10 @@ if (empty($resultado)) {
                             <span class="info-label">ID Paciente</span>
                             <span class="info-value"><?php echo $radiografia['Cedula paciente']; ?></span>
                         </div>
+                                                <div class="info-content">
+                            <span class="info-label">Nombre:</span>
+                            <span class="info-value"><?php echo $radiografia['Nombre completo']; ?></span>
+                        </div>
                     </div>
 
                     <div class="info-card">

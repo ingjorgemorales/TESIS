@@ -32,7 +32,6 @@ $empleado = [
 ?>
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,12 +42,17 @@ $empleado = [
 </head>
 
 <body>
+    
     <header class="main-header">
         <div class="logo-container">
             <a href="examen.php">
                 <img src="../assets/img/logo_x_ray.png" alt="X-RAY DIAGNOSTIC" class="logo">
             </a>
         </div>
+                    <div class="notification" id="notification" style="display: none;">
+                <span id="notification-message"></span>
+                <span class="close" onclick="closeNotification()">&times;</span>
+            </div>
         <nav class="top-nav">
             <a href="examen.php" class="nav-item">
                 <i class="fas fa-file-medical"></i>
@@ -115,7 +119,7 @@ $empleado = [
         </div>
 
         <div class="diagnosis-form-container">
-            <form method="POST">
+            <form method="POST" action="registrar_patologia2.php">
                 <h2 class="form-section-title">
                     <i class="fas fa-plus-circle"></i> Información de la Patología
                 </h2>
@@ -139,10 +143,7 @@ $empleado = [
                         </select>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="id_patologia"><i class="fas fa-id-card"></i> ID Patología</label>
-                        <input type="text" class="form-input readonly" value="PAT-<?php echo date('YmdHis'); ?>" readonly>
-                    </div>
+  
                 </div>
                 
                 <div class="form-group">
@@ -160,7 +161,9 @@ $empleado = [
                     </a>
                 </div>
             </form>
+
         </div>
+
     </main>
 
     <?php if(isset($mensaje)): ?>
@@ -169,7 +172,6 @@ $empleado = [
         <div><?php echo $mensaje; ?></div>
     </div>
     <?php endif; ?>
-
     <script src="../assets/js/registrar_patologia.js"></script>
 </body>
 </html>

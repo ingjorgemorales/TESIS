@@ -81,3 +81,18 @@ INNER JOIN paciente p ON r.Id_paciente = p.Id_paciente
 WHERE r.Id_radiografia = ide;
 
 END
+//////////////////////////////////////- Mostrar todo patologia -///////////////////////////////////////
+DELIMITER //
+CREATE PROCEDURE Mostrar_todo_patologia()
+BEGIN
+SELECT * FROM patologia;
+END
+//////////////////////////////////////- Eliminar patologia -///////////////////////////////////////DELIMITER //
+DELIMITER //
+CREATE PROCEDURE Eliminar_patologia (
+    IN p_Id_patologia varchar(100)
+)
+BEGIN
+    DELETE FROM patologia
+    WHERE Id_patologia = p_Id_patologia;
+END
