@@ -73,8 +73,15 @@ $result_paciente = $objconsulta->Consultar_todo_paciente();
 
         <div class="user-info">
             <div class="user-avatar">
+                <a href="configurar.php">
+                            <?php if (empty($empleado['Foto'])): ?>
                 <img src="../assets/img/icono_doctor.png" alt="Doctor">
+            <?php else: ?>
+                <img src="../assets/upload/<?php echo htmlspecialchars($empleado['Foto']); ?>" alt="Foto de perfil">
+            <?php endif; ?>
+            </a>
             </div>
+            
             <div class="user-name">
                 <span><?php echo htmlspecialchars($empleado['Nombre'] . " " . $empleado['Apellido']); ?></span>
                 <div class="status-indicator"></div>

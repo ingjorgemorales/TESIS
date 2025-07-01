@@ -64,8 +64,12 @@ $empleado = mysqli_fetch_assoc($result);
 
         <div class="user-info">
             <div class="user-avatar">
+            <?php if (empty($empleado['Foto'])): ?>
                 <img src="../assets/img/icono_doctor.png" alt="Doctor">
-                 <div class="status-indicator"></div>
+            <?php else: ?>
+                <img src="../assets/upload/<?php echo htmlspecialchars($empleado['Foto']); ?>" alt="Foto de perfil">
+            <?php endif; ?>
+            <div class="status-indicator"></div>
             </div>
             <div class="user-name">
                 <span><?php echo $empleado['Nombre'] . " " . $empleado['Apellido']; ?></span>
@@ -102,7 +106,11 @@ $empleado = mysqli_fetch_assoc($result);
             <!-- Tarjeta de perfil -->
             <div class="profile-card">
                 <div class="profile-picture">
-                    <img src="../assets/img/icono_doctor.png" alt="Foto de perfil">
+                               <?php if (empty($empleado['Foto'])): ?>
+                <img src="../assets/img/icono_doctor.png" alt="Doctor">
+            <?php else: ?>
+                <img src="../assets/upload/<?php echo htmlspecialchars($empleado['Foto']); ?>" alt="Foto de perfil">
+            <?php endif; ?>
                     <button class="change-photo-btn">
                         <i class="fas fa-camera"></i>
                     </button>
@@ -126,7 +134,7 @@ $empleado = mysqli_fetch_assoc($result);
             <div class="profile-form">
                 <h3 class="form-section-title">Información Personal</h3>
 
-                <form id="profileForm">
+                <form id="profileForm" action="actualizar_empleado.php" method="POST" enctype="multipart/form-data">
                     <div class="form-row">
                         <div class="form-half">
                             <div class="form-group">
@@ -137,7 +145,7 @@ $empleado = mysqli_fetch_assoc($result);
                         <div class="form-half">
                             <div class="form-group">
                                 <label for="especialidad" class="form-label">Especialidad</label>
-                                <input type="text" id="especialidad" class="form-input readonly" value="<?php echo $empleado['Especialidad']; ?>" readonly>
+                                <input type="text" id="especialidad" name= "especialidad" class="form-input readonly" value="<?php echo $empleado['Especialidad']; ?>" readonly>
                             </div>
                         </div>
                     </div>
@@ -146,13 +154,13 @@ $empleado = mysqli_fetch_assoc($result);
                         <div class="form-half">
                             <div class="form-group">
                                 <label for="nombres" class="form-label">Nombres</label>
-                                <input type="text" id="nombres" class="form-input" value="<?php echo $empleado['Nombre']; ?>">
+                                <input type="text" id="nombres" name= "nombre" class="form-input" value="<?php echo $empleado['Nombre']; ?>">
                             </div>
                         </div>
                         <div class="form-half">
                             <div class="form-group">
                                 <label for="apellidos" class="form-label">Apellidos</label>
-                                <input type="text" id="apellidos" class="form-input" value="<?php echo $empleado['Apellido']; ?>">
+                                <input type="text" id="apellidos" name= "apellido" class="form-input" value="<?php echo $empleado['Apellido']; ?>">
                             </div>
                         </div>
                     </div>
@@ -161,27 +169,29 @@ $empleado = mysqli_fetch_assoc($result);
                         <div class="form-half">
                             <div class="form-group">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" id="email" class="form-input" value="<?php echo $empleado['Email']; ?>">
+                                <input type="email" id="email" name= "email" class="form-input" value="<?php echo $empleado['Email']; ?>">
                             </div>
                         </div>
                         <div class="form-half">
                             <div class="form-group">
                                 <label for="celular" class="form-label">Celular</label>
-                                <input type="tel" id="celular" class="form-input" value="<?php echo $empleado['Celular']; ?>">
+                                <input type="tel" id="celular" name = "celular" class="form-input" value="<?php echo $empleado['Celular']; ?>">
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="direccion" class="form-label">Dirección</label>
-                        <input type="text" id="direccion" class="form-input" value="<?php echo $empleado['Direccion']; ?>">
+                        <input type="text" id="direccion" name= "direccion" class="form-input" value="<?php echo $empleado['Direccion']; ?>">
                     </div>
 
                     <h3 class="form-section-title" style="margin-top: 30px;">Cambiar Foto de Perfil</h3>
+                    <input type="hidden" name="pass" value="<?php echo $empleado['Password']; ?>">
+                    <input type="hidden" name="validarFoto" value="<?php echo $empleado['Foto']; ?>">
 
                     <div class="form-group">
                         <label for="fotoPerfil" class="form-label">Seleccionar nueva foto</label>
-                        <input type="file" id="fotoPerfil" class="form-input">
+                        <input type="file" id= "fotoPerfil"  name="fotoPerfil" class="form-input"  accept="image/png, image/jpeg, image/jpg, image/gif">
                     </div>
 
                     <button type="submit" class="save-btn">
@@ -189,6 +199,9 @@ $empleado = mysqli_fetch_assoc($result);
                     </button>
                 </form>
             </div>
+                        <div class="notification" id="notification" style="display: none;">
+        <span id="notification-message"></span>
+        <span class="close" onclick="closeNotification()">&times;</span>
         </div>
     </main>
 

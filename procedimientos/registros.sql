@@ -120,3 +120,29 @@ BEGIN
         p_Descripcion_patologia
     );
 END
+///////////////////////-Actualizar Empleado-///////////////////////
+DELIMITER //
+CREATE PROCEDURE Actualizar_Empleado (
+    IN p_cedula VARCHAR(20),
+    IN p_nombre VARCHAR(100),
+    IN p_apellido VARCHAR(100),
+    IN p_direccion VARCHAR(200),
+    IN p_email VARCHAR(100),
+    IN p_celular VARCHAR(100),
+    IN p_especialidad VARCHAR(100),
+    IN p_password VARCHAR(255),
+    IN p_foto VARCHAR(255)
+)
+BEGIN
+    UPDATE empleado
+    SET 
+        nombre = p_nombre,
+        apellido = p_apellido,
+        direccion = p_direccion,
+        email = p_email,
+        celular = p_celular,
+        especialidad = p_especialidad,
+        password = p_password,
+        foto = p_foto
+    WHERE cedula = p_cedula;
+END ;

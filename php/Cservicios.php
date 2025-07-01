@@ -210,6 +210,27 @@ function Eliminar_patologia($id_patologia){
     $resultado = $stmt->get_result();
     return $id_patologia;
 }
+function  Actualizar_empleado($nombre, $apellido, $direccion, $email, $celular, $especialidad, $pass, $nombreArchivo){
+    global $id;
+    $conexion = $this->createConnection();
+    $sql = "CALL Actualizar_Empleado(? ,?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("issssssss", $id, $nombre, $apellido, $direccion, $email, $celular, $especialidad, $pass, $nombreArchivo);
+    
+    try {
+        if ($stmt->execute()) {
+            return ['success' => true];
+        } else {
+            return ['success' => false, 'error' => 'Error al ejecutar el procedimiento'];
+        }
+    } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() == 1062) {
+            return ['success' => false, 'error' => ''];
+        } else {
+            return ['success' => false, 'error' => 'Error de base de datos: ' . $e->getMessage()];
+        }
+    }
+}
 
 }
 ?>

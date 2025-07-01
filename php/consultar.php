@@ -10,10 +10,10 @@ if (empty($resultado)) {
 }
 
 // Obtener nombre del médico para mostrarlo una sola vez
-$nombre_medico = "";
-while ($row = mysqli_fetch_array($result)) {
-    $nombre_medico = $row['Nombre'] . " " . $row['Apellido'];
-}
+
+$empleado = mysqli_fetch_array($result);
+$nombre_medico = $empleado['Nombre'] . " " . $empleado['Apellido'];
+
 
 
 ?>
@@ -76,7 +76,13 @@ while ($row = mysqli_fetch_array($result)) {
 
         <div class="user-info">
             <div class="user-avatar">
+                 <a href="configurar.php">
+                            <?php if (empty($empleado['Foto'])): ?>
                 <img src="../assets/img/icono_doctor.png" alt="Doctor">
+            <?php else: ?>
+                <img src="../assets/upload/<?php echo htmlspecialchars($empleado['Foto']); ?>" alt="Foto de perfil">
+            <?php endif; ?>
+            </a>
             </div>
             <div class="user-name">
                 <span><?php echo $nombre_medico; ?></span>

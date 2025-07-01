@@ -63,15 +63,34 @@ setTimeout(() => {
             }
         });
 
-        // Manejo del formulario
-        document.getElementById('profileForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Aquí iría la lógica para guardar los cambios en la base de datos
-            alert('Cambios guardados correctamente');
-            
-            // Simular recarga de datos
-            document.querySelector('.profile-name').textContent = 
-                document.getElementById('nombres').value + ' ' + 
-                document.getElementById('apellidos').value;
-        });
+//Control de notificaciones
+       const params = new URLSearchParams(window.location.search);
+const message = params.get('ms');
+const type = params.get('type');
+
+if (message && type) {
+    const notification = document.getElementById('notification');
+    const messageSpan = document.getElementById('notification-message');
+
+    // Set message
+    messageSpan.textContent = message;
+
+    // Set background color
+    if (type === 'ok') {
+        notification.style.backgroundColor = '#23c483'; // verde
+    } else if (type === 'error') {
+        notification.style.backgroundColor = '#e74c3c'; // rojo
+    }
+
+    // Mostrar
+    notification.style.display = 'block';
+
+    // Ocultar automáticamente luego de 4 segundos
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 4000);
+}
+
+function closeNotification() {
+    document.getElementById('notification').style.display = 'none';
+}

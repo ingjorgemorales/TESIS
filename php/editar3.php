@@ -6,6 +6,8 @@ $resultado = $objconsulta->Usuario_logueado();
 $result = $objconsulta->Consultar_empleado($resultado);
 $result_radiografia = $objconsulta->Consultar_radiografia($ID_Radiografia);
 $radiografia = mysqli_fetch_array($result_radiografia);
+$empleado = mysqli_fetch_array($result);
+$nombre_empleado = $empleado['Nombre'] . " " . $empleado['Apellido'];
 if (empty($radiografia)) {
     header("Location: editar.php?ms=Radiografía no encontrada&type=error");
     exit();
@@ -159,16 +161,18 @@ if (empty($resultado)) {
 
         <div class="user-info">
             <div class="user-avatar">
+                 <a href="configurar.php">
+                          <?php if (empty($empleado['Foto'])): ?>
                 <img src="../assets/img/icono_doctor.png" alt="Doctor">
+            <?php else: ?>
+                <img src="../assets/upload/<?php echo htmlspecialchars($empleado['Foto']); ?>" alt="Foto de perfil">
+            <?php endif; ?>
+            </a>
             </div>
             <div class="user-name">
                 <span>
                     <?php
-                    $nombre_empleado = '';
-                    while ($row = mysqli_fetch_array($result)) {
-                        $nombre_empleado = $row['Nombre'] . " " . $row['Apellido'];
-                    }
-                    echo $nombre_empleado;
+                    echo $nombre_empleado
                     ?>
                 </span>
                 <div class="status-indicator"></div>

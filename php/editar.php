@@ -9,11 +9,10 @@ if (empty($resultado)) {
     exit();
 }
 
-// Obtener nombre del empleado para mostrarlo
 $nombre_empleado = '';
-while ($row = mysqli_fetch_array($result)) {
-    $nombre_empleado = $row['Nombre'] . " " . $row['Apellido'];
-}
+$empleado = mysqli_fetch_array($result);
+    $nombre_empleado = $empleado['Nombre'] . " " . $empleado['Apellido'];
+
 ?>
 
 <!DOCTYPE html>
@@ -29,52 +28,6 @@ while ($row = mysqli_fetch_array($result)) {
 
 
 </head>
-<style>
-    .notification {
-        display: none;
-        position: fixed;
-        top: -50px;
-        /* Inicialmente fuera de la pantalla */
-        left: 50%;
-        transform: translateX(-50%);
-        width: fit-content;
-        background-color: rgb(196, 35, 35);
-        color: white;
-        text-align: center;
-        padding: 10px;
-        z-index: 1000;
-        animation: slideDown 0.5s ease-in-out forwards, fadeOut 0.5s 2s ease-in-out forwards;
-    }
-
-    @keyframes slideDown {
-        0% {
-            top: -50px;
-        }
-
-        100% {
-            top: 0;
-        }
-    }
-
-    @keyframes fadeOut {
-        0% {
-            opacity: 1;
-        }
-
-        100% {
-            opacity: 0;
-            top: -100px;
-            display: none;
-        }
-    }
-
-    .close {
-        float: right;
-        font-size: 20px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-</style>
 
 <body>
     <!-- Barra de navegación superior -->
@@ -117,7 +70,13 @@ while ($row = mysqli_fetch_array($result)) {
 
         <div class="user-info">
             <div class="user-avatar">
+                 <a href="configurar.php">
+                           <?php if (empty($empleado['Foto'])): ?>
                 <img src="../assets/img/icono_doctor.png" alt="Doctor">
+            <?php else: ?>
+                <img src="../assets/upload/<?php echo htmlspecialchars($empleado['Foto']); ?>" alt="Foto de perfil">
+            <?php endif; ?>
+                </a>
             </div>
             <div class="user-name">
                 <span><?php echo $nombre_empleado; ?></span>

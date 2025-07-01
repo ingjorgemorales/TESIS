@@ -1,34 +1,24 @@
 <?php
-session_start();
+include_once("Cservicios.php");
+$objconsulta = new cCliente;
+$resultado = $objconsulta->Usuario_logueado();
 
-// Inicializar array de patologías si no existe
-if (!isset($_SESSION['patologias'])) {
-    $_SESSION['patologias'] = [];
+// Verificar si el usuario está logueado
+if (empty($resultado)) {
+    header("Location: ../login.html");
+    exit();
 }
 
-// Procesar el formulario de registro
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar'])) {
-    $id = 'pat-' . uniqid(); // Generar ID único
-    $nombre = $_POST['nombre_patologia'];
-    $tipo = $_POST['tipo_patologia'];
-    $descripcion = $_POST['descripcion_patologia'];
-    
-    // Agregar nueva patología
-    $_SESSION['patologias'][] = [
-        'id' => $id,
-        'nombre' => $nombre,
-        'tipo' => $tipo,
-        'descripcion' => $descripcion
-    ];
-    
-    $mensaje = "Patología registrada exitosamente!";
-}
+// Obtener datos del empleado
+$result = $objconsulta->Consultar_empleado($resultado);
+$result_categoria = $objconsulta->Mostrar_todo_categoria();
+$result_zona = $objconsulta->Mostrar_todo_zona();
 
-// Simular datos de usuario
-$empleado = [
-    'Nombre' => 'Carlos',
-    'Apellido' => 'Mendoza'
-];
+
+$empleado = mysqli_fetch_array($result); 
+
+$result_paciente = $objconsulta->Consultar_todo_paciente();
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -85,7 +75,13 @@ $empleado = [
 
         <div class="user-info">
             <div class="user-avatar">
+                 <a href="configurar.php">
+                           <?php if (empty($empleado['Foto'])): ?>
                 <img src="../assets/img/icono_doctor.png" alt="Doctor">
+            <?php else: ?>
+                <img src="../assets/upload/<?php echo htmlspecialchars($empleado['Foto']); ?>" alt="Foto de perfil">
+            <?php endif; ?>
+            </a>
             </div>
             <div class="user-name">
                 <span><?php echo $empleado['Nombre'] . " " . $empleado['Apellido']; ?></span>

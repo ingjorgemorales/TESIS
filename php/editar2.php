@@ -13,9 +13,9 @@ if (empty($resultado)) {
 
 // Obtener nombre del empleado para mostrarlo
 $nombre_empleado = '';
-while ($row = mysqli_fetch_array($result)) {
-    $nombre_empleado = $row['Nombre'] . " " . $row['Apellido'];
-}
+$empleado = mysqli_fetch_array($result);
+$nombre_empleado = $empleado['Nombre'] . " " . $empleado['Apellido'];
+
 ?>
 
 <!DOCTYPE html>
@@ -71,7 +71,13 @@ while ($row = mysqli_fetch_array($result)) {
 
         <div class="user-info">
             <div class="user-avatar">
+                 <a href="configurar.php">
+                            <?php if (empty($empleado['Foto'])): ?>
                 <img src="../assets/img/icono_doctor.png" alt="Doctor">
+            <?php else: ?>
+                <img src="../assets/upload/<?php echo htmlspecialchars($empleado['Foto']); ?>" alt="Foto de perfil">
+            <?php endif; ?>
+            </a>
             </div>
 
             <div class="user-name">
