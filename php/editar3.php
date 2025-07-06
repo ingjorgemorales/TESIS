@@ -30,92 +30,112 @@ if (empty($resultado)) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/Style/editar3.css">
     <style>
-        /* Estilos para el nuevo layout de tres columnas */
+        /* Nuevo layout con imagen a la izquierda y paneles apilados a la derecha */
+    .diagnostic-container {
+        display: grid;
+        grid-template-columns: 70% 30%;
+        gap: 20px;
+        margin-top: 20px;
+    }
+    
+    .image-section {
+        grid-column: 1;
+        grid-row: 1 / span 2; /* Ocupa dos filas */
+        background-color: var(--card-bg);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: var(--shadow);
+        height: calc(100% - 40px); /* Ajuste de padding */
+    }
+    
+    .tools-section {
+        grid-column: 2;
+        grid-row: 1;
+        background-color: var(--card-bg);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: var(--shadow);
+        margin-bottom: 20px;
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+    
+    .info-section {
+        grid-column: 2;
+        grid-row: 2;
+        background-color: var(--card-bg);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: var(--shadow);
+        height: fit-content;
+    }
+    
+    .image-container {
+        width: 100%;
+        height: 700px; /* Altura aumentada */
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        overflow: auto; /* Scroll si la imagen es muy grande */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #e0e0e0;
+    }
+    
+    .image-container img {
+        max-width: none; /* Quitamos la limitación */
+        max-height: none;
+        object-fit: contain;
+        transform-origin: center center;
+        transition: transform 0.3s ease;
+    }
+    
+    @media (max-width: 1200px) {
         .diagnostic-container {
-            display: grid;
-            grid-template-columns: 40% 30% 30%;
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: 1fr;
         }
         
         .image-section {
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: var(--shadow);
+            grid-column: 1;
+            grid-row: 1;
+            height: 500px;
+        }
+        
+        .tools-section, .info-section {
+            grid-column: 1;
         }
         
         .tools-section {
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: var(--shadow);
-            overflow-y: auto;
-            max-height: 80vh;
+            grid-row: 2;
         }
         
         .info-section {
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: var(--shadow);
+            grid-row: 3;
         }
-        
-        .image-container {
-            width: 100%;
-            height: 400px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid #e0e0e0;
-            margin-bottom: 20px;
-        }
-        
-        .image-container img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-        
-        .control-group {
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .control-group:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-        
-        @media (max-width: 1200px) {
-            .diagnostic-container {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        
+    }
+
         @media (max-width: 768px) {
             .diagnostic-container {
                 grid-template-columns: 1fr;
             }
         }
-        .button_diagnostico{
-            background-color: #2dbd2d; 
+
+        .button_diagnostico {
+            background-color: #2dbd2d;
             color: white;
             margin-bottom: 10px;
         }
+
         .button_diagnostico:hover {
-            background-color: #28a745; 
+            background-color: #28a745;
             color: white;
         }
-        .input-label{
-        border: none; 
-        background: transparent; 
-        outline: none;
-        font-size: 14px;
+
+        .input-label {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -145,7 +165,7 @@ if (empty($resultado)) {
                 <i class="fas fa-edit"></i>
                 <span>EDITAR</span>
             </a>
-            <a href="diagnostico.php" class="nav-item">
+            <a href="actualizar_diagnostico.php" class="nav-item">
                 <i class="fas fa-stethoscope"></i>
                 <span>DIAGNÓSTICO</span>
             </a>
@@ -161,13 +181,13 @@ if (empty($resultado)) {
 
         <div class="user-info">
             <div class="user-avatar">
-                 <a href="configurar.php">
-                          <?php if (empty($empleado['Foto'])): ?>
-                <img src="../assets/img/icono_doctor.png" alt="Doctor">
-            <?php else: ?>
-                <img src="../assets/upload/<?php echo htmlspecialchars($empleado['Foto']); ?>" alt="Foto de perfil">
-            <?php endif; ?>
-            </a>
+                <a href="configurar.php">
+                    <?php if (empty($empleado['Foto'])): ?>
+                        <img src="../assets/img/icono_doctor.png" alt="Doctor">
+                    <?php else: ?>
+                        <img src="../assets/upload/<?php echo htmlspecialchars($empleado['Foto']); ?>" alt="Foto de perfil">
+                    <?php endif; ?>
+                </a>
             </div>
             <div class="user-name">
                 <span>
@@ -193,7 +213,7 @@ if (empty($resultado)) {
             <li><a href="consultar.php"><i class="fas fa-search"></i> CONSULTAR</a></li>
             <li><a href="configurar.php"><i class="fas fa-cog"></i> AJUSTES</a></li>
             <li class="active"><a href="editar.php"><i class="fas fa-edit"></i> EDITAR</a></li>
-            <li><a href="diagnostico.php"><i class="fas fa-stethoscope"></i> DIAGNÓSTICO</a></li>
+            <li><a href="actualizar_diagnostico.php"><i class="fas fa-stethoscope"></i> DIAGNÓSTICO</a></li>
             <li><a href="registrar_patologia.php"><i class="fas fa-notes-medical"></i> PATOLOGÍAS</a></li>
             <li><a href="cerrar_session.php"><i class="fas fa-sign-out-alt"></i> SALIR</a></li>
         </ul>
@@ -232,7 +252,7 @@ if (empty($resultado)) {
             <!-- Sección 2: Herramientas -->
             <div class="tools-section">
                 <h2><i class="fas fa-tools"></i> Herramientas de Edición</h2>
-                
+
                 <div class="control-group">
                     <h3><i class="fas fa-font"></i> Texto</h3>
                     <label for="textInput">Texto a agregar:</label>
@@ -306,11 +326,11 @@ if (empty($resultado)) {
                         <div class="info-icon">
                             <i class="fas fa-id-card"></i>
                         </div>
-                    <form action="editar2.php" method = "POST">
-                        <div class="info-content">
-                            <span class="info-label">ID Análisis</span>
-                            <input class= "input-label" name="id" value="<?php echo $radiografia['ID']; ?>" readonly>
-                        </div>
+                        <form action="editar2.php" method="POST">
+                            <div class="info-content">
+                                <span class="info-label">ID Análisis</span>
+                                <input class="input-label" name="id" value="<?php echo $radiografia['ID']; ?>" readonly>
+                            </div>
                     </div>
 
                     <div class="info-card">
@@ -321,7 +341,7 @@ if (empty($resultado)) {
                             <span class="info-label">ID Paciente</span>
                             <span class="info-value"><?php echo $radiografia['Cedula paciente']; ?></span>
                         </div>
-                                                <div class="info-content">
+                        <div class="info-content">
                             <span class="info-label">Nombre:</span>
                             <span class="info-value"><?php echo $radiografia['Nombre completo']; ?></span>
                         </div>
@@ -376,11 +396,11 @@ if (empty($resultado)) {
                     </div>
 
                 </div>
-                
-                    <button type="submit" class = "button_diagnostico">
-                        <i class="fas fa-plus"></i>&nbsp;&nbsp;&nbsp;Empezar Diagnostico
-                    </button><br>
-                    </form>
+
+                <button type="submit" class="button_diagnostico">
+                    <i class="fas fa-plus"></i>&nbsp;&nbsp;&nbsp;Empezar Diagnostico
+                </button><br>
+                </form>
                 <div class="action-buttons">
                     <form method="POST" action="editar2.php" class="action-form">
                         <input type="hidden" name="id" value="<?php echo $radiografia['ID']; ?>">
@@ -406,4 +426,5 @@ if (empty($resultado)) {
 
     <script src="../assets/js/editar3.js"></script>
 </body>
+
 </html>

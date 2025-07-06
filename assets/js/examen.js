@@ -1,3 +1,5 @@
+console.log("✅ JavaScript cargado correctamente.");
+
 // Función para cerrar el menú
 function closeMenu() {
     document.querySelector('.sidebar-nav').classList.remove('active');

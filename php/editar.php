@@ -54,7 +54,7 @@ $empleado = mysqli_fetch_array($result);
                 <i class="fas fa-edit"></i>
                 <span>EDITAR</span>
             </a>
-            <a href="diagnostico.php" class="nav-item">
+            <a href="actualizar_diagnostico.php" class="nav-item">
                 <i class="fas fa-stethoscope"></i>
                 <span>DIAGNÓSTICO</span>
             </a>
@@ -98,7 +98,7 @@ $empleado = mysqli_fetch_array($result);
             <li><a href="consultar.php"><i class="fas fa-search"></i> CONSULTAR</a></li>
             <li><a href="configurar.php"><i class="fas fa-cog"></i> AJUSTES</a></li>
             <li class="active"><a href="editar.php"><i class="fas fa-edit"></i> EDITAR</a></li>
-            <li><a href="diagnostico.php"><i class="fas fa-stethoscope"></i> DIAGNÓSTICO</a></li>
+            <li><a href="actualizar_diagnostico.php"><i class="fas fa-stethoscope"></i> DIAGNÓSTICO</a></li>
             <li><a href="registrar_patologia.php"><i class="fas fa-notes-medical"></i> PATOLOGÍAS</a></li>
             <li><a href="cerrar_session.php"><i class="fas fa-sign-out-alt"></i> SALIR</a></li>
         </ul>

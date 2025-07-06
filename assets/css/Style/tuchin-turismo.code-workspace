@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../../dev/tuchin-turismo"
+		},
+		{
+			"path": "../../../../../../dev/codest"
+		},
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../../../dev/x-ray_ia"
+		},
+		{
+			"path": "../../../../../../Users/jorge/OneDrive/Escritorio/ejemplo"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "ejemplo"
+	}
+}

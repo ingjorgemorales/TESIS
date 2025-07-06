@@ -518,7 +518,7 @@ body {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .main-header {
         padding: 5px 15px;
     }
@@ -576,3 +576,4 @@ body {
         font-size: 0.75rem;
     }
 }
+

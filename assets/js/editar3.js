@@ -17,7 +17,6 @@ document.querySelectorAll('.sidebar-nav a').forEach(item => {
 
 // Cerrar menú automáticamente al redimensionar
 window.addEventListener('resize', function() {
-    // Cierra el menú solo si está abierto y el ancho supera 900px
     const isMenuOpen = document.querySelector('.hamburger-btn').classList.contains('active');
     if (window.innerWidth > 900 && isMenuOpen) {
         closeMenu();
@@ -29,12 +28,8 @@ if (window.innerWidth > 900) {
     closeMenu();
 }
 
-
-console.log("Página cargada");
-
 document.addEventListener('DOMContentLoaded', function () {
     // Elementos del DOM
-    const imageUpload = document.getElementById('imageUpload');
     const imagePreview = document.getElementById('imagePreview');
     const textInput = document.getElementById('textInput');
     const textColor = document.getElementById('textColor');
@@ -69,6 +64,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let activeTextElement = null;
     let dragStartX, dragStartY, elementStartX, elementStartY;
 
+    // Centrar imagen al cargar
+    if (imagePreview.complete) {
+        centerImage();
+    } else {
+        imagePreview.onload = centerImage;
+    }
 
     // Agregar texto
     addTextBtn.addEventListener('click', function () {
@@ -90,31 +91,20 @@ document.addEventListener('DOMContentLoaded', function () {
         textElement.style.fontSize = `${textSize.value}px`;
         textElement.style.fontFamily = textFont.value;
 
-        // Posición central inicial
+        // Posición central inicial relativa al contenedor
         const containerRect = imageContainer.getBoundingClientRect();
-        const imgRect = imagePreview.getBoundingClientRect();
+        const scrollLeft = imageContainer.scrollLeft;
+        const scrollTop = imageContainer.scrollTop;
+        
+        const centerX = (containerRect.width / 2) - (textElement.offsetWidth / 2) + scrollLeft;
+        const centerY = (containerRect.height / 2) - (textElement.offsetHeight / 2) + scrollTop;
 
-        const centerX = (imgRect.width / 2) - (textElement.offsetWidth / 2);
-        const centerY = (imgRect.height / 2) - (textElement.offsetHeight / 2);
-
+        textElement.style.position = 'absolute';
         textElement.style.left = `${centerX}px`;
         textElement.style.top = `${centerY}px`;
 
-        
         // Hacer el texto arrastrable
         makeDraggable(textElement);
-
-        // Mostrar controles al pasar el mouse
-        textElement.addEventListener('mouseenter', function () {
-            textControls.style.display = 'flex';
-        });
-
-        textElement.addEventListener('mouseleave', function () {
-            if (activeTextElement !== textElement) {
-                textControls.style.display = 'none';
-            }
-        });
-
         imageContainer.appendChild(textElement);
         textElements.push(textElement);
 
@@ -126,11 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
     clearTextBtn.addEventListener('click', function () {
         if (textElements.length === 0) return;
         if (confirm('¿Eliminar todo el texto agregado?')) {
-            textElements.forEach(element => {
-                if (element.parentNode) {
-                    element.parentNode.removeChild(element);
-                }
-            });
+            textElements.forEach(element => element.parentNode?.removeChild(element));
             textElements = [];
             activeTextElement = null;
         }
@@ -176,18 +162,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Zoom
     zoomInBtn.addEventListener('click', function () {
-        scale *= 1.2;
+        scale *= 1.3;
         applyTransformations();
+        centerImage();
     });
 
     zoomOutBtn.addEventListener('click', function () {
-        scale /= 1.2;
-        applyTransformations();
+        if (scale > 0.2) {
+            scale /= 1.3;
+            applyTransformations();
+            centerImage();
+        }
     });
 
     zoomResetBtn.addEventListener('click', function () {
         scale = 1;
+        currentRotation = 0;
+        isFlippedHorizontal = false;
+        isFlippedVertical = false;
         applyTransformations();
+        centerImage();
+        resetImageSettings();
     });
 
     // Reiniciar ajustes
@@ -198,11 +193,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Funciones auxiliares
     function resetImageSettings() {
-        currentRotation = 0;
-        scale = 1;
-        isFlippedHorizontal = false;
-        isFlippedVertical = false;
-
         contrastRange.value = 100;
         brightnessRange.value = 100;
         saturationRange.value = 100;
@@ -211,98 +201,106 @@ document.addEventListener('DOMContentLoaded', function () {
         brightnessValue.textContent = '100';
         saturationValue.textContent = '100';
 
-        applyTransformations();
         applyImageFilters();
     }
 
     function applyTransformations() {
-        let transform = `scale(${scale}) `;
+        let transform = `scale(${scale})`;
 
-        if (isFlippedHorizontal) {
-            transform += 'scaleX(-1) ';
-        }
-
-        if (isFlippedVertical) {
-            transform += 'scaleY(-1) ';
-        }
-
-        transform += `rotate(${currentRotation}deg)`;
+        if (isFlippedHorizontal) transform += ' scaleX(-1)';
+        if (isFlippedVertical) transform += ' scaleY(-1)';
+        if (currentRotation !== 0) transform += ` rotate(${currentRotation}deg)`;
 
         imagePreview.style.transform = transform;
+        
+        // Ajustar el contenedor para scroll cuando la imagen es grande
+        if (scale > 1) {
+            imageContainer.style.overflow = 'auto';
+        } else {
+            imageContainer.style.overflow = 'hidden';
+        }
     }
 
     function applyImageFilters() {
-        const contrast = contrastRange.value;
-        const brightness = brightnessRange.value;
-        const saturation = saturationRange.value;
-
         imagePreview.style.filter = `
-                    contrast(${contrast}%)
-                    brightness(${brightness}%)
-                    saturate(${saturation}%)
-                `;
+            contrast(${contrastRange.value}%)
+            brightness(${brightnessRange.value}%)
+            saturate(${saturationRange.value}%)
+        `;
+    }
+
+    function centerImage() {
+        setTimeout(() => {
+            if (scale > 1) {
+                const centerX = (imagePreview.offsetWidth * scale - imageContainer.clientWidth) / 2;
+                const centerY = (imagePreview.offsetHeight * scale - imageContainer.clientHeight) / 2;
+                
+                imageContainer.scrollTo({
+                    left: centerX,
+                    top: centerY,
+                    behavior: 'smooth'
+                });
+            } else {
+                imageContainer.scrollTo({
+                    left: 0,
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        }, 10);
     }
 
     function makeDraggable(element) {
+        let isDragging = false;
+        let offsetX, offsetY;
+
         element.addEventListener('mousedown', startDrag);
 
         function startDrag(e) {
-            // Ignorar si se hizo clic en los controles del texto
-            if (e.target.classList.contains('text-btn') ||
-                e.target.classList.contains('text-controls')) {
-                return;
-            }
-
             e.preventDefault();
+            isDragging = true;
+            
+            const rect = element.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+            
             selectTextElement(element);
-
-            // Obtener posición inicial
-            dragStartX = e.clientX;
-            dragStartY = e.clientY;
-
-            const style = window.getComputedStyle(element);
-            elementStartX = parseInt(style.left);
-            elementStartY = parseInt(style.top);
-
             document.addEventListener('mousemove', drag);
             document.addEventListener('mouseup', stopDrag);
         }
 
         function drag(e) {
-            const dx = e.clientX - dragStartX;
-            const dy = e.clientY - dragStartY;
-
-            element.style.left = `${elementStartX + dx}px`;
-            element.style.top = `${elementStartY + dy}px`;
+            if (!isDragging) return;
+            
+            const containerRect = imageContainer.getBoundingClientRect();
+            const scrollLeft = imageContainer.scrollLeft;
+            const scrollTop = imageContainer.scrollTop;
+            
+            let newX = e.clientX - containerRect.left - offsetX + scrollLeft;
+            let newY = e.clientY - containerRect.top - offsetY + scrollTop;
+            
+            // Limitar al área del contenedor
+            newX = Math.max(0, Math.min(newX, containerRect.width - element.offsetWidth));
+            newY = Math.max(0, Math.min(newY, containerRect.height - element.offsetHeight));
+            
+            element.style.left = `${newX}px`;
+            element.style.top = `${newY}px`;
         }
 
         function stopDrag() {
+            isDragging = false;
             document.removeEventListener('mousemove', drag);
             document.removeEventListener('mouseup', stopDrag);
         }
     }
 
     function selectTextElement(element) {
-        // Deseleccionar el elemento activo anterior
         if (activeTextElement) {
             activeTextElement.classList.remove('selected-text');
-            const prevControls = activeTextElement.querySelector('.text-controls');
-            if (prevControls) {
-                prevControls.style.display = 'none';
-            }
         }
-
-        // Seleccionar el nuevo elemento
+        
         activeTextElement = element;
         activeTextElement.classList.add('selected-text');
-
-        // Mostrar controles del texto seleccionado
-        const controls = activeTextElement.querySelector('.text-controls');
-        if (controls) {
-            controls.style.display = 'flex';
-        }
-
-        // Actualizar controles de texto
         updateActiveTextControls();
     }
 
@@ -313,7 +311,6 @@ document.addEventListener('DOMContentLoaded', function () {
         textColor.value = rgbToHex(activeTextElement.style.color);
         textSize.value = parseInt(activeTextElement.style.fontSize) || 24;
 
-        // Actualizar fuente si está definida
         if (activeTextElement.style.fontFamily) {
             const font = activeTextElement.style.fontFamily.replace(/['"]/g, '');
             textFont.value = font;
@@ -322,71 +319,49 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function rgbToHex(rgb) {
         if (!rgb) return '#ffffff';
+        if (rgb.startsWith('#')) return rgb;
 
-        // Si ya es un valor hexadecimal
-        if (rgb.startsWith('#')) {
-            return rgb;
-        }
-
-        // Extraer los valores RGB
         const rgbValues = rgb.match(/\d+/g);
         if (!rgbValues || rgbValues.length < 3) return '#ffffff';
 
-        const r = parseInt(rgbValues[0]);
-        const g = parseInt(rgbValues[1]);
-        const b = parseInt(rgbValues[2]);
-
-        return '#' + [r, g, b].map(x => {
-            const hex = x.toString(16);
-            return hex.length === 1 ? '0' + hex : hex;
-        }).join('');
+        return '#' + rgbValues.slice(0, 3)
+            .map(x => parseInt(x).toString(16).padStart(2, '0'))
+            .join('');
     }
 
     function downloadImage() {
         if (!imagePreview.src) {
-            alert('Primero sube una imagen');
+            alert('No hay imagen para descargar');
             return;
         }
 
-        // Crear un canvas para combinar imagen y texto
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-
-        // Ajustar el tamaño del canvas a la imagen
         const img = new Image();
+        
         img.crossOrigin = 'Anonymous';
         img.src = imagePreview.src;
 
-        img.onload = function () {
-            // Configurar el canvas con las dimensiones correctas
+        img.onload = function() {
             canvas.width = img.width;
             canvas.height = img.height;
-
-            // Aplicar transformaciones (rotación y volteo)
+            
             ctx.save();
-
-            // Mover al centro del canvas
             ctx.translate(canvas.width / 2, canvas.height / 2);
-
-            // Aplicar rotación
-            ctx.rotate(currentRotation * Math.PI / 180);
-
-            // Aplicar volteo
-            if (isFlippedHorizontal) {
-                ctx.scale(-1, 1);
-            }
-            if (isFlippedVertical) {
-                ctx.scale(1, -1);
-            }
-
-            // Dibujar la imagen con los filtros aplicados
+            
+            // Aplicar transformaciones
+            if (isFlippedHorizontal) ctx.scale(-1, 1);
+            if (isFlippedVertical) ctx.scale(1, -1);
+            if (currentRotation !== 0) ctx.rotate(currentRotation * Math.PI / 180);
+            
+            // Aplicar filtros
             ctx.filter = `
-                        contrast(${contrastRange.value}%)
-                        brightness(${brightnessRange.value}%)
-                        saturate(${saturationRange.value}%)
-                    `;
-
-            // Dibujar la imagen (teniendo en cuenta la escala y posición)
+                contrast(${contrastRange.value}%)
+                brightness(${brightnessRange.value}%)
+                saturate(${saturationRange.value}%)
+            `;
+            
+            // Dibujar imagen
             ctx.drawImage(
                 img,
                 -img.width / 2 * scale,
@@ -394,10 +369,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 img.width * scale,
                 img.height * scale
             );
-
+            
             ctx.restore();
-
-            // Dibujar el texto
+            
+            // Dibujar texto
             textElements.forEach(textElement => {
                 const style = window.getComputedStyle(textElement);
                 const left = parseInt(style.left);
@@ -407,27 +382,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 const bgColor = style.backgroundColor;
                 const fontFamily = style.fontFamily;
                 const text = textElement.textContent;
-
-                // Calcular posición relativa en el canvas
+                
+                // Calcular posición relativa
                 const imgRect = imagePreview.getBoundingClientRect();
-                const containerRect = imageContainer.getBoundingClientRect();
-
                 const scaleX = img.width / imgRect.width;
                 const scaleY = img.height / imgRect.height;
-
+                
                 const x = left * scaleX;
                 const y = top * scaleY;
-
-                // Configurar el texto
+                
+                // Configurar texto
                 ctx.font = `bold ${fontSize * scaleX}px ${fontFamily}`;
                 ctx.textAlign = 'left';
                 ctx.textBaseline = 'top';
-
+                
                 // Dibujar fondo si existe
                 if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
                     const textMetrics = ctx.measureText(text);
                     const padding = 5 * scaleX;
-
+                    
                     ctx.fillStyle = bgColor;
                     ctx.beginPath();
                     ctx.roundRect(
@@ -439,47 +412,41 @@ document.addEventListener('DOMContentLoaded', function () {
                     );
                     ctx.fill();
                 }
-
-                // Dibujar el texto
+                
+                // Dibujar texto
                 ctx.fillStyle = color;
                 ctx.fillText(text, x, y);
             });
-
-            // Descargar la imagen
+            
+            // Descargar
             const link = document.createElement('a');
-            link.download = 'imagen-editada.png';
+            link.download = `radiografia-${new Date().toISOString().slice(0, 10)}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
         };
-
-        img.onerror = function () {
+        
+        img.onerror = function() {
             alert('Error al cargar la imagen para descarga');
         };
     }
 
-    // Permitir eliminar texto con la tecla Suprimir
-    document.addEventListener('keydown', function (e) {
+    // Manejo de teclado
+    document.addEventListener('keydown', function(e) {
         if (e.key === 'Delete' && activeTextElement) {
             if (confirm('¿Eliminar este texto?')) {
                 const index = textElements.indexOf(activeTextElement);
-                if (index > -1) {
-                    textElements.splice(index, 1);
-                }
-                imageContainer.removeChild(activeTextElement);
+                if (index > -1) textElements.splice(index, 1);
+                activeTextElement.parentNode?.removeChild(activeTextElement);
                 activeTextElement = null;
             }
         }
     });
 
-    // Seleccionar texto al hacer clic
-    imageContainer.addEventListener('click', function (e) {
+    // Deseleccionar texto al hacer clic fuera
+    imageContainer.addEventListener('click', function(e) {
         if (e.target === imageContainer || e.target === imagePreview) {
             if (activeTextElement) {
                 activeTextElement.classList.remove('selected-text');
-                const controls = activeTextElement.querySelector('.text-controls');
-                if (controls) {
-                    controls.style.display = 'none';
-                }
                 activeTextElement = null;
             }
         }

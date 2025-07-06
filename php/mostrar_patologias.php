@@ -39,7 +39,7 @@ $empleado = mysqli_fetch_assoc($result);
             <a href="consultar.php" class="nav-item"><i class="fas fa-search"></i><span>CONSULTAR</span></a>
             <a href="configurar.php" class="nav-item"><i class="fas fa-cog"></i><span>AJUSTES</span></a>
             <a href="editar.php" class="nav-item"><i class="fas fa-edit"></i><span>EDITAR</span></a>
-            <a href="diagnostico.php" class="nav-item"><i class="fas fa-stethoscope"></i><span>DIAGNÓSTICO</span></a>
+            <a href="actualizar_diagnostico.php" class="nav-item"><i class="fas fa-stethoscope"></i><span>DIAGNÓSTICO</span></a>
             <a href="mostrar_patologias.php" class="nav-item active"><i class="fas fa-disease"></i><span>PATOLOGÍAS</span></a>
             <a href="cerrar_session.php" class="nav-item"><i class="fas fa-sign-out-alt"></i><span>SALIR</span></a>
         </nav>
@@ -69,7 +69,7 @@ $empleado = mysqli_fetch_assoc($result);
             <li><a href="consultar.php"><i class="fas fa-search"></i> CONSULTAR</a></li>
             <li><a href="configurar.php"><i class="fas fa-cog"></i> AJUSTES</a></li>
             <li><a href="editar.php"><i class="fas fa-edit"></i> EDITAR</a></li>
-            <li><a href="diagnostico.php"><i class="fas fa-stethoscope"></i> DIAGNÓSTICO</a></li>
+            <li><a href="actualizar_diagnostico.php"><i class="fas fa-stethoscope"></i> DIAGNÓSTICO</a></li>
             <li class="active"><a href="mostrar_patologias.php"><i class="fas fa-disease"></i> PATOLOGÍAS</a></li>
             <li><a href="cerrar_session.php"><i class="fas fa-sign-out-alt"></i> SALIR</a></li>
         </ul>
@@ -130,12 +130,12 @@ $empleado = mysqli_fetch_assoc($result);
         </div>
     </main>
 
-    <?php if (isset($mensaje)): ?>
+    <?php if (isset($mensaje)): ?>.
     <div class="notification success" id="notification">
         <i class="fas fa-check-circle"></i>
         <div><?php echo $mensaje; ?></div>
     </div>
-    <?php endif; ?>
+    <?php endif; ?>|
 
     <script src="../assets/js/mostrar_patologias.js"></script>
 </body>
