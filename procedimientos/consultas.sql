@@ -96,3 +96,32 @@ BEGIN
     DELETE FROM patologia
     WHERE Id_patologia = p_Id_patologia;
 END
+////////////////////////////////////////- Mostrar todo diagnostico -///////////////////////////////////////
+DELIMITER //
+CREATE PROCEDURE Mostrar_todo_diagnostico()
+BEGIN
+SELECT 
+    d.Id_diagnostico,
+    d.Descripcion,
+    d.Nivel_gravedad,
+    d.Porcentaje_confianza_IA,
+    d.Tipo_Fractura_IA,
+    d.Fecha_hora,
+    r.Fecha_hora AS Fecha_radiografia,
+    pa.Nombres AS Nombre_paciente,
+	z.Nombre_zona AS Zona_radiografiada,
+    p.Nombre_patologia
+    
+FROM diagnostico d
+INNER JOIN radiografia r ON d.Id_radiografia = r.Id_radiografia
+INNER JOIN zona z ON r.Id_zona = z.Id_zona
+INNER JOIN patologia p ON d.Id_patologia = p.Id_patologia
+INNER JOIN paciente pa ON r.Id_paciente = pa.Id_paciente;
+
+END
+//////////////////////////-consultar diagnostico-///////////////////////////////////////
+DELIMITER //
+CREATE PROCEDURE Consultar_Diagnostico(in ide varchar(100))
+BEGIN
+SELECT * from diagnostico WHERE id_diagnostico = ide;
+END

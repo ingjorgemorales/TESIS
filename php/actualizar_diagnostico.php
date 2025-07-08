@@ -13,86 +13,10 @@ if (empty($resultado)) {
 $result = $objconsulta->Consultar_empleado($resultado);
 $empleado = mysqli_fetch_assoc($result);
 
-// Obtener todos los diagnósticos (simulados para este ejemplo)
-$diagnosticos = [
-    [
-        'id_diagnostico' => 'DX-20230627143015',
-        'fecha_hora' => '2023-06-27T14:30',
-        'id_radiografia' => 2,
-        'id_patologia' => 3,
-        'descripcion' => 'Fractura completa del radio con desplazamiento de aproximadamente 5 mm. Evidente fragmentación ósea en el tercio distal. Ligera angulación de 15 grados. Se observa afectación de la articulación radiocubital distal.',
-        'nivel_gravedad' => 'grave',
-        'tipo_fractura' => 'Fractura conminuta',
-        'porcentajeconfianza_IA' => 92,
-        'paciente_nombre' => 'María García - RX Pierna',
-        'patologia_nombre' => 'Fractura de Monteggia'
-    ],
-    [
-        'id_diagnostico' => 'DX-20230715113045',
-        'fecha_hora' => '2023-07-15T11:30',
-        'id_radiografia' => 1,
-        'id_patologia' => 1,
-        'descripcion' => 'Fractura transversal no desplazada en la epífisis distal del radio. Ligera línea de fractura visible sin desplazamiento significativo. Sin compromiso articular aparente.',
-        'nivel_gravedad' => 'leve',
-        'tipo_fractura' => 'Fractura transversal',
-        'porcentajeconfianza_IA' => 88,
-        'paciente_nombre' => 'Juan Pérez - RX Brazo',
-        'patologia_nombre' => 'Fractura de Colles'
-    ],
-    [
-        'id_diagnostico' => 'DX-20230805164522',
-        'fecha_hora' => '2023-08-05T16:45',
-        'id_radiografia' => 3,
-        'id_patologia' => 5,
-        'descripcion' => 'Fractura intraarticular conminuta del primer metacarpiano derecho. Significativa fragmentación ósea con depresión articular. Evidente desplazamiento de fragmentos.',
-        'nivel_gravedad' => 'muy_grave',
-        'tipo_fractura' => 'Fractura conminuta intraarticular',
-        'porcentajeconfianza_IA' => 95,
-        'paciente_nombre' => 'Carlos López - RX Tórax',
-        'patologia_nombre' => 'Fractura de Bennett'
-    ],
-    [
-        'id_diagnostico' => 'DX-20230820111033',
-        'fecha_hora' => '2023-08-20T11:10',
-        'id_radiografia' => 4,
-        'id_patologia' => 4,
-        'descripcion' => 'Fractura diafisaria del cúbito con luxación de la cabeza radial. Obvia deformidad en el antebrazo derecho. Signos de inestabilidad radiocubital distal.',
-        'nivel_gravedad' => 'grave',
-        'tipo_fractura' => 'Fractura-luxación',
-        'porcentajeconfianza_IA' => 90,
-        'paciente_nombre' => 'Ana Rodríguez - RX Antebrazo',
-        'patologia_nombre' => 'Fractura de Galeazzi'
-    ],
-    [
-        'id_diagnostico' => 'DX-20230901092018',
-        'fecha_hora' => '2023-09-01T09:20',
-        'id_radiografia' => 5,
-        'id_patologia' => 2,
-        'descripcion' => 'Fractura del tercio distal del radio con desplazamiento palmar. Ligera angulación de 10 grados. Sin compromiso articular significativo.',
-        'nivel_gravedad' => 'moderado',
-        'tipo_fractura' => 'Fractura desplazada',
-        'porcentajeconfianza_IA' => 85,
-        'paciente_nombre' => 'Luis Martínez - RX Muñeca',
-        'patologia_nombre' => 'Fractura de Smith'
-    ]
-];
+$diagnosticos = $objconsulta->Mostrar_todo_diagnosticos();
 
-// Obtener datos para los select (simulado)
-$radiografias = [
-    ['id' => 1, 'paciente' => 'Juan Pérez - RX Brazo'],
-    ['id' => 2, 'paciente' => 'María García - RX Pierna'],
-    ['id' => 3, 'paciente' => 'Carlos López - RX Tórax'],
-    ['id' => 4, 'paciente' => 'Ana Rodríguez - RX Antebrazo'],
-    ['id' => 5, 'paciente' => 'Luis Martínez - RX Muñeca']
-];
 
-$patologias = [
-    ['id' => 1, 'nombre' => 'Fractura de Colles'],
-    ['id' => 2, 'nombre' => 'Fractura de Smith'],
-    ['id' => 3, 'nombre' => 'Fractura de Monteggia'],
-    ['id' => 4, 'nombre' => 'Fractura de Galeazzi'],
-    ['id' => 5, 'nombre' => 'Fractura de Bennett']
-];
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -482,7 +406,7 @@ $patologias = [
                             <th>Descripción</th>
                             <th>Nivel Gravedad</th>
                             <th>Confianza IA</th>
-                            <th>Tipo Fractura</th>
+                            <th>Tipo Fractura IA</th>
                             <th>Fecha y Hora</th>
                             <th>Radiografía</th>
                             <th>Patología</th>
@@ -490,59 +414,68 @@ $patologias = [
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($diagnosticos as $diag): ?>
-                        <tr>
-                            <td><?php echo $diag['id_diagnostico']; ?></td>
-                            <td class="description-cell"><?php echo $diag['descripcion']; ?></td>
-                            <td>
-                                <?php 
-                                    $severityClass = 'severity-' . $diag['nivel_gravedad'];
-                                    $severityText = '';
-                                    switch ($diag['nivel_gravedad']) {
-                                        case 'leve':
-                                            $severityText = 'LEVE';
-                                            break;
-                                        case 'moderado':
-                                            $severityText = 'MODERADO';
-                                            break;
-                                        case 'grave':
-                                            $severityText = 'GRAVE';
-                                            break;
-                                        case 'muy_grave':
-                                            $severityText = 'MUY GRAVE';
-                                            break;
-                                    }
-                                    echo '<span class="severity-badge ' . $severityClass . '">' . $severityText . '</span>';
-                                ?>
-                            </td>
-                            <td class="confidence-cell">
-                                <div class="confidence-bar">
-                                    <div class="confidence-fill" 
-                                        style="width: <?php echo $diag['porcentajeconfianza_IA']; ?>%;
-                                                background: <?php 
-                                                    $conf = $diag['porcentajeconfianza_IA'];
-                                                    if ($conf < 50) echo '#ff6b6b';
-                                                    elseif ($conf < 80) echo '#ffd166';
-                                                    else echo '#06d6a0';
-                                                ?>;">
-                                    </div>
+                    <?php while($diag = mysqli_fetch_array($diagnosticos)){ ?>
+                    <tr id="diag_<?php echo $diag['Id_diagnostico']; ?>">
+                        <td><?php echo $diag['Id_diagnostico']; ?> </td>
+                        <td class="description-cell"><?php echo $diag['Descripcion']; ?></td>
+                        <td>
+                            <?php 
+                                $severityClass = 'severity-' . $diag['Nivel_gravedad'];
+                                $severityText = '';
+                                switch ($diag['Nivel_gravedad']) {
+                                    case 'leve':
+                                        $severityText = 'LEVE';
+                                        break;
+                                    case 'moderado':
+                                        $severityText = 'MODERADO';
+                                        break;
+                                    case 'grave':
+                                        $severityText = 'GRAVE';
+                                        break;
+                                    case 'muy_grave':
+                                        $severityText = 'MUY GRAVE';
+                                        break;
+                                }
+                                echo '<span class="severity-badge ' . $severityClass . '">' . $severityText . '</span>';
+                            ?>
+                        </td>
+                        <td class="confidence-cell">
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" 
+                                    style="width: <?php echo $diag['Porcentaje_confianza_IA']; ?>%;
+                                            background: <?php 
+                                                $conf = $diag['Porcentaje_confianza_IA'];
+                                                if ($conf < 50) echo '#ff6b6b';
+                                                elseif ($conf < 80) echo '#ffd166';
+                                                else echo '#06d6a0';
+                                            ?>;">
                                 </div>
-                                <div class="confidence-value"><?php echo $diag['porcentajeconfianza_IA']; ?>%</div>
-                            </td>
-                            <td><?php echo $diag['tipo_fractura']; ?></td>
-                            <td><?php echo date('d/m/Y H:i', strtotime($diag['fecha_hora'])); ?></td>
-                            <td><?php echo $diag['paciente_nombre']; ?></td>
-                            <td><?php echo $diag['patologia_nombre']; ?></td>
-                            <td class="action-cell">
-                                <button class="action-btn edit-btn" onclick="editDiagnostic('<?php echo $diag['id_diagnostico']; ?>')">
-                                    <i class="fas fa-edit"></i> Editar
-                                </button>
-                                <button class="action-btn delete-btn" onclick="confirmDelete('<?php echo $diag['id_diagnostico']; ?>')">
-                                    <i class="fas fa-trash-alt"></i> Eliminar
-                                </button>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
+                            </div>
+                            <div class="confidence-value"><?php echo $diag['Porcentaje_confianza_IA']; ?>%</div>
+                        </td>
+                        <td><?php echo $diag['Tipo_Fractura_IA']; ?></td>
+                        <td><?php echo date('d/m/Y H:i', strtotime($diag['Fecha_hora'])); ?></td>
+                        <td><?php echo $diag['Nombre_paciente'] . ' ' . $diag['Apellido_paciente'] . ' - Zona: ' . $diag['Zona_radiografiada']; ?></td>
+                        <td><?php echo $diag['Nombre_patologia']; ?></td>
+                        <td class="action-cell">
+
+                        <form action="actulizar_un_diagnostico.php" method="POST">
+                            <input type="hidden" name="id_diagnostico" value="<?php echo $diag['Id_diagnostico']; ?>">
+                            <button type="submit" class="action-btn edit-btn" onclick="editDiagnostic('<?php echo $diag['Id_diagnostico']; ?>')">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                        </form>
+                            <button class="action-btn delete-btn" onclick="confirmDelete('<?php echo $diag['Id_diagnostico']; ?>')">
+                                <i class="fas fa-trash-alt"></i> Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                    <tr id="no-data-message" style="display: none;">
+                        <td colspan="8" style="text-align:center; color: #888; font-style: italic;">
+                            No se encontraron diagnósticos.
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -557,13 +490,13 @@ $patologias = [
                 <button class="page-btn">3</button>
             </div>
         </div>
+
     </main>
     
-    <div class="notification" id="notification" style="display: none;">
-        <div class="notification-content">
-            <i class="fas fa-check-circle"></i>
-            <span id="notificationMessage">Operación realizada con éxito</span>
-        </div>
+
+        <div class="notification" id="notification" style="display: none;">
+        <span id="notification-message"></span>
+        <span class="close" onclick="closeNotification()">&times;</span>
     </div>
     <script src="../assets/js/actualizar_diagnostico.js"></script>
 

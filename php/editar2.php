@@ -28,6 +28,7 @@ $nombre_empleado = $empleado['Nombre'] . " " . $empleado['Apellido'];
     <link rel="shortcut icon" href="./assets/img/logo_icono_x_ray.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/Style/editar2.css">
+        <link rel="shortcut icon" href="../assets/img/logo_icono_x_ray.png" type="image/png">
 </head>
 
 <body>

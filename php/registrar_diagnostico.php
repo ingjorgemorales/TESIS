@@ -12,10 +12,10 @@ $objconsulta = new cCliente;
 $resultado = $objconsulta->Registrar_diagnostico($descripcion,$nivel_gravedad,$porcentaje, $tipo_de_fractura, $fecha_hora, $id_r, $id_patologia);
 
 if ($resultado['success']) {
-    header("Location: diagnostico.php?ms=✅Se ha registrado correctamente&type=ok");
+    header("Location: actualizar_diagnostico.php?ms=✅Se ha registrado correctamente&type=ok");
 } else {
     $msg = urlencode($resultado['error']); 
-    header("Location: diagnostico.php?ms=$msg&type=error");
+    header("Location: actualizar_diagnostico.php?ms=$msg&type=error");
 }
 
 ?>

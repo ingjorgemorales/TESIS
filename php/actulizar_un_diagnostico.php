@@ -1,5 +1,9 @@
-<?php
+<?php 
 date_default_timezone_set('America/Mexico_City'); // Ajusta la zona horaria según tu ubicación
+
+$id_diagnostico= $_POST['id_diagnostico'] ?? null;
+
+
 include_once("Cservicios.php");
 $objconsulta = new cCliente;
 $resultado = $objconsulta->Usuario_logueado();
@@ -11,6 +15,9 @@ $result_radiografia = $objconsulta->Consultar_radiografia($id);
 $result_patologia = $objconsulta->Mostrar_todo_patologia();
 $patologias = mysqli_fetch_array($result_patologia);
 $radiografia = mysqli_fetch_array($result_radiografia);
+
+$result_diagnostico= $objconsulta->Consultar_diagnostico($id_diagnostico);
+$diagnostico = mysqli_fetch_array($result_diagnostico);
 // Verificar si el usuario está logueado
 if (empty($resultado)) {
     header("Location: ../login.html");
@@ -118,7 +125,7 @@ $empleado = mysqli_fetch_assoc($result);
         </div>
 
         <div class="diagnosis-form-container">
-            <form id="diagnosisForm" action="registrar_diagnostico.php" method="POST">
+            <form id="diagnosisForm" action="update_diagnostico.php" method="POST">
                 <h2 class="form-section-title">
                     <i class="fas fa-info-circle"></i> Información Básica
                 </h2>
@@ -128,27 +135,27 @@ $empleado = mysqli_fetch_assoc($result);
 
                     <div class="form-group">
                         <label for="fecha_hora"><i class="fas fa-calendar-alt"></i> Fecha y Hora</label>
-                        <input type="datetime-local" id="fecha_hora" name= "fecha_hora" class="form-input" value="<?php echo date('Y-m-d\TH:i', time() + 3600); ?>">
+                        <input id="fecha_hora" name="fecha_hora" class="form-input" value="<?php echo $diagnostico['Fecha_hora']?>" readonly disabled>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="id_radiografia"><i class="fas fa-x-ray"></i> Radiografía Asociada</label>
-                        <input type="text" id="id_radiografia"  class="form-input" value="<?php echo 'Nombre: ' . ($radiografia['Nombre completo'] ?? '') . ' - Zona: ' . ($radiografia['Zona'] ?? ''); ?>" required disabled/>
-                        <input type="hidden" name="id_r" value="<?php echo htmlspecialchars($id, ENT_QUOTES, 'UTF-8'); ?>" />
+                        <input type="text" id="id_radiografia"  class="form-input" value="<?php echo 'Nombre: ' . (($diagnostico['Nombre_paciente'] ?? '') . ' ' . ($diagnostico['Apellido_paciente'] ?? '')) . ' - Zona: ' . ($diagnostico['Zona_radiografiada'] ?? ''); ?>" required disabled/>
+                        <input type="hidden" name="id_r" value="<?php echo htmlspecialchars($id_diagnostico, ENT_QUOTES, 'UTF-8'); ?>" />
                     </div>
                     <div class="form-group">
-                        <label for="id_patologia"><i class="fas fa-disease"></i> Patología</label>
-                         <input id="nombre" name="id_patologia" class="form-input" list="pacieenteList" required>
-<?php mysqli_data_seek($result_patologia, 0); // Reposiciona el puntero al inicio ?>
-<datalist id="pacieenteList">
-    <?php while ($patologias = mysqli_fetch_assoc($result_patologia)) : ?>
-        <option value="<?php echo htmlspecialchars($patologias['Id_patologia'], ENT_QUOTES, 'UTF-8'); ?>">
-            <?php echo htmlspecialchars($patologias['Nombre_patologia'], ENT_QUOTES, 'UTF-8'); ?>
-        </option>
-    <?php endwhile; ?>
-</datalist>
+                        <label for="id_patologia"><i class="fas fa-disease" ></i> Patología</label>
+                         <input id="nombre" name="id_patologia" class="form-input" list="pacieenteList" value= "<?php echo $diagnostico['Id_patologia']?>" required>
+                    <?php mysqli_data_seek($result_patologia, 0); // Reposiciona el puntero al inicio ?>
+                    <datalist id="pacieenteList">
+                        <?php while ($patologias = mysqli_fetch_assoc($result_patologia)) : ?>
+                            <option value="<?php echo htmlspecialchars($patologias['Id_patologia'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <?php echo htmlspecialchars($patologias['Nombre_patologia'], ENT_QUOTES, 'UTF-8'); ?>
+                            </option>
+                        <?php endwhile; ?>
+                    </datalist>
 
 
                     </div>
@@ -160,25 +167,25 @@ $empleado = mysqli_fetch_assoc($result);
 
                 <div class="form-group full-width">
                     <label for="descripcion"><i class="fas fa-file-medical"></i> Descripción</label>
-                    <textarea id="descripcion" class="form-textarea" name = "descripcion" placeholder="Describa en detalle el diagnóstico..." required></textarea>
+                    <input id="descripcion" class="form-input" value="<?php echo $diagnostico['Descripcion']?>" name = "descripcion" placeholder="Describa en detalle el diagnóstico..." required></input>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="nivel_gravedad"><i class="fas fa-exclamation-triangle"></i> Nivel de Gravedad</label>
-                        <select id="nivel_gravedad" name= "nivel_gravedad" class="form-select" required>
+                        <select id="nivel_gravedad" name="nivel_gravedad" class="form-select" required>
                             <option value="">Seleccione nivel</option>
-                            <option value="leve">Leve</option>
-                            <option value="moderado">Moderado</option>
-                            <option value="grave" selected>Grave</option>
-                            <option value="muy_grave">Muy Grave</option>
+                            <option value="leve" <?php echo ($diagnostico['Nivel_gravedad'] == 'leve') ? 'selected' : ''; ?>>Leve</option>
+                            <option value="moderado" <?php echo ($diagnostico['Nivel_gravedad'] == 'moderado') ? 'selected' : ''; ?>>Moderado</option>
+                            <option value="grave" <?php echo ($diagnostico['Nivel_gravedad'] == 'grave') ? 'selected' : ''; ?>>Grave</option>
+                            <option value="muy_grave" <?php echo ($diagnostico['Nivel_gravedad'] == 'muy_grave') ? 'selected' : ''; ?>>Muy Grave</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="tipo_fractura"><i class="fas fa-bone"></i> Tipo de Fractura (IA)</label>
-                        <input type="text" id="tipo_fractura" name="tipo_de_fractura" class="form-input" value="<?php echo $hallazgos ?>" readonly />
-                        <input type="hidden" name="tipo_de_fractura" value="<?php echo htmlspecialchars($hallazgos, ENT_QUOTES, 'UTF-8'); ?>" />
+                        <input type="text" id="tipo_fractura" name="tipo_de_fractura" class="form-input" value="<?php echo $diagnostico['Tipo_Fractura_IA']; ?>" readonly />
+                        <input type="hidden" name="tipo_de_fractura" value="<?php echo $diagnostico['Tipo_Fractura_IA']; ?>" />
                        
                     </div>
                 </div>
@@ -187,26 +194,21 @@ $empleado = mysqli_fetch_assoc($result);
                     <label for="porcentaje_confianza"><i class="fas fa-brain"></i> Confianza de la IA</label>
                     <div class="confidence-container">
                         <div class="confidence-bar">
-                            <div class="confidence-fill" id="confidenceFill" style="width: <?php echo $promedio_confianza ?>%"></div>
+                            <div class="confidence-fill" id="confidenceFill" style="width: <?php echo intval($diagnostico['Porcentaje_confianza_IA']); ?>%"></div>
                         </div>
-                        <div class="confidence-value" id="confidenceValue"><?php echo $promedio_confianza ?>%</div>
+                        <div class="confidence-value" id="confidenceValue"><?php echo $diagnostico['Porcentaje_confianza_IA'] ?></div>
                     </div>
                      <input type="hidden" name="porcentaje" value="<?php echo htmlspecialchars($promedio_confianza, ENT_QUOTES, 'UTF-8'); ?>" />
-                 <!--   <input type="range" id="porcentaje_confianza" class="form-input" min="0" max="100" value="<?php echo $promedio_confianza ?>" step="1" style="width: 100%; margin-top: 10px;"> -->
+                 <!--   <input type="range" id="porcentaje_confianza" class="form-input" min="0" max="100" value="<?php echo $diagnostico['Porcentaje_confianza_IA'] ?>" step="1" style="width: 100%; margin-top: 10px;"> -->
                 </div>
 
                 <!-- Botones de acción -->
                 <div class="form-buttons">
                     <button type="submit" class="save-btn">
-                        <i class="fas fa-save"></i> Guardar Diagnóstico
+                        <i class="fas fa-save"></i> Actualizar Diagnóstico
                     </button>
              </form>       
-             <form action="actualizar_diagnostico.php">
-                    <button type="submit" class="update-btn" id="updateDiagnosticBtn">
-                        <i class="fas fa-sync-alt"></i> Todos los Diagnósticos
-                    </button>
-                </div>
-           </form> 
+
         </div>
             <div class="notification" id="notification" style="display: none;">
         <span id="notification-message"></span>

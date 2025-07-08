@@ -3,6 +3,7 @@ const hamburgerBtn = document.querySelector('.hamburger-btn');
 const sidebarNav = document.querySelector('.sidebar-nav');
 const updateDiagnosticBtn = document.getElementById('updateDiagnosticBtn');
 
+
 // Función para cerrar el menú
 function closeMenu() {
     sidebarNav.classList.remove('active');
@@ -39,7 +40,7 @@ const confidenceSlider = document.getElementById('porcentaje_confianza');
 const confidenceFill = document.getElementById('confidenceFill');
 const confidenceValue = document.getElementById('confidenceValue');
 
-confidenceSlider.addEventListener('input', function () {
+/*confidenceSlider.addEventListener('input', function () {
     const value = this.value;
     confidenceFill.style.width = value + '%';
     confidenceValue.textContent = value + '%';
@@ -52,10 +53,10 @@ confidenceSlider.addEventListener('input', function () {
     } else {
         confidenceFill.style.background = '#06d6a0';
     }
-});
+}); */
 
 // Manejo del formulario
-document.getElementById('diagnosisForm').addEventListener('submit', function (e) {
+/*document.getElementById('diagnosisForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
     // Simulación de envío exitoso
@@ -82,7 +83,7 @@ document.getElementById('diagnosisForm').addEventListener('submit', function (e)
             notification.remove();
         }, 300);
     }, 3000);
-});
+}); 
 
 // Redirección a la vista de actualización de diagnóstico
 updateDiagnosticBtn.addEventListener('click', function () {
@@ -92,7 +93,7 @@ updateDiagnosticBtn.addEventListener('click', function () {
 
     // Para esta demo, mostramos un mensaje
     alert('Redirigiendo a la vista de Actualizar Diagnóstico...');
-});
+});*/
 
        const params = new URLSearchParams(window.location.search);
 const message = params.get('ms');

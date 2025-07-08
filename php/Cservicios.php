@@ -231,6 +231,57 @@ function  Actualizar_empleado($nombre, $apellido, $direccion, $email, $celular, 
         }
     }
 }
+function Mostrar_todo_diagnosticos(){
+    $conexion = $this->createConnection();
+    $sql = "CALL Mostrar_todo_diagnostico()";
+    $stmt = $conexion->prepare($sql);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    return $resultado;
+}
+function Eliminar_Diagnostico($id_diagnostico){
+    $conexion = $this->createConnection();
+    $sql = "CALL Eliminar_Diagnostico(?)";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("i", $id_diagnostico);
+    if ($stmt->execute()) {
+        return true;
+    } else {
+        return false;
+    }
+   
+}
+
+function Consultar_diagnostico($id_diagnostico){
+    $conexion = $this->createConnection();
+    $sql = "CALL Consultar_diagnostico(?)";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("i", $id_diagnostico);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    return $resultado;
+}
+
+function Actualizar_diagnostico($id_r, $id_patologia, $descripcion, $nivel_gravedad){
+    $conexion = $this->createConnection();
+    $sql = "CALL Actualizar_diagnostico(?, ?, ?,?)";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("ssss",   $id_r, $id_patologia, $descripcion, $nivel_gravedad);
+    
+    try {
+        if ($stmt->execute()) {
+            return ['success' => true];
+        } else {
+            return ['success' => false, 'error' => 'Error al ejecutar el procedimiento'];
+        }
+    } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() == 1062) {
+            return ['success' => false, 'error' => ''];
+        } else {
+            return ['success' => false, 'error' => 'Error de base de datos: ' . $e->getMessage()];
+        }
+    }
+}
 
 }
 ?>

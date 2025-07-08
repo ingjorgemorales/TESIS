@@ -112,21 +112,52 @@ function editDiagnostic(id) {
     }, 1500);
 }
 
-// Función para eliminar diagnóstico
 function confirmDelete(id) {
-    if (confirm(`¿Está seguro que desea eliminar el diagnóstico ${id}? Esta acción no se puede deshacer.`)) {
-        // Simulación de eliminación
-        showNotification(`Diagnóstico ${id} eliminado correctamente`);
-
-        // En una implementación real, aquí se haría una petición AJAX o se redirigiría
-        // a un script de eliminación
-        setTimeout(() => {
-            // Aquí iría la lógica para eliminar el registro de la tabla visualmente
-            // y/o recargar la página después de eliminar de la base de datos
-            // location.reload();
-        }, 1500);
+    if (confirm("¿Estás seguro de que deseas eliminar este diagnóstico?")) {
+        fetch('eliminar_diagnostico.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'id=' + encodeURIComponent(id)
+        })
+        .then(response => response.text())
+        .then(data => {
+            if (data.trim() === 'ok') {
+                removeRow(id);
+                 window.location.href = `actualizar_diagnostico.php?ms=✅El diagnóstico se eliminó correctamente&type=ok`;
+            } else {
+                alert("Error al eliminar el diagnóstico.");
+            }
+        })
+        .catch(error => {
+            console.error("Error de red:", error);
+            alert("No se pudo conectar con el servidor.");
+        });
     }
 }
+
+function removeRow(id) {
+    const row = document.getElementById("diag_" + id);
+    if (row) {
+        row.remove();
+
+        const remainingRows = document.querySelectorAll("tr[id^='diag_']");
+        const noDataMessage = document.getElementById("no-data-message");
+
+        if (remainingRows.length === 0 && noDataMessage) {
+            noDataMessage.style.display = "table-row";
+        }
+    } else {
+        alert("No se encontró la fila.");
+    }
+}
+
+
+
+
+
+
 
 // Manejo de paginación
 document.querySelectorAll('.page-btn').forEach(btn => {
@@ -143,3 +174,35 @@ document.querySelectorAll('.page-btn').forEach(btn => {
         showNotification(`Mostrando página ${this.textContent} de diagnósticos`);
     });
 });
+
+
+       const params = new URLSearchParams(window.location.search);
+const message = params.get('ms');
+const type = params.get('type');
+
+if (message && type) {
+    const notification = document.getElementById('notification');
+    const messageSpan = document.getElementById('notification-message');
+
+    // Set message
+    messageSpan.textContent = message;
+
+    // Set background color
+    if (type === 'ok') {
+        notification.style.backgroundColor = '#23c483'; // verde
+    } else if (type === 'error') {
+        notification.style.backgroundColor = '#e74c3c'; // rojo
+    }
+
+    // Mostrar
+    notification.style.display = 'block';
+
+    // Ocultar automáticamente luego de 4 segundos
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 4000);
+}
+
+function closeNotification() {
+    document.getElementById('notification').style.display = 'none';
+}

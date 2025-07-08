@@ -146,3 +146,43 @@ BEGIN
         foto = p_foto
     WHERE cedula = p_cedula;
 END ;
+/////////////////////////////////-eliminar diagnostico-////////////////////////////////
+DELIMITER //
+
+CREATE PROCEDURE Eliminar_Diagnostico(
+    IN p_Id_diagnostico varchar(100)
+)
+BEGIN
+SELECT 
+    d.*,
+    r.Fecha_hora AS Fecha_radiografia,
+    pa.Nombres AS Nombre_paciente,
+    pa.Apellidos AS Apellido_paciente,
+	z.Nombre_zona AS Zona_radiografiada,
+    p.Nombre_patologia
+    
+FROM diagnostico d
+INNER JOIN radiografia r ON d.Id_radiografia = r.Id_radiografia
+INNER JOIN zona z ON r.Id_zona = z.Id_zona
+INNER JOIN patologia p ON d.Id_patologia = p.Id_patologia
+INNER JOIN paciente pa ON r.Id_paciente = pa.Id_paciente
+WHERE d.Id_diagnostico = ide;
+END
+//////////////////////////////-Actualizar Diagnostico-////////////////////////////////
+DELIMITER //
+
+CREATE PROCEDURE Actualizar_diagnostico(
+    IN p_Id_diagnostico varchar(100),
+    IN p_Id_patologia varchar(100),
+    IN p_Descripcion varchar(100),
+    IN p_Nivel_gravedad VARCHAR(100)
+)
+BEGIN
+    UPDATE diagnostico
+    SET 
+        Id_patologia = p_Id_patologia,
+        Descripcion = p_Descripcion,
+        Nivel_gravedad = p_Nivel_gravedad
+    WHERE Id_diagnostico = p_Id_diagnostico;
+END 
+
